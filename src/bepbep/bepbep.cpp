@@ -1,6 +1,4 @@
-#include <vector>
-
-#include "mesh.h"
+#include "structure.h"
 #include "camera.h"
 
 const unsigned int SCR_WIDTH = 800;
@@ -11,26 +9,6 @@ using namespace bebone::gfx;
 using namespace bebone::gfx::opengl;
 
 using namespace bepbep;
-
-const std::vector<Vertex> vertices {
-    {{-1.0, -1.0,  1.0},   {1.0f, 1.0f, 1.0f}},
-    {{ 1.0, -1.0,  1.0},   {1.0f, 1.0f, 0.0f}},
-    {{ 1.0,  1.0,  1.0},   {1.0f, 0.0f, 1.0f}},
-    {{-1.0,  1.0,  1.0},   {1.0f, 0.0f, 0.0f}},
-    {{-1.0, -1.0, -1.0},   {0.0f, 1.0f, 1.0f}},
-    {{ 1.0, -1.0, -1.0},   {0.0f, 1.0f, 0.0f}},
-    {{ 1.0,  1.0, -1.0},   {0.0f, 0.0f, 1.0f}},
-    {{-1.0,  1.0, -1.0},   {0.0f, 0.0f, 0.0f}}
-};
-
-const std::vector<u32> indices {
-    0, 1, 2, 2, 3, 0,
-    1, 5, 6, 6, 2, 1,
-    7, 6, 5, 5, 4, 7,
-    4, 0, 3, 3, 7, 4,
-    4, 5, 1, 1, 0, 4,
-    3, 2, 6, 6, 7, 3
-};
 
 int main() {
     GLFWContext::init();
@@ -47,17 +25,13 @@ int main() {
     vertexShader.destroy();
     fragmentShader.destroy();
 
-    Mesh cube(vertices, indices);
-
     shaderProgram.enable();
-    shaderProgram.set_uniform("translation", Mat4f::translation(Vec3f::zero));
-    shaderProgram.set_uniform("scale", Mat4f::identity());
-    shaderProgram.set_uniform("rotation", trait_bryan_angle_yxz(Vec3f::zero));
 
     Camera camera({-5, 0, 0}, 100.0f);
 
-    GLContext::enable(GL_DEPTH_TEST);
+    Structure structure;
 
+    GLContext::enable(GL_DEPTH_TEST);
     while (!window->closing()) {
         camera.update(window);
 
@@ -68,7 +42,8 @@ int main() {
         shaderProgram.enable();
 
         camera.bind(shaderProgram);
-        cube.render();
+
+        structure.render(shaderProgram);
 
         GLFWContext::swap_buffers(*window);
         GLFWContext::poll_events();

@@ -38,7 +38,11 @@ namespace bepbep {
         return viewMatrix;
     }
 
-    void Camera::update(shared_ptr<Window>& window) {
+    void Camera::move(const Vec3f& direction) {
+        m_position += direction;
+    }
+
+    void Camera::update_position(shared_ptr<Window>& window) {
         const f32 speed = 0.5f;
 
         if (glfwGetKey(window->get_backend(), 'W') == GLFW_PRESS)
@@ -58,6 +62,13 @@ namespace bepbep {
 
         if (glfwGetKey(window->get_backend(), GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
             m_position.y -= speed;
+    }
+
+    void Camera::update(shared_ptr<Window>& window) {
+        update_position(window);
+
+        const auto winCenterWidth = static_cast<f32>(window->get_width()) / 2.0f;
+        const auto winCenterHeight = static_cast<f32>(window->get_height()) / 2.0f;
 
         bool oldMouseLockState = m_mouseLocked;
         static auto buttonPressed = false;
@@ -66,24 +77,21 @@ namespace bepbep {
         buttonPressed = isDebugButtonPressed;
 
         if(oldMouseLockState != m_mouseLocked)
-            glfwSetCursorPos(window->get_backend(), window->get_width() / 2.0f, window->get_height() / 2.0f);
+            glfwSetCursorPos(window->get_backend(), winCenterWidth, winCenterHeight);
 
         if(m_mouseLocked) {
             glfwSetInputMode(window->get_backend(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
-            const f64 centerXPos = window->get_width() / 2.0f;
-            const f64 centerYPos = window->get_height() / 2.0f;
-
             f64 xPos, yPos;
             glfwGetCursorPos(window->get_backend(), &xPos, &yPos);
 
-            const f32 deltaX = floor(centerXPos) - xPos;
-            const f32 deltaY = floor(centerYPos) - yPos;
+            const auto deltaX = floorf(winCenterWidth) - static_cast<f32>(xPos);
+            const auto deltaY = floorf(winCenterHeight) - static_cast<f32>(yPos);
 
             m_rotation.x += deltaY * 0.005f;
             m_rotation.y += deltaX * 0.005f; // If this is confusing just think that we rotate Y axis cause of movement mouse a long X axis, actual this make sense
 
-            glfwSetCursorPos(window->get_backend(), centerXPos, centerYPos);
+            glfwSetCursorPos(window->get_backend(), winCenterWidth, winCenterHeight);
         } else
             glfwSetInputMode(window->get_backend(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
@@ -102,6 +110,10 @@ namespace bepbep {
 
     const Vec3f& Camera::get_position() const {
         return m_position;
+    }
+
+    const Vec3f& Camera::get_direction() const {
+        return m_direction;
     }
 
     const i32& Camera::get_render_distance() const {
