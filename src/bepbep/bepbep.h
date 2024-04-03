@@ -16,7 +16,10 @@ namespace bepbep {
         private:
             std::shared_ptr<Window> window;
 
-            std::shared_ptr<GLShaderProgram> shader;
+            std::shared_ptr<GLShaderProgram> mainShader;
+            std::shared_ptr<GLShaderProgram> lineShader;
+
+            static std::shared_ptr<GLShaderProgram> load_shader(const std::string& vertPath, const std::string& fragPath);
 
         public:
             void preinit();

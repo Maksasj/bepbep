@@ -12,34 +12,34 @@ namespace bepbep {
         private:
             unsigned long long indicesCount;
 
-            unique_ptr<GLVertexArrayObject> m_vao;
-            unique_ptr<GLVertexBufferObject> m_vbo;
-            unique_ptr<GLElementBufferObject> m_ebo;
+            unique_ptr<GLVertexArrayObject> vao;
+            unique_ptr<GLVertexBufferObject> vbo;
+            unique_ptr<GLElementBufferObject> ebo;
 
         public:
             Mesh(const vector<Vertex>& vertices, const vector<u32>& indices) : indicesCount(indices.size()) {
-                m_vao = make_unique<GLVertexArrayObject>();
-                m_vao->bind();
+                vao = make_unique<GLVertexArrayObject>();
+                vao->bind();
 
-                m_vbo = make_unique<GLVertexBufferObject>(vertices.data(), vertices.size() * sizeof(Vertex));
-                m_ebo = make_unique<GLElementBufferObject>(indices.data(), indices.size() * sizeof(u32));
+                vbo = make_unique<GLVertexBufferObject>(vertices.data(), vertices.size() * sizeof(Vertex));
+                ebo = make_unique<GLElementBufferObject>(indices.data(), indices.size() * sizeof(u32));
 
-                m_vao->link_attributes(*m_vbo, 0, 3, GL_FLOAT, sizeof(Vertex), (void*) offsetof(Vertex, pos));
-                m_vao->link_attributes(*m_vbo, 1, 4, GL_FLOAT, sizeof(Vertex), (void*) offsetof(Vertex, color));
+                vao->link_attributes(*vbo, 0, 3, GL_FLOAT, sizeof(Vertex), (void*) offsetof(Vertex, pos));
+                vao->link_attributes(*vbo, 1, 4, GL_FLOAT, sizeof(Vertex), (void*) offsetof(Vertex, color));
 
-                m_vao->unbind();
-                m_vbo->unbind();
-                m_ebo->unbind();
+                vao->unbind();
+                vbo->unbind();
+                ebo->unbind();
             }
 
             ~Mesh() {
-                m_vao->destroy();
-                m_vbo->destroy();
-                m_ebo->destroy();
+                vao->destroy();
+                vbo->destroy();
+                ebo->destroy();
             }
 
             void render() const {
-                m_vao->bind();
+                vao->bind();
 
                 GLContext::draw_elements(GL_TRIANGLES, static_cast<i32>(indicesCount), GL_UNSIGNED_INT, nullptr);
             }

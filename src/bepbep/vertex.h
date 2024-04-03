@@ -12,6 +12,11 @@ namespace bepbep {
         Vec3f pos;
         ColorRGBA color;
     };
+
+    struct LineVertex {
+        Vec3f pos;
+        ColorRGBA color;
+    };
 }
 
 #endif

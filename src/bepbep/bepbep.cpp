@@ -15,25 +15,34 @@ namespace bepbep {
         GLContext::set_viewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
     }
 
-    void BepBepApp::load() {
-        auto vertexShader = GLShaderFactory::create_shader("shaders/main_vert.glsl", ShaderTypes::VERTEX_SHADER, ENABLE_UNIFORMS);
-        auto fragmentShader = GLShaderFactory::create_shader("shaders/main_frag.glsl", ShaderTypes::FRAGMENT_SHADER, ENABLE_UNIFORMS);
+    std::shared_ptr<GLShaderProgram> BepBepApp::load_shader(const std::string& vertPath, const std::string& fragPath) {
+        auto vertexShader = GLShaderFactory::create_shader(vertPath, ShaderTypes::VERTEX_SHADER, ENABLE_UNIFORMS);
+        auto fragmentShader = GLShaderFactory::create_shader(fragPath, ShaderTypes::FRAGMENT_SHADER, ENABLE_UNIFORMS);
 
-        shader = std::make_shared<GLShaderProgram>(vertexShader, fragmentShader);
+        std::shared_ptr<GLShaderProgram> shader = std::make_shared<GLShaderProgram>(vertexShader, fragmentShader);
 
         vertexShader.destroy();
         fragmentShader.destroy();
+
+        return shader;
+    }
+
+    void BepBepApp::load() {
+        mainShader = load_shader("shaders/main_vert.glsl", "shaders/main_frag.glsl");
+        lineShader = load_shader("shaders/line_vert.glsl", "shaders/line_frag.glsl");
     }
 
     void BepBepApp::run() {
         GraphicsContext context;
 
         context.set_debug_mode(true);
-        context.set_main_shader(shader.get());
-        context.set_line_shader(nullptr);
+        context.set_main_shader(mainShader.get());
+        context.set_line_shader(lineShader.get());
 
-        shader->enable();
+        // Todo
+        context.init_line_mesh();
 
+        mainShader->enable();
         Camera camera({-5, 0, 0}, 100.0f);
 
         Level level;
@@ -51,9 +60,11 @@ namespace bepbep {
             GLContext::clear_color(0.2f, 0.2f, 0.2f, 1.0f);
             GLContext::clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-            shader->enable();
+            mainShader->enable();
+            camera.bind(*mainShader);
 
-            camera.bind(*shader);
+            lineShader->enable();
+            camera.bind(*lineShader);
 
             level.render(context);
 
@@ -63,7 +74,8 @@ namespace bepbep {
     }
 
     void BepBepApp::cleanup() {
-        shader->destroy();
+        mainShader->destroy();
+        lineShader->destroy();
 
         GLFWContext::terminate();
     }
