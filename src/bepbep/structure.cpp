@@ -57,13 +57,11 @@ namespace bepbep {
      void Chunk::render(GraphicsContext& context) {
         auto shader = context.get_main_shader();
 
-        if(shader != nullptr) {
-            shader->enable();
-            shader->set_uniform("translation", transform.translation);
-            shader->set_uniform("rotation", transform.rotation);
+        shader->enable();
+        shader->set_uniform("translation", transform.translation);
+        shader->set_uniform("rotation", transform.rotation);
 
-            mesh->render();
-        }
+        mesh->render();
 
         if(context.is_debug()) {
             context.render_line({0, 0, 0}, {16, 0, 0}, ColorRGBA::WHITE);
@@ -86,12 +84,45 @@ namespace bepbep {
         }
     }
 
-    Structure::Structure() {
+    Structure::Structure(const Vec3f& pos, const float& m) {
         chunks.push_back(std::make_unique<Chunk>());
+
+        posCurrent = pos;
+        posOld = pos;
+
+        mass = m;
     }
 
     void Structure::render(GraphicsContext& context) {
-        for(auto& ch : chunks)
-            ch->render(context);
+        // for(auto& ch : chunks)
+        //     ch->render(context);
+
+        // auto shader = context.get_main_shader();
+//
+        // shader->enable();
+        // shader->set_uniform("translation", transform.translation);
+        // shader->set_uniform("rotation", transform.rotation);
+
+        // mesh->render();
+
+        if(context.is_debug()) {
+            context.render_line({0, 0, 0}, {16, 0, 0}, posCurrent, ColorRGBA::WHITE);
+            context.render_line({0, 0, 0}, {0, 16, 0}, posCurrent, ColorRGBA::WHITE);
+            context.render_line({0, 0, 0}, {0, 0, 16}, posCurrent, ColorRGBA::WHITE);
+
+            context.render_line({16, 0, 0}, {16, 16, 0}, posCurrent, ColorRGBA::WHITE);
+            context.render_line({16, 0, 0}, {16, 0, 16}, posCurrent, ColorRGBA::WHITE);
+
+            context.render_line({0, 16, 0}, {16, 16, 0}, posCurrent, ColorRGBA::WHITE);
+            context.render_line({0, 16, 0}, {0, 16, 16}, posCurrent, ColorRGBA::WHITE);
+
+            context.render_line({16, 16, 0}, {16, 16, 16}, posCurrent, ColorRGBA::WHITE);
+
+            context.render_line({16, 16, 16}, {16, 0, 16}, posCurrent, ColorRGBA::WHITE);
+            context.render_line({16, 16, 16}, {0, 16, 16}, posCurrent, ColorRGBA::WHITE);
+
+            context.render_line({0, 0, 16}, {0, 16, 16}, posCurrent, ColorRGBA::WHITE);
+            context.render_line({0, 0, 16}, {16, 0, 16}, posCurrent, ColorRGBA::WHITE);
+        }
     }
 }

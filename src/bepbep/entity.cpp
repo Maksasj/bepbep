@@ -1,7 +1,7 @@
 #include "entity.h"
 
 namespace bepbep {
-    Entity::Entity() {
+    Entity::Entity(const Vec3f& pos, const float& m) {
         const std::vector<Vertex> vertices {
             {{-1.0, -1.0,  1.0},   {1.0f, 1.0f, 1.0f}},
             {{ 1.0, -1.0,  1.0},   {1.0f, 1.0f, 0.0f}},
@@ -23,6 +23,10 @@ namespace bepbep {
         };
 
         mesh = make_unique<Mesh>(vertices, indices);
+
+        posCurrent = pos;
+        posOld = pos;
+        mass = m;
     }
 
     void Entity::render(GraphicsContext& context) {

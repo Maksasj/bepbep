@@ -46,6 +46,21 @@ namespace bepbep {
                 }
             }
 
+            void render_line(const Vec3f& start, const Vec3f& end, const Vec3f& translation, const ColorRGBA& color) {
+                if(lineShader != nullptr) {
+                    LineVertex vertices[2] = {
+                            { start + translation, color },
+                            { end + translation, color },
+                    };
+
+                    line->update_vertices(vertices, 2);
+
+                    lineShader->enable();
+
+                    line->render();
+                }
+            }
+
             const bool& is_debug() const;
             GLShaderProgram* get_main_shader();
             GLShaderProgram* get_line_shader();

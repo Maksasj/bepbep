@@ -26,7 +26,7 @@ namespace bepbep {
             std::vector<std::unique_ptr<Chunk>> chunks;
 
         public:
-            Structure();
+            Structure(const Vec3f& pos, const float& mass);
 
             void render(GraphicsContext& context) override;
     };

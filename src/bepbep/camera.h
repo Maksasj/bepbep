@@ -10,11 +10,11 @@ namespace bepbep {
 
     class Camera : private core::NonCopyable {
         private:
-            i32 m_renderDistance;
+            i32 renderDistance;
 
-            Vec3f m_position;
-            Vec3f m_rotation;
-            Vec3f m_direction;
+            Vec3f position;
+            Vec3f rotation;
+            Vec3f direction;
 
             bool m_mouseLocked;
 

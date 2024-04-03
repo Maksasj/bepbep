@@ -1,12 +1,12 @@
 #include "camera.h"
 
 namespace bepbep {
-    Camera::Camera(const Vec3f& position, const i32& renderDistance) {
-        m_renderDistance = renderDistance;
+    Camera::Camera(const Vec3f& pos, const i32& rDistance) {
+        renderDistance = rDistance;
 
-        m_position = position;
-        m_rotation = Vec3f::zero;
-        m_direction = Vec3f::zero;
+        position = pos;
+        rotation = Vec3f::zero;
+        direction = Vec3f::zero;
 
         m_mouseLocked = true;
 
@@ -17,7 +17,7 @@ namespace bepbep {
     Mat4f Camera::calculate_view_matrix() const {
         const static auto upVector = Vec3f::down;
 
-        const auto w = m_direction.normalize();
+        const auto w = direction.normalize();
         const auto u = w.cross(upVector).normalize();
         const auto v = w.cross(u);
 
@@ -31,37 +31,40 @@ namespace bepbep {
         viewMatrix[0 * 4 + 2] = w.x;
         viewMatrix[1 * 4 + 2] = w.y;
         viewMatrix[2 * 4 + 2] = w.z;
-        viewMatrix[3 * 4 + 0] = -1.0f * (u).dot(m_position);
-        viewMatrix[3 * 4 + 1] = -1.0f * (v).dot(m_position);
-        viewMatrix[3 * 4 + 2] = -1.0f * (w).dot(m_position);
+        viewMatrix[3 * 4 + 0] = -1.0f * (u).dot(position);
+        viewMatrix[3 * 4 + 1] = -1.0f * (v).dot(position);
+        viewMatrix[3 * 4 + 2] = -1.0f * (w).dot(position);
 
         return viewMatrix;
     }
 
     void Camera::move(const Vec3f& direction) {
-        m_position += direction;
+        position += direction;
     }
 
     void Camera::update_position(shared_ptr<Window>& window) {
-        const f32 speed = 0.5f;
+        f32 speed = 0.5f;
+
+        if (glfwGetKey(window->get_backend(), GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
+            speed = 3.0f;
 
         if (glfwGetKey(window->get_backend(), 'W') == GLFW_PRESS)
-            m_position += Vec3f(1.0f, 0.0f, 1.0f) * m_direction.normalize() * speed;
+            position += Vec3f(1.0f, 0.0f, 1.0f) * direction.normalize() * speed;
 
         if (glfwGetKey(window->get_backend(), 'S') == GLFW_PRESS)
-            m_position -= Vec3f(1.0f, 0.0f, 1.0f) * m_direction.normalize() * speed;
+            position -= Vec3f(1.0f, 0.0f, 1.0f) * direction.normalize() * speed;
 
         if (glfwGetKey(window->get_backend(), 'A') == GLFW_PRESS)
-            m_position -= Vec3f(m_direction.z, 0.0f, -m_direction.x).normalize() * speed;
+            position -= Vec3f(direction.z, 0.0f, -direction.x).normalize() * speed;
 
         if (glfwGetKey(window->get_backend(), 'D') == GLFW_PRESS)
-            m_position += Vec3f(m_direction.z, 0.0f, -m_direction.x).normalize() * speed;
+            position += Vec3f(direction.z, 0.0f, -direction.x).normalize() * speed;
 
         if (glfwGetKey(window->get_backend(), GLFW_KEY_SPACE) == GLFW_PRESS)
-            m_position.y += speed;
+            position.y += speed;
 
         if (glfwGetKey(window->get_backend(), GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-            m_position.y -= speed;
+            position.y -= speed;
     }
 
     void Camera::update(shared_ptr<Window>& window) {
@@ -88,16 +91,16 @@ namespace bepbep {
             const auto deltaX = floorf(winCenterWidth) - static_cast<f32>(xPos);
             const auto deltaY = floorf(winCenterHeight) - static_cast<f32>(yPos);
 
-            m_rotation.x += deltaY * 0.005f;
-            m_rotation.y += deltaX * 0.005f; // If this is confusing just think that we rotate Y axis cause of movement mouse a long X axis, actual this make sense
+            rotation.x += deltaY * 0.005f;
+            rotation.y += deltaX * 0.005f; // If this is confusing just think that we rotate Y axis cause of movement mouse a long X axis, actual this make sense
 
             glfwSetCursorPos(window->get_backend(), winCenterWidth, winCenterHeight);
         } else
             glfwSetInputMode(window->get_backend(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
-        m_direction.x = cos(m_rotation.y) * cos(m_rotation.x);
-        m_direction.y = sin(m_rotation.x);
-        m_direction.z = sin(m_rotation.y) * cos(m_rotation.x);
+        direction.x = cos(rotation.y) * cos(rotation.x);
+        direction.y = sin(rotation.x);
+        direction.z = sin(rotation.y) * cos(rotation.x);
 
         m_viewMatrix = calculate_view_matrix();
         m_projMatrix = Mat4f::perspective(1.0472, window->get_aspect(), 0.1f, 2000.0f);
@@ -109,14 +112,14 @@ namespace bepbep {
     }
 
     const Vec3f& Camera::get_position() const {
-        return m_position;
+        return position;
     }
 
     const Vec3f& Camera::get_direction() const {
-        return m_direction;
+        return direction;
     }
 
     const i32& Camera::get_render_distance() const {
-        return m_renderDistance;
+        return renderDistance;
     }
 }

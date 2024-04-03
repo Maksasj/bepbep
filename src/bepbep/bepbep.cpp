@@ -33,6 +33,11 @@ namespace bepbep {
     }
 
     void BepBepApp::run() {
+        while(glfwGetKey(window->get_backend(), 'P') != GLFW_PRESS) {
+            GLFWContext::swap_buffers(*window);
+            GLFWContext::poll_events();
+        }
+
         GraphicsContext context;
 
         context.set_debug_mode(true);
@@ -53,7 +58,16 @@ namespace bepbep {
         GLContext::cull_face(GL_BACK);
         GLContext::front_face(GL_CCW);
 
+        double currentFrame = glfwGetTime();
+        double lastFrame = currentFrame;
+        double deltaTime;
+
         while (!window->closing()) {
+            currentFrame = glfwGetTime();
+            deltaTime = currentFrame - lastFrame;
+            lastFrame = currentFrame;
+
+            level.update(deltaTime);
             camera.update(window);
 
             GLContext::set_viewport(0, 0, window->get_width(), window->get_height());

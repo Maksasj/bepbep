@@ -11,7 +11,7 @@ namespace bepbep {
             unique_ptr<Mesh> mesh;
 
         public:
-            Entity();
+            Entity(const Vec3f& pos, const float& m);
 
             void render(GraphicsContext& context) override;
     };
