@@ -9,7 +9,7 @@ namespace bepbep {
                 for(int z = 0; z < 16; ++z) {
                     int v = rand() % 16;
 
-                    if (v < 5)
+                    if (v < 1)
                         tiles[x][y][z] = 1;
                 }
             }

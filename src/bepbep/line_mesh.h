@@ -16,33 +16,13 @@ namespace bepbep {
             unique_ptr<GLVertexBufferObject> vbo;
 
         public:
-            LineMesh(LineVertex* vertices, unsigned long long vCount) : vertexCount(vCount) {
-                vao = make_unique<GLVertexArrayObject>();
-                vao->bind();
+            LineMesh(LineVertex* vertices, unsigned long long vCount);
 
-                vbo = make_unique<GLVertexBufferObject>(vertices, vCount * sizeof(LineVertex), GL_DYNAMIC_DRAW);
+            ~LineMesh();
 
-                vao->link_attributes(*vbo, 0, 3, GL_FLOAT, sizeof(LineVertex), (void*) offsetof(LineVertex, pos));
-                vao->link_attributes(*vbo, 1, 4, GL_FLOAT, sizeof(LineVertex), (void*) offsetof(LineVertex, color));
+            void update_vertices(LineVertex* vertices, unsigned long long vCount);
 
-                vao->unbind();
-                vbo->unbind();
-            }
-
-            ~LineMesh() {
-                vao->destroy();
-                vbo->destroy();
-            }
-
-            void update_vertices(LineVertex* vertices, unsigned long long vCount) {
-                vbo->buffer_sub_data(0, vCount * sizeof(LineVertex), vertices);
-            }
-
-            void render() const {
-                vao->bind();
-
-                GLContext::draw_arrays(GL_LINES, 0, static_cast<i32>(vertexCount));
-            }
+            void render() const;
     };
 }
 
