@@ -3,8 +3,8 @@
 
 #include "vertex.h"
 #include "mesh.h"
-#include "structure.h"
 #include "camera.h"
+#include "level.h"
 
 namespace bepbep {
     using namespace bebone::core;

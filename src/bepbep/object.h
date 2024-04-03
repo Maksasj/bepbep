@@ -1,5 +1,5 @@
-#ifndef _BEPBEP_STRUCTURE_H_
-#define _BEPBEP_STRUCTURE_H_
+#ifndef _BEPBEP_OBJECT_H_
+#define _BEPBEP_OBJECT_H_
 
 #include "mesh.h"
 
@@ -11,16 +11,14 @@ namespace bepbep {
         Mat4f rotation;
     };
 
-    class Structure {
-        private:
+    class Object {
+        protected:
             Transform transform;
 
-            unique_ptr<Mesh> mesh;
-
         public:
-            Structure();
+            Object();
 
-            void render(GLShaderProgram& program);
+            virtual void render(GLShaderProgram& program) = 0;
     };
 }
 

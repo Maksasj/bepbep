@@ -1,10 +1,7 @@
-#include "structure.h"
+#include "entity.h"
 
 namespace bepbep {
-    Structure::Structure() {
-        transform.translation = Mat4f::translation(Vec3f::zero);
-        transform.rotation = trait_bryan_angle_yxz(Vec3f::zero);
-
+    Entity::Entity() {
         const std::vector<Vertex> vertices {
             {{-1.0, -1.0,  1.0},   {1.0f, 1.0f, 1.0f}},
             {{ 1.0, -1.0,  1.0},   {1.0f, 1.0f, 0.0f}},
@@ -28,7 +25,7 @@ namespace bepbep {
         mesh = make_unique<Mesh>(vertices, indices);
     }
 
-    void Structure::render(GLShaderProgram& program) {
+    void Entity::render(GLShaderProgram& program) {
         program.set_uniform("translation", transform.translation);
         program.set_uniform("rotation", transform.rotation);
 

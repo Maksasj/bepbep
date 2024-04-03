@@ -30,7 +30,7 @@ namespace bepbep {
 
         Camera camera({-5, 0, 0}, 100.0f);
 
-        Structure structure;
+        Level level;
 
         GLContext::enable(GL_DEPTH_TEST);
 
@@ -49,7 +49,7 @@ namespace bepbep {
 
             camera.bind(*shader);
 
-            structure.render(*shader);
+            level.render(*shader);
 
             GLFWContext::swap_buffers(*window);
             GLFWContext::poll_events();
