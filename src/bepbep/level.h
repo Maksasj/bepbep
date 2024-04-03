@@ -11,18 +11,12 @@ namespace bepbep {
 
         public:
             Level() {
-                objects.push_back(std::make_shared<Structure>(Vec3f{24, 0, 0}, 5000));
+                objects.push_back(std::make_shared<Structure>(Vec3f{24, 0, 0}, 10));
 
-                objects.push_back(std::make_shared<Structure>(Vec3f{100, 0, 0}, 1000));
-                objects.push_back(std::make_shared<Structure>(Vec3f{-100, 50, 50}, 1000));
+                objects.push_back(std::make_shared<Structure>(Vec3f{100, 0, 0}, 10));
+                objects.push_back(std::make_shared<Structure>(Vec3f{-100, 50, 50}, 10));
 
-                for(int i = 0; i < 200; ++i) {
-                    float x = (rand() % 200) - 100;
-                    float y = (rand() % 200) - 100;
-                    float z = (rand() % 200) - 100;
-
-                    objects.push_back(std::make_shared<Entity>(Vec3f{x, y, z}, 10));
-                }
+                objects.push_back(std::make_shared<Entity>(Vec3f{0, 0, 0}, 10));
             }
 
             void update(float dt) {
@@ -46,15 +40,11 @@ namespace bepbep {
                         auto dist = vec.length();
                         auto normal = vec.normalize();
 
-                        auto g = (normal * 9.0 * planet->mass) / (dist * dist);
+                        auto g = (normal * 9.8 * planet->mass) / (dist * dist);
 
                         sputnik->accelerate(g);
                     }
                 }
-
-                // for(auto& obj : objects) {
-                //     obj->accelerate({0, -9.8, 0});
-                // }
             }
 
             void render(GraphicsContext& context) {

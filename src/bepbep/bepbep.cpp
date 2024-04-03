@@ -33,11 +33,6 @@ namespace bepbep {
     }
 
     void BepBepApp::run() {
-        while(glfwGetKey(window->get_backend(), 'P') != GLFW_PRESS) {
-            GLFWContext::swap_buffers(*window);
-            GLFWContext::poll_events();
-        }
-
         GraphicsContext context;
 
         context.set_debug_mode(true);
