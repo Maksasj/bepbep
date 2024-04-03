@@ -10,7 +10,7 @@ namespace bepbep {
 
     struct Vertex {
         Vec3f pos;
-        Vec3f color;
+        ColorRGBA color;
     };
 }
 

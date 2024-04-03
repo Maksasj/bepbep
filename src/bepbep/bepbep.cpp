@@ -18,8 +18,8 @@ int main() {
     GLContext::load_opengl();
     GLContext::set_viewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 
-    auto vertexShader = GLShaderFactory::create_shader("vertex.glsl", ShaderTypes::VERTEX_SHADER, ENABLE_UNIFORMS);
-    auto fragmentShader = GLShaderFactory::create_shader("fragment.glsl", ShaderTypes::FRAGMENT_SHADER, ENABLE_UNIFORMS);
+    auto vertexShader = GLShaderFactory::create_shader("shaders/main_vert.glsl", ShaderTypes::VERTEX_SHADER, ENABLE_UNIFORMS);
+    auto fragmentShader = GLShaderFactory::create_shader("shaders/main_frag.glsl", ShaderTypes::FRAGMENT_SHADER, ENABLE_UNIFORMS);
     GLShaderProgram shaderProgram(vertexShader, fragmentShader);
 
     vertexShader.destroy();
@@ -32,6 +32,11 @@ int main() {
     Structure structure;
 
     GLContext::enable(GL_DEPTH_TEST);
+
+    GLContext::enable(GL_CULL_FACE);
+    GLContext::cull_face(GL_BACK);
+    GLContext::front_face(GL_CCW);
+
     while (!window->closing()) {
         camera.update(window);
 
