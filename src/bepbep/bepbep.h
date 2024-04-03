@@ -5,6 +5,7 @@
 #include "mesh.h"
 #include "camera.h"
 #include "level.h"
+#include "graphics_context.h"
 
 namespace bepbep {
     using namespace bebone::core;

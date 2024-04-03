@@ -13,9 +13,9 @@ namespace bepbep {
                 objects.push_back(std::make_shared<Entity>());
             }
 
-            void render(GLShaderProgram& shader) {
+            void render(GraphicsContext& context) {
                 for(auto& obj : objects)
-                    obj->render(shader);
+                    obj->render(context);
             }
     };
 }

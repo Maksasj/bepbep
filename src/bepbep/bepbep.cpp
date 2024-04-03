@@ -26,6 +26,12 @@ namespace bepbep {
     }
 
     void BepBepApp::run() {
+        GraphicsContext context;
+
+        context.set_debug_mode(true);
+        context.set_main_shader(shader.get());
+        context.set_line_shader(nullptr);
+
         shader->enable();
 
         Camera camera({-5, 0, 0}, 100.0f);
@@ -49,7 +55,7 @@ namespace bepbep {
 
             camera.bind(*shader);
 
-            level.render(*shader);
+            level.render(context);
 
             GLFWContext::swap_buffers(*window);
             GLFWContext::poll_events();

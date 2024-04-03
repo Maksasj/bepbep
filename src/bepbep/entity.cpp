@@ -25,10 +25,15 @@ namespace bepbep {
         mesh = make_unique<Mesh>(vertices, indices);
     }
 
-    void Entity::render(GLShaderProgram& program) {
-        program.set_uniform("translation", transform.translation);
-        program.set_uniform("rotation", transform.rotation);
+    void Entity::render(GraphicsContext& context) {
+        auto shader = context.get_main_shader();
 
-        mesh->render();
+        if(shader != nullptr) {
+            shader->enable();
+            shader->set_uniform("translation", transform.translation);
+            shader->set_uniform("rotation", transform.rotation);
+
+            mesh->render();
+        }
     }
 }

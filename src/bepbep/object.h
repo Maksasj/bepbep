@@ -2,6 +2,7 @@
 #define _BEPBEP_OBJECT_H_
 
 #include "mesh.h"
+#include "graphics_context.h"
 
 namespace bepbep {
     using namespace bebone::core;
@@ -18,7 +19,7 @@ namespace bepbep {
         public:
             Object();
 
-            virtual void render(GLShaderProgram& program) = 0;
+            virtual void render(GraphicsContext& context) = 0;
     };
 }
 

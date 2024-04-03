@@ -13,7 +13,7 @@ namespace bepbep {
         public:
             Entity();
 
-            void render(GLShaderProgram& program) override;
+            void render(GraphicsContext& context) override;
     };
 }
 
