@@ -9,7 +9,9 @@ namespace bepbep {
     }
 
     void BepBepApp::init() {
-        window = WindowFactory::create_window("BepBep", SCR_WIDTH, SCR_HEIGHT, GfxAPI::OPENGL);
+        window = WindowFactory::create_window("BepBep", SCR_WIDTH, SCR_HEIGHT, GfxAPI::OPENGL, {
+            .enableResize = true
+        });
 
         GLContext::load_opengl();
         GLContext::set_viewport(0, 0, SCR_WIDTH, SCR_HEIGHT);

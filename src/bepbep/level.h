@@ -48,6 +48,11 @@ namespace bepbep {
             }
 
             void render(GraphicsContext& context) {
+                auto lineShader = context.get_line_shader();
+                lineShader->enable();
+                lineShader->set_uniform("translation", Mat4f::identity());
+                lineShader->set_uniform("rotation", Mat4f::identity());
+
                 context.render_line({0, 0, 0}, {5, 0, 0}, ColorRGBA::RED);
                 context.render_line({0, 0, 0}, {0, 5, 0}, ColorRGBA::BLUE);
                 context.render_line({0, 0, 0}, {0, 0, 5}, ColorRGBA::GREEN);

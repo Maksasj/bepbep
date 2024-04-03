@@ -39,9 +39,6 @@ namespace bepbep {
                     };
 
                     line->update_vertices(vertices, 2);
-
-                    lineShader->enable();
-
                     line->render();
                 }
             }
@@ -49,14 +46,11 @@ namespace bepbep {
             void render_line(const Vec3f& start, const Vec3f& end, const Vec3f& translation, const ColorRGBA& color) {
                 if(lineShader != nullptr) {
                     LineVertex vertices[2] = {
-                            { start + translation, color },
-                            { end + translation, color },
+                        { start + translation, color },
+                        { end + translation, color },
                     };
 
                     line->update_vertices(vertices, 2);
-
-                    lineShader->enable();
-
                     line->render();
                 }
             }
