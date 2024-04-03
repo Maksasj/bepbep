@@ -19,16 +19,7 @@ namespace bepbep {
     }
 
     void Chunk::build_mesh() {
-        const std::vector<Vertex> vertices {
-            {{ 0,    0,     1.0}, ColorRGBA::MAGENTA },
-            {{ 1.0,  0,     1.0}, ColorRGBA::MAGENTA },
-            {{ 1.0,  1.0,   1.0}, ColorRGBA::MAGENTA },
-            {{ 0,    1.0,   1.0}, ColorRGBA::MAGENTA },
-            {{ 0,    0,     0},   ColorRGBA::MAGENTA },
-            {{ 1.0,  0,     0},   ColorRGBA::MAGENTA },
-            {{ 1.0,  1.0,   0},   ColorRGBA::MAGENTA },
-            {{ 0,    1.0,   0},   ColorRGBA::MAGENTA }
-        };
+
 
         const std::vector<u32> indices {
             0, 1, 2, 2, 3, 0,
@@ -45,6 +36,24 @@ namespace bepbep {
             for(int y = 0; y < 16; ++y) {
                 for(int z = 0; z < 16; ++z) {
                     if(tiles[x][y][z] == 1) {
+                        auto color = ColorRGBA{
+                            (rand() % 254 / 255.0f),
+                            (rand() % 254 / 255.0f),
+                            (rand() % 254 / 255.0f),
+                            1.0f
+                        };
+
+                        const std::vector<Vertex> vertices {
+                                {{ 0,    0,     1.0}, color },
+                                {{ 1.0,  0,     1.0}, color },
+                                {{ 1.0,  1.0,   1.0}, color },
+                                {{ 0,    1.0,   1.0}, color },
+                                {{ 0,    0,     0},   color },
+                                {{ 1.0,  0,     0},   color },
+                                {{ 1.0,  1.0,   0},   color },
+                                {{ 0,    1.0,   0},   color }
+                        };
+
                         builder.append(vertices, indices, {x, y, z});
                     }
                 }

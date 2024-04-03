@@ -77,7 +77,7 @@ namespace bepbep {
             lineShader->enable();
             camera.bind(*lineShader);
 
-            level.render(context);
+            level.render(camera, context);
 
             GLFWContext::swap_buffers(*window);
             GLFWContext::poll_events();

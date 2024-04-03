@@ -1,7 +1,7 @@
 #include "entity.h"
 
 namespace bepbep {
-    Entity::Entity(const Vec3f& pos, const float& m) {
+    Entity::Entity(const Vec3f& pos, const float& m) : Object(ENTITY) {
         const std::vector<Vertex> vertices {
             {{-1.0, -1.0,  1.0},   {1.0f, 1.0f, 1.0f}},
             {{ 1.0, -1.0,  1.0},   {1.0f, 1.0f, 0.0f}},
@@ -32,12 +32,12 @@ namespace bepbep {
     void Entity::render(GraphicsContext& context) {
         auto shader = context.get_main_shader();
 
-        if(shader != nullptr) {
-            shader->enable();
-            shader->set_uniform("translation", transform.translation);
-            shader->set_uniform("rotation", transform.rotation);
+        shader->enable();
+        shader->set_uniform("translation", transform.translation);
+        shader->set_uniform("rotation", transform.rotation);
 
-            mesh->render();
-        }
+        mesh->render();
+
+        Object::render(context);
     }
 }

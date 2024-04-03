@@ -12,12 +12,18 @@ namespace bepbep {
         Mat4f rotation;
     };
 
+    enum ObjectType {
+        ENTITY,
+        STRUCTURE
+    };
+
     class Object {
         protected:
             Transform transform;
+            const ObjectType type;
 
         public:
-            Object();
+            Object(const ObjectType& t);
 
             Vec3f posCurrent;
             Vec3f posOld;
@@ -40,7 +46,9 @@ namespace bepbep {
                 acceleration += acc;
             }
 
-            virtual void render(GraphicsContext& context) = 0;
+            virtual void render(GraphicsContext& context);
+
+            const ObjectType& get_type() const;
     };
 }
 
