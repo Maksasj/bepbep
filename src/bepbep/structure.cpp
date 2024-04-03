@@ -2,21 +2,32 @@
 
 namespace bepbep {
     Chunk::Chunk() {
-        std::memset(tiles, 0, 16 * 16);
+        std::memset(tiles, 0, 16 * 16 * 16);
+
+        for(int x = 0; x < 16; ++x) {
+            for(int y = 0; y < 16; ++y) {
+                for(int z = 0; z < 16; ++z) {
+                    int v = rand() % 16;
+
+                    if (v < 5)
+                        tiles[x][y][z] = 1;
+                }
+            }
+        }
 
         build_mesh();
     }
 
     void Chunk::build_mesh() {
         const std::vector<Vertex> vertices {
-                {{-1.0, -1.0,  1.0},   {1.0f, 1.0f, 1.0f}},
-                {{ 1.0, -1.0,  1.0},   {1.0f, 1.0f, 0.0f}},
-                {{ 1.0,  1.0,  1.0},   {1.0f, 0.0f, 1.0f}},
-                {{-1.0,  1.0,  1.0},   {1.0f, 0.0f, 0.0f}},
-                {{-1.0, -1.0, -1.0},   {0.0f, 1.0f, 1.0f}},
-                {{ 1.0, -1.0, -1.0},   {0.0f, 1.0f, 0.0f}},
-                {{ 1.0,  1.0, -1.0},   {0.0f, 0.0f, 1.0f}},
-                {{-1.0,  1.0, -1.0},   {0.0f, 0.0f, 0.0f}}
+            {{ 0,    0,     1.0}, ColorRGBA::MAGENTA },
+            {{ 1.0,  0,     1.0}, ColorRGBA::MAGENTA },
+            {{ 1.0,  1.0,   1.0}, ColorRGBA::MAGENTA },
+            {{ 0,    1.0,   1.0}, ColorRGBA::MAGENTA },
+            {{ 0,    0,     0},   ColorRGBA::MAGENTA },
+            {{ 1.0,  0,     0},   ColorRGBA::MAGENTA },
+            {{ 1.0,  1.0,   0},   ColorRGBA::MAGENTA },
+            {{ 0,    1.0,   0},   ColorRGBA::MAGENTA }
         };
 
         const std::vector<u32> indices {
@@ -28,7 +39,19 @@ namespace bepbep {
                 3, 2, 6, 6, 7, 3
         };
 
-        mesh = make_unique<Mesh>(vertices, indices);
+        MeshBuilder builder;
+
+        for(int x = 0; x < 16; ++x) {
+            for(int y = 0; y < 16; ++y) {
+                for(int z = 0; z < 16; ++z) {
+                    if(tiles[x][y][z] == 1) {
+                        builder.append(vertices, indices, {x, y, z});
+                    }
+                }
+            }
+        }
+
+        mesh = builder.build();
     }
 
      void Chunk::render(GraphicsContext& context) {
