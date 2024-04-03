@@ -2,6 +2,7 @@
 #define _BEPBEP_LEVEL_H_
 
 #include "entity.h"
+#include "structure.h"
 
 namespace bepbep {
     class Level {
@@ -10,7 +11,7 @@ namespace bepbep {
 
         public:
             Level() {
-                objects.push_back(std::make_shared<Entity>());
+                objects.push_back(std::make_shared<Structure>());
             }
 
             void render(GraphicsContext& context) {
