@@ -4,39 +4,49 @@
 #include "entity.h"
 #include "structure.h"
 
+#include "physics_engine.h"
+
 namespace bepbep {
     class Level {
         private:
             std::vector<std::shared_ptr<Object>> objects;
 
+            PhysicsEngine engine;
+
         public:
             Level() {
-                objects.push_back(std::make_shared<Structure>(Vec3f{24, 0, 0}, 10));
+                for(int i = 0; i < 200; ++i) {
+                    float x = (rand() % 100) - 50;
+                    float y = (rand() % 100) - 50;
+                    float z = (rand() % 100) - 50;
 
-                objects.push_back(std::make_shared<Structure>(Vec3f{100, 0, 0}, 10));
-                objects.push_back(std::make_shared<Structure>(Vec3f{-100, 50, 50}, 10));
+                    objects.push_back(std::make_shared<Entity>(Vec3f{x, y, z}, 10));
+                }
 
-                objects.push_back(std::make_shared<Entity>(Vec3f{0, 0, 0}, 10));
+                for(int i = 0; i < 200; ++i) {
+                    float x = (rand() % 100) - 50;
+                    float y = (rand() % 100) - 50;
+                    float z = (rand() % 100) - 50;
+
+                    objects.push_back(std::make_shared<Entity>(Vec3f{300 + x, y, z}, 10));
+                }
+
+                for(auto& o : objects)
+                    engine.add_object(o.get());
             }
 
             void update(float dt) {
-                applyGravity();
-                updatePosition(dt);
+                engine.step(dt);
             }
 
-            void updatePosition(float dt) {
-                for(auto& obj : objects) {
-                    obj->updatePos(dt);
-                }
-            }
-
+            /*
             void applyGravity() {
                 for(auto& planet : objects) {
                     for(auto& sputnik : objects) {
                         if(planet.get() == sputnik.get())
                             continue;
 
-                        auto vec = planet->posCurrent - sputnik->posCurrent;
+                        auto vec = planet->position - sputnik->position;
                         auto dist = vec.length();
                         auto normal = vec.normalize();
 
@@ -46,6 +56,7 @@ namespace bepbep {
                     }
                 }
             }
+            */
 
             void render(Camera& camera, GraphicsContext& context) {
                 if(context.is_debug()) {
@@ -68,7 +79,7 @@ namespace bepbep {
                     if(obj->get_type() != STRUCTURE)
                         continue;
 
-                    Box box(obj->posCurrent, { obj->posCurrent.x + 16, obj->posCurrent.y + 16, obj->posCurrent.z + 16 });
+                    Box box(obj->position, { obj->position.x + 16, obj->position.y + 16, obj->position.z + 16 });
 
                     float tmin = box.intersect(ray);
                     if(tmin > 0.0f) {
@@ -78,8 +89,8 @@ namespace bepbep {
                             for(int y = 0; y < 16; ++y) {
                                 for (int z = 0; z < 16; ++z) {
                                     Box bbbb(
-                                        { obj->posCurrent.x + x, obj->posCurrent.y + y, obj->posCurrent.z + z},
-                                        { obj->posCurrent.x + x + 1, obj->posCurrent.y + y + 1, obj->posCurrent.z + z + 1});
+                                        { obj->position.x + x, obj->position.y + y, obj->position.z + z},
+                                        { obj->position.x + x + 1, obj->position.y + y + 1, obj->position.z + z + 1});
 
                                     float t = bbbb.intersect(ray);
                                     if(t > 0.0f) {

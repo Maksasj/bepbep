@@ -2,11 +2,8 @@
 
 namespace bepbep {
     Object::Object(const ObjectType& t) : type(t) {
-        transform.translation = Mat4f::translation(Vec3f::zero);
-        transform.rotation = trait_bryan_angle_yxz(Vec3f::zero);
-
-        posCurrent = Vec3f::zero;
-        posOld = Vec3f::zero;
+        position = Vec3f::zero;
+        velocity = Vec3f::zero;
         acceleration = Vec3f::zero;
     }
 
@@ -15,6 +12,12 @@ namespace bepbep {
             // Normals
             auto lineShader = context.get_line_shader();
             lineShader->enable();
+
+            Transform transform = {
+                .translation = Mat4f::translation(position),
+                .rotation = Mat4f::identity()
+            };
+
             lineShader->set_uniform("translation", transform.translation);
             lineShader->set_uniform("rotation", transform.rotation);
 
@@ -22,7 +25,7 @@ namespace bepbep {
             context.render_line({0, 0, 0}, {0, 5, 0}, ColorRGBA::BLUE);
             context.render_line({0, 0, 0}, {0, 0, 5}, ColorRGBA::GREEN);
 
-            auto vector = (posCurrent - posOld).normalize() * 5;
+            auto vector = velocity.normalize() * 5;
             context.render_line({0, 0, 0}, vector, ColorRGBA::MAGENTA);
         }
     }

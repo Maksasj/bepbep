@@ -24,13 +24,19 @@ namespace bepbep {
 
         mesh = make_unique<Mesh>(vertices, indices);
 
-        posCurrent = pos;
-        posOld = pos;
+        position = pos;
         mass = m;
+
+        collider = new SphereCollider(Vec3f::zero, 1);
     }
 
     void Entity::render(GraphicsContext& context) {
         auto shader = context.get_main_shader();
+
+        Transform transform = {
+            .translation = Mat4f::translation(position),
+            .rotation = Mat4f::identity()
+        };
 
         shader->enable();
         shader->set_uniform("translation", transform.translation);
