@@ -9,16 +9,14 @@ namespace bepbep {
 
     class Chunk {
         private:
-            std::unique_ptr<Mesh> mesh;
+            ChunkRenderer* renderer;
+
+            i32 tiles[16][16][16];
 
         public:
             Chunk();
 
-            i32 tiles[16][16][16];
-
             void build_mesh();
-
-            void render(const Transform& transform, GraphicsContext& context);
     };
 }
 

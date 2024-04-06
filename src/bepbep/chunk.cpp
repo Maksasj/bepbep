@@ -15,12 +15,12 @@ namespace bepbep {
             }
         }
 
+        renderer = new ChunkRenderer();
+
         build_mesh();
     }
 
     void Chunk::build_mesh() {
-
-
         const std::vector<u32> indices {
             0, 1, 2, 2, 3, 0,
             1, 5, 6, 6, 2, 1,
@@ -60,37 +60,6 @@ namespace bepbep {
             }
         }
 
-        mesh = builder.build();
-    }
-
-     void Chunk::render(const Transform& transform, GraphicsContext& context) {
-        auto mainShader = context.get_main_shader();
-        mainShader->enable();
-
-        mainShader->set_uniform("translation", transform.translation);
-        mainShader->set_uniform("rotation", transform.rotation);
-
-        mesh->render();
-
-        if(context.is_debug()) {
-            auto lineShader = context.get_line_shader();
-            lineShader->enable();
-
-            lineShader->set_uniform("translation", transform.translation);
-            lineShader->set_uniform("rotation", transform.rotation);
-
-            context.render_line({0, 0, 0}, {16, 0, 0}, ColorRGBA::WHITE);
-            context.render_line({0, 0, 0}, {0, 16, 0}, ColorRGBA::WHITE);
-            context.render_line({0, 0, 0}, {0, 0, 16}, ColorRGBA::WHITE);
-            context.render_line({16, 0, 0}, {16, 16, 0}, ColorRGBA::WHITE);
-            context.render_line({16, 0, 0}, {16, 0, 16}, ColorRGBA::WHITE);
-            context.render_line({0, 16, 0}, {16, 16, 0}, ColorRGBA::WHITE);
-            context.render_line({0, 16, 0}, {0, 16, 16}, ColorRGBA::WHITE);
-            context.render_line({16, 16, 0}, {16, 16, 16}, ColorRGBA::WHITE);
-            context.render_line({16, 16, 16}, {16, 0, 16}, ColorRGBA::WHITE);
-            context.render_line({16, 16, 16}, {0, 16, 16}, ColorRGBA::WHITE);
-            context.render_line({0, 0, 16}, {0, 16, 16}, ColorRGBA::WHITE);
-            context.render_line({0, 0, 16}, {16, 0, 16}, ColorRGBA::WHITE);
-        }
+        ((ChunkRenderer*) renderer)->swap_mesh(builder.build());
     }
 }

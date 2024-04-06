@@ -53,7 +53,7 @@ namespace bepbep {
 
         GLContext::enable(GL_CULL_FACE);
         GLContext::cull_face(GL_BACK);
-        GLContext::front_face(GL_CCW);
+        GLContext::front_face(GL_CW);
 
         double currentFrame = glfwGetTime();
         double lastFrame = currentFrame;

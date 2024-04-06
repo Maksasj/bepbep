@@ -29,6 +29,7 @@ namespace bepbep {
             true
         };
     }
+
     CollisionPoints find_sphere_plane_collision_points(const SphereCollider* a, const Vec3f& aPos, const PlaneCollider* b, const Vec3f& bPos) {
         Vec3f A = a->center + aPos;
         Vec3f N = b->plane * bPos;

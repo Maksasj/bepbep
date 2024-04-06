@@ -16,7 +16,7 @@ namespace bepbep {
         public:
             Structure(const Vec3f& pos, const float& mass);
 
-            void render(GraphicsContext& context) override;
+            // void render(GraphicsContext& context) override;
 
             std::vector<std::unique_ptr<Chunk>>& get_chunks();
     };

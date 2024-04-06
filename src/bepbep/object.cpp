@@ -1,12 +1,16 @@
 #include "object.h"
 
 namespace bepbep {
-    Object::Object(const ObjectType& t) : type(t) {
+    Object::Object() {
         position = Vec3f::zero;
         velocity = Vec3f::zero;
         acceleration = Vec3f::zero;
+
+        collider = nullptr;
+        renderer = nullptr;
     }
 
+    /*
     void Object::render(GraphicsContext& context) {
         if(context.is_debug()) {
             // Normals
@@ -29,8 +33,5 @@ namespace bepbep {
             context.render_line({0, 0, 0}, vector, ColorRGBA::MAGENTA);
         }
     }
-
-    const ObjectType& Object::get_type() const {
-        return type;
-    }
+    */
 }

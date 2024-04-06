@@ -15,20 +15,14 @@ namespace bepbep {
 
         public:
             Level() {
+                objects.push_back(std::make_shared<Structure>(Vec3f{0, 0, 0}, 100));
+
                 for(int i = 0; i < 200; ++i) {
                     float x = (rand() % 100) - 50;
                     float y = (rand() % 100) - 50;
                     float z = (rand() % 100) - 50;
 
                     objects.push_back(std::make_shared<Entity>(Vec3f{x, y, z}, 10));
-                }
-
-                for(int i = 0; i < 200; ++i) {
-                    float x = (rand() % 100) - 50;
-                    float y = (rand() % 100) - 50;
-                    float z = (rand() % 100) - 50;
-
-                    objects.push_back(std::make_shared<Entity>(Vec3f{300 + x, y, z}, 10));
                 }
 
                 for(auto& o : objects)
@@ -38,25 +32,6 @@ namespace bepbep {
             void update(float dt) {
                 engine.step(dt);
             }
-
-            /*
-            void applyGravity() {
-                for(auto& planet : objects) {
-                    for(auto& sputnik : objects) {
-                        if(planet.get() == sputnik.get())
-                            continue;
-
-                        auto vec = planet->position - sputnik->position;
-                        auto dist = vec.length();
-                        auto normal = vec.normalize();
-
-                        auto g = (normal * 9.8 * planet->mass) / (dist * dist);
-
-                        sputnik->accelerate(g);
-                    }
-                }
-            }
-            */
 
             void render(Camera& camera, GraphicsContext& context) {
                 if(context.is_debug()) {
@@ -70,12 +45,22 @@ namespace bepbep {
                     context.render_line({0, 0, 0}, {0, 0, 5}, ColorRGBA::GREEN);
                 }
 
-                for(auto& obj : objects)
-                    obj->render(context);
+
+                for(auto& obj : objects) {
+                    if(obj->renderer != nullptr) {
+                        Transform transform = {
+                            .translation = Mat4f::translation(obj->position),
+                            .rotation = Mat4f::identity()
+                        };
+
+                        obj->renderer->render(context, transform);
+                    }
+                }
 
                 Ray ray(camera.get_position(), camera.get_direction());
 
                 for(auto& obj : objects) {
+                    /*
                     if(obj->get_type() != STRUCTURE)
                         continue;
 
@@ -104,6 +89,7 @@ namespace bepbep {
 
                         // std::cout << camera.get_position() + camera.get_direction().normalize() * tmin << "\n";
                     }
+                    */
                 }
             }
     };
