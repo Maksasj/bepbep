@@ -4,20 +4,20 @@
 #include "graphics_context.h"
 #include "mesh.h"
 
-namespace bepbep {
-    struct Object;
+#include "transform.h"
 
+namespace bepbep {
     using namespace bebone::core;
 
-    struct Transform {
-        Mat4f translation;
-        Mat4f rotation;
-    };
+    struct Object;
+    struct Entity;
+    struct Structure;
 
     class Renderer {
         private:
 
         public:
+            virtual ~Renderer() = default;
             virtual void render(GraphicsContext& context, const Transform& transform) = 0;
     };
 
@@ -38,15 +38,15 @@ namespace bepbep {
         public:
             void render(GraphicsContext& context, const Transform& transform) override;
 
-            void swap_mesh(unique_ptr<Mesh> in) {
-                mesh = std::move(in);
-            }
+            void swap_mesh(unique_ptr<Mesh> in);
     };
 
     class StructureRenderer : public Renderer {
         private:
-
+            Structure* structure;
         public:
+            StructureRenderer(Structure* ptr);
+
             void render(GraphicsContext& context, const Transform& transform) override;
     };
 }

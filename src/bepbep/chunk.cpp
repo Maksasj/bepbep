@@ -2,15 +2,15 @@
 
 namespace bepbep {
     Chunk::Chunk() {
-        std::memset(tiles, 0, 16 * 16 * 16);
-
         for(int x = 0; x < 16; ++x) {
             for(int y = 0; y < 16; ++y) {
                 for(int z = 0; z < 16; ++z) {
                     int v = rand() % 16;
 
                     if (v < 1)
-                        tiles[x][y][z] = 1;
+                        blocks[x][y][z] = new Block();
+                    else
+                        blocks[x][y][z] = nullptr;
                 }
             }
         }
@@ -35,7 +35,7 @@ namespace bepbep {
         for(int x = 0; x < 16; ++x) {
             for(int y = 0; y < 16; ++y) {
                 for(int z = 0; z < 16; ++z) {
-                    if(tiles[x][y][z] == 1) {
+                    if(blocks[x][y][z] != nullptr) {
                         auto color = ColorRGBA{
                             (rand() % 254 / 255.0f),
                             (rand() % 254 / 255.0f),
@@ -44,14 +44,14 @@ namespace bepbep {
                         };
 
                         const std::vector<Vertex> vertices {
-                                {{ 0,    0,     1.0}, color },
-                                {{ 1.0,  0,     1.0}, color },
-                                {{ 1.0,  1.0,   1.0}, color },
-                                {{ 0,    1.0,   1.0}, color },
-                                {{ 0,    0,     0},   color },
-                                {{ 1.0,  0,     0},   color },
-                                {{ 1.0,  1.0,   0},   color },
-                                {{ 0,    1.0,   0},   color }
+                            {{ 0,    0,     1.0}, color },
+                            {{ 1.0,  0,     1.0}, color },
+                            {{ 1.0,  1.0,   1.0}, color },
+                            {{ 0,    1.0,   1.0}, color },
+                            {{ 0,    0,     0},   color },
+                            {{ 1.0,  0,     0},   color },
+                            {{ 1.0,  1.0,   0},   color },
+                            {{ 0,    1.0,   0},   color }
                         };
 
                         builder.append(vertices, indices, {x, y, z});

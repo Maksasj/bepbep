@@ -13,8 +13,11 @@ namespace bepbep {
     class Object {
         public:
             Object();
+            virtual ~Object();
 
-            Vec3f position;
+            Transform transform;
+
+            // Physics
             Vec3f velocity;
             Vec3f acceleration;
             float mass;

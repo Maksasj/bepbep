@@ -2,12 +2,17 @@
 
 namespace bepbep {
     Object::Object() {
-        position = Vec3f::zero;
+
         velocity = Vec3f::zero;
         acceleration = Vec3f::zero;
 
         collider = nullptr;
         renderer = nullptr;
+    }
+
+    Object::~Object() {
+        if(renderer) delete renderer;
+        if(collider) delete renderer;
     }
 
     /*

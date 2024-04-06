@@ -30,7 +30,7 @@ namespace bepbep {
 
                         if(!a->collider || !b->collider) continue;
 
-                        CollisionPoints points = a->collider->test_collision(a->position, b->collider, b->position);
+                        CollisionPoints points = a->collider->test_collision(a->transform.position, b->collider, b->transform.position);
 
                         if(points.hasCollision) {
                             collisions.emplace_back(a, b, points);
@@ -53,7 +53,7 @@ namespace bepbep {
                         if(planet == sputnik)
                             continue;
 
-                        auto vec = planet->position - sputnik->position;
+                        auto vec = planet->transform.position - sputnik->transform.position;
                         auto dist = vec.length();
                         auto normal = vec.normalize();
 
@@ -71,7 +71,7 @@ namespace bepbep {
 
                 for(auto& obj : objects) {
                     obj->velocity += obj->acceleration / obj->mass * dt;
-                    obj->position += obj->velocity * dt;
+                    obj->transform.position += obj->velocity * dt;
 
                     obj->acceleration = Vec3f::zero;
                 }

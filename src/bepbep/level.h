@@ -16,14 +16,7 @@ namespace bepbep {
         public:
             Level() {
                 objects.push_back(std::make_shared<Structure>(Vec3f{0, 0, 0}, 100));
-
-                for(int i = 0; i < 200; ++i) {
-                    float x = (rand() % 100) - 50;
-                    float y = (rand() % 100) - 50;
-                    float z = (rand() % 100) - 50;
-
-                    objects.push_back(std::make_shared<Entity>(Vec3f{x, y, z}, 10));
-                }
+                objects.push_back(std::make_shared<Entity>(Vec3f{32, 0, 0}, 100));
 
                 for(auto& o : objects)
                     engine.add_object(o.get());
@@ -37,30 +30,22 @@ namespace bepbep {
                 if(context.is_debug()) {
                     auto lineShader = context.get_line_shader();
                     lineShader->enable();
-                    lineShader->set_uniform("translation", Mat4f::identity());
-                    lineShader->set_uniform("rotation", Mat4f::identity());
+                    lineShader->set_uniform("transform", Mat4f::identity());
 
                     context.render_line({0, 0, 0}, {5, 0, 0}, ColorRGBA::RED);
                     context.render_line({0, 0, 0}, {0, 5, 0}, ColorRGBA::BLUE);
                     context.render_line({0, 0, 0}, {0, 0, 5}, ColorRGBA::GREEN);
                 }
 
-
                 for(auto& obj : objects) {
-                    if(obj->renderer != nullptr) {
-                        Transform transform = {
-                            .translation = Mat4f::translation(obj->position),
-                            .rotation = Mat4f::identity()
-                        };
-
-                        obj->renderer->render(context, transform);
-                    }
+                    if(obj->renderer != nullptr)
+                        obj->renderer->render(context, obj->transform);
                 }
 
+                /*
                 Ray ray(camera.get_position(), camera.get_direction());
 
                 for(auto& obj : objects) {
-                    /*
                     if(obj->get_type() != STRUCTURE)
                         continue;
 
@@ -89,8 +74,8 @@ namespace bepbep {
 
                         // std::cout << camera.get_position() + camera.get_direction().normalize() * tmin << "\n";
                     }
-                    */
                 }
+                */
             }
     };
 }

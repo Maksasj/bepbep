@@ -2,7 +2,8 @@
 
 namespace bepbep {
     Entity::Entity(const Vec3f& pos, const float& m) : Object() {
-        position = pos;
+        transform.position = pos;
+
         mass = m;
 
         renderer = new CubeRenderer();

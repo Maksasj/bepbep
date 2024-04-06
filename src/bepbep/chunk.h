@@ -7,11 +7,21 @@
 namespace bepbep {
     using namespace bebone::core;
 
+    class Block {
+        private:
+
+        public:
+    };
+
     class Chunk {
         private:
+            Block* blocks[16][16][16];
+
+        protected:
             ChunkRenderer* renderer;
 
-            i32 tiles[16][16][16];
+            friend class Structure;
+            friend class StructureRenderer;
 
         public:
             Chunk();
