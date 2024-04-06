@@ -43,6 +43,7 @@ namespace bepbep {
 
         // Todo
         context.init_line_mesh();
+        context.init_circle_mesh();
 
         mainShader->enable();
         Camera camera({-5, 0, 0}, 100.0f);

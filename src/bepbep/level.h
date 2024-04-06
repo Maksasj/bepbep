@@ -35,47 +35,55 @@ namespace bepbep {
                     context.render_line({0, 0, 0}, {5, 0, 0}, ColorRGBA::RED);
                     context.render_line({0, 0, 0}, {0, 5, 0}, ColorRGBA::BLUE);
                     context.render_line({0, 0, 0}, {0, 0, 5}, ColorRGBA::GREEN);
+
+                    context.render_sphere();
+
+                    Ray ray(camera.get_position(), camera.get_direction());
+
+                    for(auto& obj : objects) {
+                        auto* str = dynamic_cast<Structure*>(obj.get());
+
+                        if(!str)
+                            continue;
+
+                        Box box(obj->transform.position, { obj->transform.position.x + 16, obj->transform.position.y + 16, obj->transform.position.z + 16 });
+
+                        float tmin = box.intersect(ray);
+                        if(tmin >= 0.0f) {
+                            auto& chunk = ((Structure*) obj.get())->get_chunks()[0];
+
+                            for(int x = 0; x < 16; ++x) {
+                                for(int y = 0; y < 16; ++y) {
+                                    for (int z = 0; z < 16; ++z) {
+                                        if(chunk->get_block(x, y, z) == nullptr)
+                                            continue;
+
+                                        Box bbbb(
+                                            { obj->transform.position.x + x, obj->transform.position.y + y, obj->transform.position.z + z},
+                                            { obj->transform.position.x + x + 1, obj->transform.position.y + y + 1, obj->transform.position.z + z + 1});
+
+                                        auto t = bbbb.intersect(ray);
+
+                                        if(t >= 0.0f) {
+                                            Transform tr = {
+                                                .position = ray.orig + ray.dir * t,
+                                                .rotation = Mat4f::identity()
+                                            };
+
+                                            lineShader->set_uniform("transform", tr.calculate_final_transform());
+                                            context.render_sphere();
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
                 for(auto& obj : objects) {
                     if(obj->renderer != nullptr)
                         obj->renderer->render(context, obj->transform);
                 }
-
-                /*
-                Ray ray(camera.get_position(), camera.get_direction());
-
-                for(auto& obj : objects) {
-                    if(obj->get_type() != STRUCTURE)
-                        continue;
-
-                    Box box(obj->position, { obj->position.x + 16, obj->position.y + 16, obj->position.z + 16 });
-
-                    float tmin = box.intersect(ray);
-                    if(tmin > 0.0f) {
-                        auto& chunk = ((Structure*) obj.get())->get_chunks()[0];
-
-                        for(int x = 0; x < 16; ++x) {
-                            for(int y = 0; y < 16; ++y) {
-                                for (int z = 0; z < 16; ++z) {
-                                    Box bbbb(
-                                        { obj->position.x + x, obj->position.y + y, obj->position.z + z},
-                                        { obj->position.x + x + 1, obj->position.y + y + 1, obj->position.z + z + 1});
-
-                                    float t = bbbb.intersect(ray);
-                                    if(t > 0.0f) {
-                                        chunk->tiles[x][y][z] = 0;
-                                    }
-                                }
-                            }
-                        }
-
-                        chunk->build_mesh();
-
-                        // std::cout << camera.get_position() + camera.get_direction().normalize() * tmin << "\n";
-                    }
-                }
-                */
             }
     };
 }

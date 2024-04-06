@@ -35,6 +35,14 @@ namespace bepbep {
             Vec3f bounds[2];
 
         float intersect(const Ray &r) {
+            if(
+                (r.orig.x > bounds[0].x &&  r.orig.x < bounds[1].x) &&
+                (r.orig.y > bounds[0].y &&  r.orig.y < bounds[1].y) &&
+                (r.orig.z > bounds[0].z &&  r.orig.z < bounds[1].z)
+            ) {
+                return 0.0f;
+            }
+
             float tmin, tmax, tymin, tymax, tzmin, tzmax;
 
             tmin = (bounds[r.sign[0]].x - r.orig.x) * r.invdir.x;

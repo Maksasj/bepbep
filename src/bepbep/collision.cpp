@@ -1,9 +1,9 @@
 #include "collision.h"
 
 namespace bepbep {
-    CollisionPoints find_sphere_sphere_collision_points(const SphereCollider* a, const Vec3f& aPos, const SphereCollider* b, const Vec3f& bPos) {
-        Vec3f A = a->center + aPos;
-        Vec3f B = b->center + bPos;
+    CollisionPoints find_sphere_sphere_collision_points(const SphereCollider* a, const Transform& aTr, const SphereCollider* b, const Transform& bTr) {
+        Vec3f A = a->center + aTr.position;
+        Vec3f B = b->center + bTr.position;
 
         float Ar = a->radius * 1; // 1 -> scale
         float Br = b->radius * 1; // 1 -> scale
@@ -30,12 +30,12 @@ namespace bepbep {
         };
     }
 
-    CollisionPoints find_sphere_plane_collision_points(const SphereCollider* a, const Vec3f& aPos, const PlaneCollider* b, const Vec3f& bPos) {
-        Vec3f A = a->center + aPos;
-        Vec3f N = b->plane * bPos;
+    CollisionPoints find_sphere_plane_collision_points(const SphereCollider* a, const Transform& aTr, const PlaneCollider* b, const Transform& bTr) {
+        Vec3f A = a->center + aTr.position;
+        Vec3f N = b->plane * bTr.position;
         N.normalize();
 
-        Vec3f P = N * b->distance + bPos;
+        Vec3f P = N * b->distance + bTr.position;
 
         float Ar = a->radius * 1; // 1 -> scale
 

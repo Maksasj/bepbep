@@ -25,6 +25,13 @@ namespace bepbep {
         return *this;
     }
 
+    MeshBuilder& MeshBuilder::append(const std::vector<VertexTriangle>& triangles) {
+        for(auto& tri : triangles)
+            append({tri.v[0], tri.v[1], tri.v[2]}, {0, 1, 2}, Vec3f::zero);
+
+        return *this;
+    }
+
     unique_ptr<Mesh> MeshBuilder::build() {
         return make_unique<Mesh>(m_vertices, m_indices);
     }

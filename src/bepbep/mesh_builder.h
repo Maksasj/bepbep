@@ -18,6 +18,7 @@ namespace bepbep {
             MeshBuilder();
 
             MeshBuilder& append(const std::vector<Vertex>& vertices, const std::vector<u32>& indices, const Vec3f& offset);
+            MeshBuilder& append(const std::vector<VertexTriangle>& triangles);
 
             std::unique_ptr<Mesh> build();
         };

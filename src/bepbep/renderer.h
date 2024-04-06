@@ -1,8 +1,8 @@
 #ifndef _BEPBEP_RENDERER_H_
 #define _BEPBEP_RENDERER_H_
 
-#include "graphics_context.h"
 #include "mesh.h"
+#include "mesh_builder.h"
 
 #include "transform.h"
 
@@ -12,6 +12,8 @@ namespace bepbep {
     struct Object;
     struct Entity;
     struct Structure;
+
+    struct GraphicsContext;
 
     class Renderer {
         private:
@@ -39,6 +41,30 @@ namespace bepbep {
             void render(GraphicsContext& context, const Transform& transform) override;
 
             void swap_mesh(unique_ptr<Mesh> in);
+    };
+
+    class IcosahedronRenderer : public Renderer {
+    private:
+        unique_ptr<Mesh> mesh;
+
+    public:
+        IcosahedronRenderer();
+
+        void render(GraphicsContext& context, const Transform& transform) override;
+
+        static std::vector<VertexTriangle> generate_icosahedron_triangles();
+    };
+
+    class SphereRenderer : public Renderer {
+        private:
+            unique_ptr<Mesh> mesh;
+
+        public:
+            SphereRenderer(const float& radius, const u32& lod);
+
+            void render(GraphicsContext& context, const Transform& transform) override;
+
+            static std::vector<VertexTriangle> generate_sphere_triangles(const float& radius, const u32& lod);
     };
 
     class StructureRenderer : public Renderer {

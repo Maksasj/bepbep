@@ -30,7 +30,7 @@ namespace bepbep {
 
                         if(!a->collider || !b->collider) continue;
 
-                        CollisionPoints points = a->collider->test_collision(a->transform.position, b->collider, b->transform.position);
+                        CollisionPoints points = a->collider->test_collision(a->transform, b->collider, b->transform);
 
                         if(points.hasCollision) {
                             collisions.emplace_back(a, b, points);

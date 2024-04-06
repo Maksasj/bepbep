@@ -27,6 +27,10 @@ namespace bepbep {
             Chunk();
 
             void build_mesh();
+
+            Block* get_block(const u32& x, const u32& y, const u32& z) {
+                return blocks[x][y][z];
+            }
     };
 }
 

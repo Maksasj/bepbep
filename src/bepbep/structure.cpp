@@ -9,6 +9,7 @@ namespace bepbep {
 
         collider = new SphereCollider({8, 8, 8}, 8);
         renderer = new StructureRenderer(this);
+        // renderer = new SphereRenderer(8, 2);
     }
 
     std::vector<std::unique_ptr<Chunk>>& Structure::get_chunks() {
