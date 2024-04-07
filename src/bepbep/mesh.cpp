@@ -9,7 +9,8 @@ namespace bepbep {
         ebo = make_unique<GLElementBufferObject>(indices.data(), indices.size() * sizeof(u32));
 
         vao->link_attributes(*vbo, 0, 3, GL_FLOAT, sizeof(Vertex), (void*) offsetof(Vertex, pos));
-        vao->link_attributes(*vbo, 1, 4, GL_FLOAT, sizeof(Vertex), (void*) offsetof(Vertex, color));
+        vao->link_attributes(*vbo, 1, 3, GL_FLOAT, sizeof(Vertex), (void*) offsetof(Vertex, normal));
+        vao->link_attributes(*vbo, 2, 4, GL_FLOAT, sizeof(Vertex), (void*) offsetof(Vertex, color));
 
         vao->unbind();
         vbo->unbind();

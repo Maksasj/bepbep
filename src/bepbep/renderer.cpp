@@ -121,18 +121,18 @@ namespace bepbep {
         float a = 1.0f;
         float b = 1.0f / phi;
 
-        auto v1  = Vertex{{0, b, -a}, ColorRGBA::BLACK };
-        auto v2  = Vertex{{b, a, 0}, ColorRGBA::WHITE };
-        auto v3  = Vertex{{-b, a, 0}, ColorRGBA::RED };
-        auto v4  = Vertex{{0, b, a}, ColorRGBA::BLUE };
-        auto v5  = Vertex{{0, -b, a}, ColorRGBA::GREEN };
-        auto v6  = Vertex{{-a, 0, b}, ColorRGBA::YELLOW };
-        auto v7  = Vertex{{0, -b, -a}, ColorRGBA::MAGENTA };
-        auto v8  = Vertex{{a, 0, -b}, ColorRGBA::CYAN };
-        auto v9  = Vertex{{a, 0, b}, ColorRGBA::BLACK };
-        auto v10 = Vertex{{-a, 0, -b}, ColorRGBA::WHITE };
-        auto v11 = Vertex{{b, -a, 0}, ColorRGBA::RED };
-        auto v12 = Vertex{{-b, -a, 0}, ColorRGBA::BLUE };
+        auto v1  = Vertex{{0, b, -a},  Vec3f::zero, ColorRGBA::BLACK };
+        auto v2  = Vertex{{b, a, 0},   Vec3f::zero, ColorRGBA::WHITE };
+        auto v3  = Vertex{{-b, a, 0},  Vec3f::zero, ColorRGBA::RED };
+        auto v4  = Vertex{{0, b, a},   Vec3f::zero, ColorRGBA::BLUE };
+        auto v5  = Vertex{{0, -b, a},  Vec3f::zero, ColorRGBA::GREEN };
+        auto v6  = Vertex{{-a, 0, b},  Vec3f::zero, ColorRGBA::YELLOW };
+        auto v7  = Vertex{{0, -b, -a}, Vec3f::zero, ColorRGBA::MAGENTA };
+        auto v8  = Vertex{{a, 0, -b},  Vec3f::zero, ColorRGBA::CYAN };
+        auto v9  = Vertex{{a, 0, b},   Vec3f::zero, ColorRGBA::BLACK };
+        auto v10 = Vertex{{-a, 0, -b}, Vec3f::zero, ColorRGBA::WHITE };
+        auto v11 = Vertex{{b, -a, 0},  Vec3f::zero, ColorRGBA::RED };
+        auto v12 = Vertex{{-b, -a, 0}, Vec3f::zero, ColorRGBA::BLUE };
 
         return {
             {{v3, v2, v1}},

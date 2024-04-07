@@ -42,8 +42,7 @@ namespace bepbep {
                         f32 x, y, z;
                         data >> x >> y >> z;
 
-                        auto val = (rand() % 255) / 255.0f;
-                        rawVertices.push_back({ Vec3f{x, y, z}, ColorRGBA::splat(val)});
+                        rawVertices.push_back({ Vec3f{x, y, z}, Vec3f::zero, ColorRGBA::WHITE});
                     } else if(keyword == "f") {
                         string in[3];
                         data >> in[0] >> in[1] >> in[2];
