@@ -17,11 +17,11 @@ namespace bepbep {
         GLContext::set_viewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
     }
 
-    std::shared_ptr<GLShaderProgram> BepBepApp::load_shader(const std::string& vertPath, const std::string& fragPath) {
+    shared_ptr<GLShaderProgram> BepBepApp::load_shader(const string& vertPath, const string& fragPath) {
         auto vertexShader = GLShaderFactory::create_shader(vertPath, ShaderTypes::VERTEX_SHADER, ENABLE_UNIFORMS);
         auto fragmentShader = GLShaderFactory::create_shader(fragPath, ShaderTypes::FRAGMENT_SHADER, ENABLE_UNIFORMS);
 
-        std::shared_ptr<GLShaderProgram> shader = std::make_shared<GLShaderProgram>(vertexShader, fragmentShader);
+        shared_ptr<GLShaderProgram> shader = make_shared<GLShaderProgram>(vertexShader, fragmentShader);
 
         vertexShader.destroy();
         fragmentShader.destroy();

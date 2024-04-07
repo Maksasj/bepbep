@@ -19,7 +19,7 @@ namespace bepbep {
     }
 
     CubeRenderer::CubeRenderer() {
-        const std::vector<Vertex> vertices {
+        const vector<Vertex> vertices {
             {{-1.0, -1.0,  1.0},   {1.0f, 1.0f, 1.0f}},
             {{ 1.0, -1.0,  1.0},   {1.0f, 1.0f, 0.0f}},
             {{ 1.0,  1.0,  1.0},   {1.0f, 0.0f, 1.0f}},
@@ -30,7 +30,7 @@ namespace bepbep {
             {{-1.0,  1.0, -1.0},   {0.0f, 0.0f, 0.0f}}
         };
 
-        const std::vector<u32> indices {
+        const vector<u32> indices {
                 0, 1, 2, 2, 3, 0,
                 1, 5, 6, 6, 2, 1,
                 7, 6, 5, 5, 4, 7,
@@ -83,7 +83,7 @@ namespace bepbep {
     }
 
     void ChunkRenderer::swap_mesh(unique_ptr<Mesh> in) {
-        mesh = std::move(in);
+        mesh = move(in);
     }
 
     StructureRenderer::StructureRenderer(Structure* ptr) : structure(ptr) {
@@ -92,8 +92,16 @@ namespace bepbep {
 
     void StructureRenderer::render(GraphicsContext& context, const Transform& transform) {
         for(auto& ch : structure->get_chunks()) {
-            if(ch->renderer != nullptr)
-                ch->renderer->render(context, transform);
+            auto& cords = ch.first;
+            auto& chunk = ch.second;
+
+            Transform newTransform = transform;
+            newTransform.position.x += static_cast<f32>(cords.x) * 16.0f;
+            newTransform.position.y += static_cast<f32>(cords.y) * 16.0f;
+            newTransform.position.z += static_cast<f32>(cords.z) * 16.0f;
+
+            if(chunk->renderer != nullptr)
+                chunk->renderer->render(context, newTransform);
         }
     }
 
@@ -116,7 +124,7 @@ namespace bepbep {
         mesh->render();
     }
 
-    std::vector<VertexTriangle> IcosahedronRenderer::generate_icosahedron_triangles() {
+    vector<VertexTriangle> IcosahedronRenderer::generate_icosahedron_triangles() {
         float phi = (1.0f + sqrt(5.0f)) * 0.5f; // golden ratio
         float a = 1.0f;
         float b = 1.0f / phi;
@@ -176,18 +184,17 @@ namespace bepbep {
         mesh->render();
     }
 
-    std::vector<VertexTriangle> SphereRenderer::generate_sphere_triangles(const float& radius, const u32& lod) {
+    vector<VertexTriangle> SphereRenderer::generate_sphere_triangles(const float& radius, const u32& lod) {
         auto triangles = IcosahedronRenderer::generate_icosahedron_triangles();
 
         for(u32 l = 0; l < lod; ++l) {
-            std::vector<VertexTriangle> tmp;
+            vector<VertexTriangle> tmp;
 
             for(auto& tri : triangles) {
                 auto res = tri.subdivide();
 
-                for(auto& r : res) {
+                for(auto& r : res)
                     r.project_to_unit_sphere(radius);
-                }
 
                 tmp.insert(tmp.end(), res.begin(), res.end());
             }

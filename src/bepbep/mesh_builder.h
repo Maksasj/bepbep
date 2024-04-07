@@ -9,18 +9,18 @@
 namespace bepbep {
     class MeshBuilder {
         private:
-            std::vector<Vertex> m_vertices;
-            std::vector<u32> m_indices;
+            vector<Vertex> m_vertices;
+            vector<u32> m_indices;
 
             u32 m_indexOffset;
 
         public:
             MeshBuilder();
 
-            MeshBuilder& append(const std::vector<Vertex>& vertices, const std::vector<u32>& indices, const Vec3f& offset);
-            MeshBuilder& append(const std::vector<VertexTriangle>& triangles);
+            MeshBuilder& append(const vector<Vertex>& vertices, const vector<u32>& indices, const Vec3f& offset);
+            MeshBuilder& append(const vector<VertexTriangle>& triangles);
 
-            std::unique_ptr<Mesh> build();
+            unique_ptr<Mesh> build();
         };
 }
 

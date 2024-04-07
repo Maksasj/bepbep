@@ -21,7 +21,7 @@ namespace bepbep {
     }
 
     void Chunk::build_mesh() {
-        const std::vector<u32> indices {
+        const vector<u32> indices {
             0, 2, 3,
             0, 3, 1,
 
@@ -54,7 +54,7 @@ namespace bepbep {
                             1.0f
                         };
 
-                        const std::vector<Vertex> vertices = {
+                        const vector<Vertex> vertices = {
 
                             {{0.0f, 0.0f, 0.0f}, { 0 , 0, -1}, color},
                             {{1.0f, 0.0f, 0.0f}, { 0 , 0, -1}, color},

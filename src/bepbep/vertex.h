@@ -32,7 +32,7 @@ namespace bepbep {
             v[2].project_to_unit_sphere(radius);
         }
 
-        std::vector<VertexTriangle> subdivide() {
+        vector<VertexTriangle> subdivide() {
             Vertex ab = {(v[0].pos + v[1].pos) / 2.0f, Vec3f::zero, {
                 ColorRGBA{ (v[0].color.r + v[1].color.r) / 2, (v[0].color.g + v[1].color.g) / 2, (v[0].color.b + v[1].color.b) / 2, (v[0].color.a + v[1].color.a) / 2 }
             }};

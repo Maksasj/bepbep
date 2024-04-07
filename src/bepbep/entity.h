@@ -8,7 +8,7 @@ namespace bepbep {
 
     class Entity : public Object {
         public:
-            Entity(const std::string& filePath, const Vec3f& pos, const float& m);
+            Entity(const string& filePath, const Vec3f& pos, const float& m);
     };
 }
 

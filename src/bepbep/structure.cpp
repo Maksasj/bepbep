@@ -2,7 +2,9 @@
 
 namespace bepbep {
     Structure::Structure(const Vec3f& pos, const float& m) : Object() {
-        chunks.push_back(std::make_unique<Chunk>());
+        chunks[{0, 0, 0}] = new Chunk();
+        chunks[{1, 0, 0}] = new Chunk();
+        chunks[{-1, 0, 0}] = new Chunk();
 
         transform.position = pos;
         mass = m;
@@ -12,7 +14,7 @@ namespace bepbep {
         // renderer = new SphereRenderer(8, 2);
     }
 
-    std::vector<std::unique_ptr<Chunk>>& Structure::get_chunks() {
+    unordered_map<Vec3i, Chunk*>& Structure::get_chunks() {
         return chunks;
     }
 }

@@ -1,7 +1,7 @@
 #include "entity.h"
 
 namespace bepbep {
-    Entity::Entity(const std::string& filePath, const Vec3f& pos, const float& m) : Object() {
+    Entity::Entity(const string& filePath, const Vec3f& pos, const float& m) : Object() {
         transform.position = pos;
 
         mass = m;

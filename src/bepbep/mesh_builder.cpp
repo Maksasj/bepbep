@@ -5,7 +5,7 @@ namespace bepbep {
 
     }
 
-    MeshBuilder& MeshBuilder::append(const std::vector<Vertex>& vertices, const std::vector<u32>& indices, const Vec3f& offset) {
+    MeshBuilder& MeshBuilder::append(const vector<Vertex>& vertices, const vector<u32>& indices, const Vec3f& offset) {
         for(auto vertex : vertices) {
             vertex.pos += offset;
 
@@ -25,7 +25,7 @@ namespace bepbep {
         return *this;
     }
 
-    MeshBuilder& MeshBuilder::append(const std::vector<VertexTriangle>& triangles) {
+    MeshBuilder& MeshBuilder::append(const vector<VertexTriangle>& triangles) {
         for(auto& tri : triangles)
             append({tri.v[0], tri.v[1], tri.v[2]}, {0, 1, 2}, Vec3f::zero);
 

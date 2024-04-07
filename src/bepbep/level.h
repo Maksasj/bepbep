@@ -57,7 +57,8 @@ namespace bepbep {
 
                         float tmin = box.intersect(ray);
                         if(tmin >= 0.0f) {
-                            auto& chunk = ((Structure*) obj.get())->get_chunks()[0];
+                            /*
+                            auto& chunk = ((Structure*) obj.get())->get_chunks()[0]->scond;
 
                             for(int x = 0; x < 16; ++x) {
                                 for(int y = 0; y < 16; ++y) {
@@ -83,6 +84,7 @@ namespace bepbep {
                                     }
                                 }
                             }
+                            */
                         }
                     }
                 }

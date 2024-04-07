@@ -35,7 +35,7 @@ namespace bepbep {
             void init_circle_mesh() {
                 auto triangles = SphereRenderer::generate_sphere_triangles(0.4, 2);
 
-                std::vector<LineVertex> vertices;
+                vector<LineVertex> vertices;
 
                 for(auto& tri : triangles) {
                     vertices.emplace_back(tri.v[0].pos, tri.v[0].color);

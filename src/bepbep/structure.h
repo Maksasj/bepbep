@@ -11,12 +11,12 @@ namespace bepbep {
 
     class Structure : public Object {
         private:
-            std::vector<std::unique_ptr<Chunk>> chunks;
+            unordered_map<Vec3i, Chunk*> chunks;
 
         public:
             Structure(const Vec3f& pos, const float& mass);
 
-            std::vector<std::unique_ptr<Chunk>>& get_chunks();
+            unordered_map<Vec3i, Chunk*>& get_chunks();
     };
 }
 

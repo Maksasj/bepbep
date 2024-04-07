@@ -14,7 +14,7 @@ namespace bepbep {
 
     class PhysicsEngine {
         protected:
-            std::vector<Object*> objects;
+            vector<Object*> objects;
 
         public:
             void add_object(Object* object) {
@@ -22,7 +22,7 @@ namespace bepbep {
             }
 
             void resolve_collisions(float dt) {
-                std::vector<Collision> collisions;
+                vector<Collision> collisions;
 
                 for(Object* a : objects) {
                     for(Object* b : objects) {

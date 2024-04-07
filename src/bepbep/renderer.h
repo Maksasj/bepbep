@@ -54,15 +54,15 @@ namespace bepbep {
     };
 
     class IcosahedronRenderer : public Renderer {
-    private:
-        unique_ptr<Mesh> mesh;
+        private:
+            unique_ptr<Mesh> mesh;
 
-    public:
-        IcosahedronRenderer();
+        public:
+            IcosahedronRenderer();
 
-        void render(GraphicsContext& context, const Transform& transform) override;
+            void render(GraphicsContext& context, const Transform& transform) override;
 
-        static std::vector<VertexTriangle> generate_icosahedron_triangles();
+            static vector<VertexTriangle> generate_icosahedron_triangles();
     };
 
     class SphereRenderer : public Renderer {
@@ -74,7 +74,7 @@ namespace bepbep {
 
             void render(GraphicsContext& context, const Transform& transform) override;
 
-            static std::vector<VertexTriangle> generate_sphere_triangles(const float& radius, const u32& lod);
+            static vector<VertexTriangle> generate_sphere_triangles(const float& radius, const u32& lod);
     };
 
     class StructureRenderer : public Renderer {
