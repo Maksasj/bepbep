@@ -98,8 +98,6 @@ namespace bepbep {
     }
 
     void RenderingEngine::render(Level* level, Camera& camera) {
-        camera.update(BepBepApp::get_window(), BepBepApp::get_delta_time());
-
         mainShader->enable();
         camera.bind(*mainShader);
 

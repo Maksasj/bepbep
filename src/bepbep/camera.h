@@ -10,7 +10,7 @@ namespace bepbep {
 
     class Camera : private core::NonCopyable {
         private:
-            i32 renderDistance;
+            f32 renderDistance;
 
             Vec3f position;
             Vec3f rotation;
@@ -21,22 +21,20 @@ namespace bepbep {
             Mat4f viewMatrix;
             Mat4f projMatrix;
 
-            void update_position(shared_ptr<Window>& window, float dt);
+            void update_position(shared_ptr<Window>& window, const f64& dt);
 
             Mat4f calculate_view_matrix() const;
 
         public:
-            Camera(const Vec3f& position, const i32& renderDistance);
+            Camera(const Vec3f& position, const f32& renderDistance);
 
             void move(const Vec3f& direction);
 
-            void update(shared_ptr<Window>& window, double dt);
+            void update(shared_ptr<Window>& window, const f64& dt);
             void bind(GLShaderProgram& shader);
 
             const Vec3f& get_position() const;
             const Vec3f& get_direction() const;
-
-            const i32& get_render_distance() const;
     };
 }
 

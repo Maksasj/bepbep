@@ -1,7 +1,7 @@
 #include "camera.h"
 
 namespace bepbep {
-    Camera::Camera(const Vec3f& pos, const i32& rDistance) {
+    Camera::Camera(const Vec3f& pos, const f32& rDistance) {
         renderDistance = rDistance;
 
         position = pos;
@@ -42,7 +42,7 @@ namespace bepbep {
         position += direction;
     }
 
-    void Camera::update_position(shared_ptr<Window>& window, float dt) {
+    void Camera::update_position(shared_ptr<Window>& window, const f64& dt) {
         f32 speed = 7.0f;
 
         Vec3f movCamera = Vec3f::zero;
@@ -71,7 +71,7 @@ namespace bepbep {
         position += movCamera * speed * dt;
     }
 
-    void Camera::update(shared_ptr<Window>& window, double dt) {
+    void Camera::update(shared_ptr<Window>& window, const f64& dt) {
         update_position(window, dt);
 
         const auto winCenterWidth = static_cast<f32>(window->get_width()) / 2.0f;
@@ -126,9 +126,5 @@ namespace bepbep {
 
     const Vec3f& Camera::get_direction() const {
         return direction;
-    }
-
-    const i32& Camera::get_render_distance() const {
-        return renderDistance;
     }
 }

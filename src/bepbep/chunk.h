@@ -1,17 +1,11 @@
 #ifndef _BEPBEP_CHUNK_H_
 #define _BEPBEP_CHUNK_H_
 
-#include "object.h"
+#include "block.h"
 #include "mesh_builder.h"
 
 namespace bepbep {
     using namespace bebone::core;
-
-    class Block {
-        private:
-
-        public:
-    };
 
     class Chunk {
         private:

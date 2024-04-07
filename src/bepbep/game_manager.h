@@ -7,31 +7,22 @@
 #include "rendering_engine.h"
 
 namespace bepbep {
+    class BepBepApp;
+
     class GameManager {
         private:
             Level* level;
 
-            RenderingEngine graphics;
-            PhysicsEngine physics;
+            unique_ptr<RenderingEngine> graphics;
+            unique_ptr<PhysicsEngine> physics;
 
             Camera mainCamera;
 
         public:
-            GameManager() : mainCamera(Vec3f::zero, 100) {
+            GameManager();
 
-            }
-
-            void load() {
-                graphics.load();
-
-                level = new Level();
-            }
-
-            void run(const f64& dt) {
-                physics.step(level, dt);
-
-                graphics.render(level, mainCamera);
-            }
+            void load();
+            void run(const f64& dt);
     };
 }
 

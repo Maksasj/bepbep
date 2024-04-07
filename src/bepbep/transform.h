@@ -10,9 +10,7 @@ namespace bepbep {
         Vec3f position;
         Mat4f rotation = Mat4f::identity();
 
-        Mat4f calculate_final_transform() const {
-            return Mat4f::translation(position) * rotation;
-        }
+        Mat4f calculate_final_transform() const;
     };
 }
 
