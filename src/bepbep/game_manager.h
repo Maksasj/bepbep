@@ -17,13 +17,14 @@ namespace bepbep {
             Camera mainCamera;
 
         public:
-            GameManager() : mainCamera(Vec3f::zero, 2000) {
-                level = new Level();
+            GameManager() : mainCamera(Vec3f::zero, 100) {
 
             }
 
             void load() {
                 graphics.load();
+
+                level = new Level();
             }
 
             void run(const f64& dt) {

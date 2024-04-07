@@ -6,7 +6,7 @@
 #include "vertex.h"
 
 namespace bepbep {
-    struct Lights {
+    struct alignas(16) Lights {
         int lightCount;
         Light lights[16];
     };
@@ -20,9 +20,11 @@ namespace bepbep {
 
         public:
             LightManager() {
-                buffer = make_unique<GLUniformBufferObject>(sizeof(int));
-
                 lightCount = 0;
+            }
+
+            void load() {
+                buffer = make_unique<GLUniformBufferObject>(sizeof(Lights));
             }
 
             void add_light(const Light& light) {
@@ -54,7 +56,6 @@ namespace bepbep {
 
                 for(int i = 0; i < lightCount; ++i) {
                     shader->set_uniform("transform", Mat4f::translation(lights[i].origin));
-
                     context.render_sphere();
                 }
             }

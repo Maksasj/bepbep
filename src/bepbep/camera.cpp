@@ -43,7 +43,7 @@ namespace bepbep {
     }
 
     void Camera::update_position(shared_ptr<Window>& window, float dt) {
-        f32 speed = 4.0f;
+        f32 speed = 7.0f;
 
         Vec3f movCamera = Vec3f::zero;
 
@@ -107,7 +107,7 @@ namespace bepbep {
         direction.z = sin(rotation.y) * cos(rotation.x);
 
         viewMatrix = calculate_view_matrix();
-        projMatrix = Mat4f::perspective(1.0472, window->get_aspect(), 0.1f, 2000.0f);
+        projMatrix = Mat4f::perspective(1.0472, window->get_aspect(), 0.1f, renderDistance);
     }
 
     void Camera::bind(GLShaderProgram& shader) {

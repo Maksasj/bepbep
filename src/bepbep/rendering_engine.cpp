@@ -29,6 +29,8 @@ namespace bepbep {
         // Todo
         context.init_line_mesh();
         context.init_circle_mesh();
+
+        light.load();
     }
 
     void RenderingEngine::render_level(Level* level, Camera& camera) {
