@@ -5,6 +5,19 @@
 #include "graphics_context.h"
 
 namespace bepbep {
+    ModelRenderer::ModelRenderer(shared_ptr<Model>& m) {
+        model = m;
+    }
+
+    void ModelRenderer::render(GraphicsContext& context, const Transform& transform) {
+        auto mainShader = context.get_main_shader();
+
+        mainShader->enable();
+        mainShader->set_uniform("transform", transform.calculate_final_transform());
+
+        model->render();
+    }
+
     CubeRenderer::CubeRenderer() {
         const std::vector<Vertex> vertices {
             {{-1.0, -1.0,  1.0},   {1.0f, 1.0f, 1.0f}},

@@ -6,7 +6,10 @@ namespace bepbep {
 
         mass = m;
 
-        renderer = new CubeRenderer();
+        auto model = Model::load_from_obj("models/suzanne.obj");
+        renderer = new ModelRenderer(model);
+
+        // renderer = new CubeRenderer();
         collider = new SphereCollider(Vec3f::zero, 1);
     }
 }

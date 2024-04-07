@@ -2,8 +2,8 @@
 #define _BEPBEP_RENDERER_H_
 
 #include "mesh.h"
+#include "model.h"
 #include "mesh_builder.h"
-
 #include "transform.h"
 
 namespace bepbep {
@@ -21,6 +21,16 @@ namespace bepbep {
         public:
             virtual ~Renderer() = default;
             virtual void render(GraphicsContext& context, const Transform& transform) = 0;
+    };
+
+    class ModelRenderer : public Renderer {
+        private:
+            shared_ptr<Model> model;
+
+        public:
+            ModelRenderer(shared_ptr<Model>& m);
+
+            void render(GraphicsContext& context, const Transform& transform) override;
     };
 
     class CubeRenderer : public Renderer {
