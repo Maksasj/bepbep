@@ -48,6 +48,10 @@ namespace bepbep {
         mainShader->enable();
         Camera camera({-5, 0, 0}, 100.0f);
 
+        LightManager light;
+        light.add_light({Vec3f{0, 10, 0}});
+        light.bind(context);
+
         Level level;
 
         GLContext::enable(GL_DEPTH_TEST);
@@ -77,6 +81,7 @@ namespace bepbep {
 
             lineShader->enable();
             camera.bind(*lineShader);
+            light.render(context);
 
             level.render(camera, context);
 

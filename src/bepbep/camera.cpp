@@ -109,6 +109,11 @@ namespace bepbep {
     void Camera::bind(GLShaderProgram& shader) {
         shader.set_uniform("proj", m_projMatrix);
         shader.set_uniform("view", m_viewMatrix);
+
+        // Todo
+        shader.set_uniform("camPos.x", position.x);
+        shader.set_uniform("camPos.y", position.y);
+        shader.set_uniform("camPos.z", position.z);
     }
 
     const Vec3f& Camera::get_position() const {

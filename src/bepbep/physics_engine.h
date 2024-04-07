@@ -67,7 +67,7 @@ namespace bepbep {
             void step(float dt) {
                 resolve_collisions(dt);
 
-                applyGravity();
+                // applyGravity();
 
                 for(auto& obj : objects) {
                     obj->velocity += obj->acceleration / obj->mass * dt;

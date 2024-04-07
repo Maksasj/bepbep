@@ -6,6 +6,7 @@
 #include "camera.h"
 #include "level.h"
 #include "graphics_context.h"
+#include "light_manager.h"
 
 namespace bepbep {
     using namespace bebone::core;

@@ -44,14 +44,14 @@ namespace bepbep {
                         };
 
                         const std::vector<Vertex> vertices {
-                            {{ 0,    0,     1.0}, Vec3f::zero, color },
-                            {{ 1.0,  0,     1.0}, Vec3f::zero, color },
-                            {{ 1.0,  1.0,   1.0}, Vec3f::zero, color },
-                            {{ 0,    1.0,   1.0}, Vec3f::zero, color },
-                            {{ 0,    0,     0},   Vec3f::zero, color },
-                            {{ 1.0,  0,     0},   Vec3f::zero, color },
-                            {{ 1.0,  1.0,   0},   Vec3f::zero, color },
-                            {{ 0,    1.0,   0},   Vec3f::zero, color }
+                            {{ 0,    0,     1.0}, Vec3f{1.0f, 0.0f, 0.0f}, color },
+                            {{ 1.0,  0,     1.0}, Vec3f{1.0f, 0.0f, 0.0f}, color },
+                            {{ 1.0,  1.0,   1.0}, Vec3f{1.0f, 0.0f, 0.0f}, color },
+                            {{ 0,    1.0,   1.0}, Vec3f{1.0f, 0.0f, 0.0f}, color },
+                            {{ 0,    0,     0},   Vec3f{1.0f, 0.0f, 0.0f}, color },
+                            {{ 1.0,  0,     0},   Vec3f{1.0f, 0.0f, 0.0f}, color },
+                            {{ 1.0,  1.0,   0},   Vec3f{1.0f, 0.0f, 0.0f}, color },
+                            {{ 0,    1.0,   0},   Vec3f{1.0f, 0.0f, 0.0f}, color }
                         };
 
                         builder.append(vertices, indices, {x, y, z});
