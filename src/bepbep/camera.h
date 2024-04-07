@@ -16,12 +16,12 @@ namespace bepbep {
             Vec3f rotation;
             Vec3f direction;
 
-            bool m_mouseLocked;
+            bool mouseLocked;
 
-            Mat4f m_viewMatrix;
-            Mat4f m_projMatrix;
+            Mat4f viewMatrix;
+            Mat4f projMatrix;
 
-            void update_position(shared_ptr<Window>& window);
+            void update_position(shared_ptr<Window>& window, float dt);
 
             Mat4f calculate_view_matrix() const;
 
@@ -30,7 +30,7 @@ namespace bepbep {
 
             void move(const Vec3f& direction);
 
-            void update(shared_ptr<Window>& window);
+            void update(shared_ptr<Window>& window, double dt);
             void bind(GLShaderProgram& shader);
 
             const Vec3f& get_position() const;

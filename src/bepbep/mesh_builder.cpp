@@ -1,26 +1,26 @@
 #include "mesh_builder.h"
 
 namespace bepbep {
-    MeshBuilder::MeshBuilder() : m_indexOffset(0) {
+    MeshBuilder::MeshBuilder() : indexOffset(0) {
 
     }
 
-    MeshBuilder& MeshBuilder::append(const vector<Vertex>& vertices, const vector<u32>& indices, const Vec3f& offset) {
-        for(auto vertex : vertices) {
+    MeshBuilder& MeshBuilder::append(const vector<Vertex>& vert, const vector<u32>& ind, const Vec3f& offset) {
+        for(auto vertex : vert) {
             vertex.pos += offset;
 
-            m_vertices.push_back(vertex);
+            vertices.push_back(vertex);
         }
 
         u32 maxIndex = 0;
-        for(const auto& index : indices) {
-            m_indices.push_back(index + m_indexOffset);
+        for(const auto& index : ind) {
+            indices.push_back(index + indexOffset);
 
             if(index > maxIndex)
                 maxIndex = index;
         }
 
-        m_indexOffset += maxIndex + 1;
+        indexOffset += maxIndex + 1;
 
         return *this;
     }
@@ -33,6 +33,6 @@ namespace bepbep {
     }
 
     unique_ptr<Mesh> MeshBuilder::build() {
-        return make_unique<Mesh>(m_vertices, m_indices);
+        return make_unique<Mesh>(vertices, indices);
     }
 }

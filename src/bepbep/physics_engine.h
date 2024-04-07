@@ -1,6 +1,8 @@
 #ifndef _BEPBEP_PHYSICS_ENGINE_H_
 #define _BEPBEP_PHYSICS_ENGINE_H_
 
+#include "level.h"
+
 #include "object.h"
 
 namespace bepbep {
@@ -13,15 +15,23 @@ namespace bepbep {
     };
 
     class PhysicsEngine {
-        protected:
-            vector<Object*> objects;
-
         public:
-            void add_object(Object* object) {
-                objects.push_back(object);
+            void step(Level* level, const f64& dt) {
+                vector<Object*>& objects = level->get_objects();
+
+                resolve_collisions(objects, dt);
+
+                // apply_gravity();
+                // Todo there we can iterate only neede objects
+                for(auto& obj : objects) {
+                    obj->velocity += obj->acceleration / obj->mass * dt;
+                    obj->transform.position += obj->velocity * dt;
+
+                    obj->acceleration = Vec3f::zero;
+                }
             }
 
-            void resolve_collisions(float dt) {
+            void resolve_collisions(const vector<Object*>& objects, const f64& dt) {
                 vector<Collision> collisions;
 
                 for(Object* a : objects) {
@@ -47,7 +57,7 @@ namespace bepbep {
                 }
             }
 
-            void applyGravity() {
+            void apply_gravity(const vector<Object*>& objects) {
                 for(auto& planet : objects) {
                     for(auto& sputnik : objects) {
                         if(planet == sputnik)
@@ -62,20 +72,6 @@ namespace bepbep {
                         sputnik->acceleration += g;
                     }
                 }
-            }
-
-            void step(float dt) {
-                resolve_collisions(dt);
-
-                // applyGravity();
-
-                for(auto& obj : objects) {
-                    obj->velocity += obj->acceleration / obj->mass * dt;
-                    obj->transform.position += obj->velocity * dt;
-
-                    obj->acceleration = Vec3f::zero;
-                }
-
             }
     };
 }

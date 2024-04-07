@@ -9,10 +9,10 @@
 namespace bepbep {
     class MeshBuilder {
         private:
-            vector<Vertex> m_vertices;
-            vector<u32> m_indices;
+            vector<Vertex> vertices;
+            vector<u32> indices;
 
-            u32 m_indexOffset;
+            u32 indexOffset;
 
         public:
             MeshBuilder();

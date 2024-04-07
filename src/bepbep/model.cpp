@@ -13,6 +13,7 @@ namespace bepbep {
         }
 
         res.push_back (s.substr (pos_start));
+
         return res;
     }
 

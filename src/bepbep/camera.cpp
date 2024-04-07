@@ -8,10 +8,10 @@ namespace bepbep {
         rotation = Vec3f::zero;
         direction = Vec3f::zero;
 
-        m_mouseLocked = true;
+        mouseLocked = true;
 
-        m_viewMatrix = Mat4f::identity();
-        m_projMatrix = Mat4f::identity();
+        viewMatrix = Mat4f::identity();
+        projMatrix = Mat4f::identity();
     }
 
     Mat4f Camera::calculate_view_matrix() const {
@@ -42,47 +42,51 @@ namespace bepbep {
         position += direction;
     }
 
-    void Camera::update_position(shared_ptr<Window>& window) {
-        f32 speed = 0.5f;
+    void Camera::update_position(shared_ptr<Window>& window, float dt) {
+        f32 speed = 4.0f;
+
+        Vec3f movCamera = Vec3f::zero;
 
         if (glfwGetKey(window->get_backend(), GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-            speed = 3.0f;
+            speed *= 3.0f;
 
         if (glfwGetKey(window->get_backend(), 'W') == GLFW_PRESS)
-            position += Vec3f(1.0f, 0.0f, 1.0f) * direction.normalize() * speed;
+            movCamera += Vec3f(1.0f, 0.0f, 1.0f) * direction.normalize();
 
         if (glfwGetKey(window->get_backend(), 'S') == GLFW_PRESS)
-            position -= Vec3f(1.0f, 0.0f, 1.0f) * direction.normalize() * speed;
+            movCamera -= Vec3f(1.0f, 0.0f, 1.0f) * direction.normalize();
 
         if (glfwGetKey(window->get_backend(), 'A') == GLFW_PRESS)
-            position -= Vec3f(direction.z, 0.0f, -direction.x).normalize() * speed;
+            movCamera -= Vec3f(direction.z, 0.0f, -direction.x).normalize();
 
         if (glfwGetKey(window->get_backend(), 'D') == GLFW_PRESS)
-            position += Vec3f(direction.z, 0.0f, -direction.x).normalize() * speed;
+            movCamera += Vec3f(direction.z, 0.0f, -direction.x).normalize();
 
         if (glfwGetKey(window->get_backend(), GLFW_KEY_SPACE) == GLFW_PRESS)
-            position.y += speed;
+            movCamera.y += 1.0f;
 
         if (glfwGetKey(window->get_backend(), GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS)
-            position.y -= speed;
+            movCamera.y -= 1.0f;
+
+        position += movCamera * speed * dt;
     }
 
-    void Camera::update(shared_ptr<Window>& window) {
-        update_position(window);
+    void Camera::update(shared_ptr<Window>& window, double dt) {
+        update_position(window, dt);
 
         const auto winCenterWidth = static_cast<f32>(window->get_width()) / 2.0f;
         const auto winCenterHeight = static_cast<f32>(window->get_height()) / 2.0f;
 
-        bool oldMouseLockState = m_mouseLocked;
+        bool oldMouseLockState = mouseLocked;
         static auto buttonPressed = false;
         const auto isDebugButtonPressed = (glfwGetKey(window->get_backend(), GLFW_KEY_ENTER) == GLFW_RELEASE);
-        m_mouseLocked = (isDebugButtonPressed && !buttonPressed) ? !m_mouseLocked : m_mouseLocked;
+        mouseLocked = (isDebugButtonPressed && !buttonPressed) ? !mouseLocked : mouseLocked;
         buttonPressed = isDebugButtonPressed;
 
-        if(oldMouseLockState != m_mouseLocked)
+        if(oldMouseLockState != mouseLocked)
             glfwSetCursorPos(window->get_backend(), winCenterWidth, winCenterHeight);
 
-        if(m_mouseLocked) {
+        if(mouseLocked) {
             glfwSetInputMode(window->get_backend(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
             f64 xPos, yPos;
@@ -102,13 +106,13 @@ namespace bepbep {
         direction.y = sin(rotation.x);
         direction.z = sin(rotation.y) * cos(rotation.x);
 
-        m_viewMatrix = calculate_view_matrix();
-        m_projMatrix = Mat4f::perspective(1.0472, window->get_aspect(), 0.1f, 2000.0f);
+        viewMatrix = calculate_view_matrix();
+        projMatrix = Mat4f::perspective(1.0472, window->get_aspect(), 0.1f, 2000.0f);
     }
 
     void Camera::bind(GLShaderProgram& shader) {
-        shader.set_uniform("proj", m_projMatrix);
-        shader.set_uniform("view", m_viewMatrix);
+        shader.set_uniform("proj", projMatrix);
+        shader.set_uniform("view", viewMatrix);
 
         // Todo
         shader.set_uniform("camPos.x", position.x);

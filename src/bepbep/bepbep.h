@@ -7,6 +7,7 @@
 #include "level.h"
 #include "graphics_context.h"
 #include "light_manager.h"
+#include "game_manager.h"
 
 namespace bepbep {
     using namespace bebone::core;
@@ -15,12 +16,10 @@ namespace bepbep {
 
     class BepBepApp {
         private:
-            std::shared_ptr<Window> window;
+            shared_ptr<Window> window;
 
-            std::shared_ptr<GLShaderProgram> mainShader;
-            std::shared_ptr<GLShaderProgram> lineShader;
-
-            static std::shared_ptr<GLShaderProgram> load_shader(const std::string& vertPath, const std::string& fragPath);
+            unique_ptr<GameManager> manager;
+            f64 deltaTime;
 
         public:
             void preinit();
@@ -28,6 +27,29 @@ namespace bepbep {
             void load();
             void run();
             void cleanup();
+
+            static BepBepApp& get_instance() {
+                static BepBepApp instance;
+                return instance;
+            }
+
+            static shared_ptr<Window>& get_window() {
+                return get_instance().window;
+            }
+
+            static const f64& get_delta_time() {
+                return get_instance().deltaTime;
+            }
+
+            static void start() {
+                BepBepApp& app = BepBepApp::get_instance();
+
+                app.preinit();
+                app.init();
+                app.load();
+                app.run();
+                app.cleanup();
+            }
     };
 }
 
