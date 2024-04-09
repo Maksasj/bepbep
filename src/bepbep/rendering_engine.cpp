@@ -33,7 +33,7 @@ namespace bepbep {
         light.load();
     }
 
-    void RenderingEngine::render_level(Level* level, Camera& camera) {
+    void RenderingEngine::render_level(Level* level, Camera* camera) {
         auto objects = level->get_objects();
 
         if(context.is_debug()) {
@@ -47,7 +47,7 @@ namespace bepbep {
 
             context.render_sphere();
 
-            Ray ray(camera.get_position(), camera.get_direction());
+            Ray ray(camera->get_position(), camera->get_direction());
 
             for(auto& obj : objects) {
                 auto* str = dynamic_cast<Structure*>(obj);
@@ -97,12 +97,12 @@ namespace bepbep {
         }
     }
 
-    void RenderingEngine::render(Level* level, Camera& camera) {
+    void RenderingEngine::render(Level* level, Camera* camera) {
         mainShader->enable();
-        camera.bind(*mainShader);
+        camera->bind(*mainShader);
 
         lineShader->enable();
-        camera.bind(*lineShader);
+        camera->bind(*lineShader);
 
         light.bind(context);
         light.render(context);

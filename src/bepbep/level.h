@@ -1,6 +1,8 @@
 #ifndef _BEPBEP_LEVEL_H_
 #define _BEPBEP_LEVEL_H_
 
+#include "player.h"
+
 #include "entity.h"
 #include "structure.h"
 

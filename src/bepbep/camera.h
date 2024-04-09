@@ -8,7 +8,7 @@ namespace bepbep {
     using namespace bebone::gfx;
     using namespace bebone::gfx::opengl;
 
-    class Camera : private core::NonCopyable {
+    class Camera {
         private:
             Mat4f viewMatrix;
             Mat4f projMatrix;

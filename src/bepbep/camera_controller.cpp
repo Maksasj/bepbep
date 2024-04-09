@@ -6,10 +6,10 @@ namespace bepbep {
 
     }
 
-    void CameraController::update_position(shared_ptr<Window>& window, Camera& camera) {
+    void CameraController::update_position(shared_ptr<Window>& window, Camera* camera) {
         const auto dt = BepBepApp::get_delta_time();
 
-        const auto direction = camera.get_direction();
+        const auto direction = camera->get_direction();
 
         Vec3f movCamera = Vec3f::zero;
 
@@ -32,13 +32,13 @@ namespace bepbep {
             movCamera.y -= 1.0f;
 
         if (glfwGetKey(window->get_backend(), GLFW_KEY_LEFT_CONTROL) == GLFW_PRESS)
-            camera.move(movCamera * camSpeed * dt * 3);
+            camera->move(movCamera * camSpeed * dt * 3);
         else
-            camera.move(movCamera * camSpeed * dt);
+            camera->move(movCamera * camSpeed * dt);
     }
 
-    void CameraController::update_rotation(shared_ptr<Window>& window, Camera& camera) {
-        Vec3f rotation = camera.get_rotation();
+    void CameraController::update_rotation(shared_ptr<Window>& window, Camera* camera) {
+        Vec3f rotation = camera->get_rotation();
 
         const auto winCenterWidth = static_cast<f32>(window->get_width()) / 2.0f;
         const auto winCenterHeight = static_cast<f32>(window->get_height()) / 2.0f;
@@ -74,17 +74,17 @@ namespace bepbep {
             sin(rotation.y) * cos(rotation.x)
         };
 
-        camera.set_rotation(rotation);
-        camera.set_direction(direction);
-        camera.set_view_matrix(calculate_view_matrix(camera));
+        camera->set_rotation(rotation);
+        camera->set_direction(direction);
+        camera->set_view_matrix(calculate_view_matrix(camera));
 
-        auto proj = Mat4f::perspective(1.0472, window->get_aspect(), 0.1f, camera.get_render_distance());
-        camera.set_proj_matrix(proj);
+        auto proj = Mat4f::perspective(1.0472, window->get_aspect(), 0.1f, camera->get_render_distance());
+        camera->set_proj_matrix(proj);
     }
 
-    Mat4f CameraController::calculate_view_matrix(Camera& camera) {
-        const auto direction = camera.get_direction();
-        const auto position = camera.get_position();
+    Mat4f CameraController::calculate_view_matrix(Camera* camera) {
+        const auto direction = camera->get_direction();
+        const auto position = camera->get_position();
 
         const static auto upVector = Vec3f::down;
 

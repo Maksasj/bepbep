@@ -13,13 +13,13 @@ namespace bepbep {
             f32 camSpeed;
             bool mouseLocked;
 
-            static Mat4f calculate_view_matrix(Camera& camera);
+            static Mat4f calculate_view_matrix(Camera* camera);
 
         public:
             CameraController();
 
-            void update_position(shared_ptr<Window>& window, Camera& camera);
-            void update_rotation(shared_ptr<Window>& window, Camera& camera);
+            void update_position(shared_ptr<Window>& window, Camera* camera);
+            void update_rotation(shared_ptr<Window>& window, Camera* camera);
     };
 }
 

@@ -63,6 +63,7 @@ namespace bepbep {
             void render(GraphicsContext& context, const Transform& transform) override;
 
             static vector<VertexTriangle> generate_icosahedron_triangles();
+            static void calculate_normals(vector<VertexTriangle>& triangles);
     };
 
     class SphereRenderer : public Renderer {
@@ -75,6 +76,16 @@ namespace bepbep {
             void render(GraphicsContext& context, const Transform& transform) override;
 
             static vector<VertexTriangle> generate_sphere_triangles(const float& radius, const u32& lod);
+    };
+
+    class CapsuleRenderer : public Renderer {
+        private:
+            unique_ptr<Mesh> mesh;
+
+        public:
+            CapsuleRenderer(const float& radius, const float& height, const u32& lod);
+
+            void render(GraphicsContext& context, const Transform& transform) override;
     };
 
     class StructureRenderer : public Renderer {

@@ -9,6 +9,9 @@
 #include "camera.h"
 #include "camera_controller.h"
 
+#include "player.h"
+#include "player_controller.h"
+
 namespace bepbep {
     class BepBepApp;
 
@@ -19,8 +22,12 @@ namespace bepbep {
             unique_ptr<RenderingEngine> graphics;
             unique_ptr<PhysicsEngine> physics;
 
-            Camera mainCamera;
+            u32 activeCamera;
+            vector<Camera*> cams;
             CameraController cameraController;
+
+            Player* player;
+            PlayerController playerController;
 
         public:
             GameManager();

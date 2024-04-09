@@ -19,14 +19,14 @@ namespace bepbep {
 
             static shared_ptr<GLShaderProgram> load_shader(const string& vertPath, const string& fragPath);
 
-            void render_level(Level* level, Camera& camera);
+            void render_level(Level* level, Camera* camera);
 
         public:
             RenderingEngine();
 
             void load();
 
-            void render(Level* level, Camera& camera);
+            void render(Level* level, Camera* camera);
     };
 }
 
