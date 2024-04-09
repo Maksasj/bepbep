@@ -4,6 +4,8 @@ namespace bepbep {
     Level::Level() {
         objects.push_back(new Entity("models/suzanne.obj", Vec3f{2, 0, 0}, 1));
 
+        objects.push_back(new Entity("models/ak47.obj", Vec3f{0, 0, 0}, 1));
+
         objects.push_back(new Structure(Vec3f{-2, -17, 8}, 1));
 
         for(int i = 0; i < 5; ++i) {
