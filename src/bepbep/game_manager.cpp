@@ -14,8 +14,8 @@ namespace bepbep {
 
         level = new Level();
 
-        cams.push_back(new Camera(Vec3f::zero, 2000.0f));
-        cams.push_back(new Camera({0.0f, -5.0f, 0.0f}, 2000.0f));
+        cams.push_back(new Camera(FREE_CAM, Vec3f::zero, 2000.0f));
+        cams.push_back(new Camera(ORBIT_CAM, Vec3f::zero, 2000.0f));
 
         activeCamera = 0;
 

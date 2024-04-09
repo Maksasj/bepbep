@@ -6,9 +6,8 @@ namespace bepbep {
 
     }
 
-    void CameraController::update_position(shared_ptr<Window>& window, Camera* camera) {
+    void CameraController::update_position_freecam(shared_ptr<Window>& window, Camera* camera) {
         const auto dt = BepBepApp::get_delta_time();
-
         const auto direction = camera->get_direction();
 
         Vec3f movCamera = Vec3f::zero;
@@ -37,20 +36,13 @@ namespace bepbep {
             camera->move(movCamera * camSpeed * dt);
     }
 
-    void CameraController::update_rotation(shared_ptr<Window>& window, Camera* camera) {
+    void CameraController::update_rotation_freecam(shared_ptr<Window>& window, Camera* camera) {
         Vec3f rotation = camera->get_rotation();
 
         const auto winCenterWidth = static_cast<f32>(window->get_width()) / 2.0f;
         const auto winCenterHeight = static_cast<f32>(window->get_height()) / 2.0f;
 
-        bool oldMouseLockState = mouseLocked;
-        static auto buttonPressed = false;
-        const auto isDebugButtonPressed = (glfwGetKey(window->get_backend(), GLFW_KEY_ENTER) == GLFW_RELEASE);
-        mouseLocked = (isDebugButtonPressed && !buttonPressed) ? !mouseLocked : mouseLocked;
-        buttonPressed = isDebugButtonPressed;
-
-        if(oldMouseLockState != mouseLocked)
-            glfwSetCursorPos(window->get_backend(), winCenterWidth, winCenterHeight);
+        handle_mouse_lock(window);
 
         if(mouseLocked) {
             glfwSetInputMode(window->get_backend(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
@@ -76,20 +68,121 @@ namespace bepbep {
 
         camera->set_rotation(rotation);
         camera->set_direction(direction);
-        camera->set_view_matrix(calculate_view_matrix(camera));
+    }
 
-        auto proj = Mat4f::perspective(1.0472, window->get_aspect(), 0.1f, camera->get_render_distance());
-        camera->set_proj_matrix(proj);
+    void CameraController::update_position_orbitcam(shared_ptr<Window>& window, Camera* camera) {
+
+    }
+
+    void CameraController::update_rotation_orbitcam(shared_ptr<Window>& window, Camera* camera) {
+        Vec3f rotation = camera->get_rotation();
+
+        const auto winCenterWidth = static_cast<f32>(window->get_width()) / 2.0f;
+        const auto winCenterHeight = static_cast<f32>(window->get_height()) / 2.0f;
+
+        handle_mouse_lock(window);
+
+        if(mouseLocked) {
+            glfwSetInputMode(window->get_backend(), GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+
+            f64 xPos, yPos;
+            glfwGetCursorPos(window->get_backend(), &xPos, &yPos);
+
+            const auto deltaX = floorf(winCenterWidth) - static_cast<f32>(xPos);
+            const auto deltaY = floorf(winCenterHeight) - static_cast<f32>(yPos);
+
+            rotation.x += deltaX * 0.005f;
+            rotation.z += deltaX * 0.005f;
+
+            rotation.y += deltaY * 0.005f;
+
+            glfwSetCursorPos(window->get_backend(), winCenterWidth, winCenterHeight);
+        } else
+            glfwSetInputMode(window->get_backend(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+
+        const Vec3f direction = {
+            7.0f * sin(rotation.x),
+            7.0f,
+            7.0f * cos(rotation.z)
+        };
+
+        camera->set_direction(direction);
+        camera->set_rotation(rotation);
+    }
+
+    void CameraController::handle_mouse_lock(shared_ptr<Window>& window) {
+        const auto winCenterWidth = static_cast<f32>(window->get_width()) / 2.0f;
+        const auto winCenterHeight = static_cast<f32>(window->get_height()) / 2.0f;
+
+        bool oldMouseLockState = mouseLocked;
+        static auto buttonPressed = false;
+        const auto isDebugButtonPressed = (glfwGetKey(window->get_backend(), GLFW_KEY_ENTER) == GLFW_RELEASE);
+        mouseLocked = (isDebugButtonPressed && !buttonPressed) ? !mouseLocked : mouseLocked;
+        buttonPressed = isDebugButtonPressed;
+
+        if(oldMouseLockState != mouseLocked)
+            glfwSetCursorPos(window->get_backend(), winCenterWidth, winCenterHeight);
+    }
+
+    void CameraController::update_position(shared_ptr<Window>& window, Camera* camera) {
+        if(camera->locked()) {
+            update_camera_matrices(window, camera);
+            return;
+        }
+
+        const auto type = camera->get_type();
+
+        if(type == FREE_CAM)
+            update_position_freecam(window, camera);
+        else if(type == ORBIT_CAM)
+            update_position_orbitcam(window, camera);
+
+        update_camera_matrices(window, camera);  // Todo fix this, to many re calculations
+    }
+
+    void CameraController::update_rotation(shared_ptr<Window>& window, Camera* camera) {
+        if(camera->locked()) {
+            update_camera_matrices(window, camera);
+            return;
+        }
+
+        const auto type = camera->get_type();
+
+        if(type == FREE_CAM)
+            update_rotation_freecam(window, camera);
+        else if(type == ORBIT_CAM)
+            update_rotation_orbitcam(window, camera);
+
+        update_camera_matrices(window, camera); // Todo fix this, to many re calculations
     }
 
     Mat4f CameraController::calculate_view_matrix(Camera* camera) {
         const auto direction = camera->get_direction();
         const auto position = camera->get_position();
 
-        const static auto upVector = Vec3f::down;
+        return look_at(position, position + direction, Vec3f::down);
+    }
 
-        const auto w = direction.normalize();
-        const auto u = w.cross(upVector).normalize();
+    void CameraController::update_camera_matrices(shared_ptr<Window>& window, Camera* camera) {
+        auto proj = Mat4f::perspective(1.0472, window->get_aspect(), 0.1f, camera->get_render_distance());
+        camera->set_proj_matrix(proj);
+
+        const auto type = camera->get_type();
+
+        const auto position = camera->get_position();
+        const auto direction = camera->get_direction();
+
+        if(type == FREE_CAM) {
+            camera->set_view_matrix(calculate_view_matrix(camera));
+        } else if(type == ORBIT_CAM) {
+            camera->set_view_matrix(look_at(position + direction, position, Vec3f::down));
+        }
+    }
+
+    Mat4f CameraController::look_at(const Vec3f& origin, const Vec3f& center, const Vec3f& up) {
+        const auto dir = center - origin;
+        const auto w = dir.normalize();
+        const auto u = w.cross(up).normalize();
         const auto v = w.cross(u);
 
         Mat4f viewMatrix = Mat4f::identity();
@@ -102,10 +195,11 @@ namespace bepbep {
         viewMatrix[0 * 4 + 2] = w.x;
         viewMatrix[1 * 4 + 2] = w.y;
         viewMatrix[2 * 4 + 2] = w.z;
-        viewMatrix[3 * 4 + 0] = -1.0f * (u).dot(position);
-        viewMatrix[3 * 4 + 1] = -1.0f * (v).dot(position);
-        viewMatrix[3 * 4 + 2] = -1.0f * (w).dot(position);
+        viewMatrix[3 * 4 + 0] = -1.0f * (u).dot(origin);
+        viewMatrix[3 * 4 + 1] = -1.0f * (v).dot(origin);
+        viewMatrix[3 * 4 + 2] = -1.0f * (w).dot(origin);
 
         return viewMatrix;
     }
+
 }

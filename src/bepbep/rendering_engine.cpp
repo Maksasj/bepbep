@@ -118,22 +118,51 @@ namespace bepbep {
 
             const auto& camera = cams[i];
 
-            const auto& position = camera->get_position();
-            const auto& rotation = camera->get_rotation();
-            const auto& direction = camera->get_direction();
+            const auto& type = camera->get_type();
 
-            auto lineShader = context.get_line_shader();
-            lineShader->enable();
+            if(type == FREE_CAM) {
+                render_freecam(camera);
+            } else if(type == ORBIT_CAM) {
+                render_orbitcam(camera);
+            }
+        }
+    }
 
-            lineShader->set_uniform("transform", Mat4f::identity());
-            context.render_line(position, position + direction.normalize() * 3, ColorRGBA::MAGENTA);
+    void RenderingEngine::render_freecam(Camera* camera) {
+        const auto& position = camera->get_position();
+        const auto& rotation = camera->get_rotation();
+        const auto& direction = camera->get_direction();
 
-            Transform transform = {
+        auto lineShader = context.get_line_shader();
+        lineShader->enable();
+
+        lineShader->set_uniform("transform", Mat4f::identity());
+        context.render_line(position, position + direction.normalize() * 3, ColorRGBA::MAGENTA);
+
+        Transform transform = {
                 .position = position - Vec3f::splat(0.5),
                 .rotation = Mat4f::identity()
-            };
-            lineShader->set_uniform("transform", transform.calculate_final_transform());
-            context.render_cube();
-        }
+        };
+        lineShader->set_uniform("transform", transform.calculate_final_transform());
+        context.render_cube();
+    }
+
+    void RenderingEngine::render_orbitcam(Camera* camera) {
+        const auto& position = camera->get_position();
+        const auto& rotation = camera->get_rotation();
+        const auto& direction = camera->get_direction();
+
+        auto lineShader = context.get_line_shader();
+        lineShader->enable();
+
+        lineShader->set_uniform("transform", Mat4f::identity());
+        context.render_line(position, position + direction, ColorRGBA::MAGENTA);
+
+        Transform transform = {
+            .position = position + direction,
+            .rotation = Mat4f::identity()
+        };
+        lineShader->set_uniform("transform", transform.calculate_final_transform());
+        context.render_cube();
     }
 }

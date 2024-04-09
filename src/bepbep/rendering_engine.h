@@ -21,6 +21,9 @@ namespace bepbep {
 
             void render_level(Level* level, Camera* camera);
 
+            void render_freecam(Camera* camera);
+            void render_orbitcam(Camera* camera);
+
         public:
             RenderingEngine();
 

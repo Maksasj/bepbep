@@ -8,6 +8,11 @@ namespace bepbep {
     using namespace bebone::gfx;
     using namespace bebone::gfx::opengl;
 
+    enum CameraType {
+        FREE_CAM,
+        ORBIT_CAM
+    };
+
     class Camera {
         private:
             Mat4f viewMatrix;
@@ -20,8 +25,11 @@ namespace bepbep {
             Vec3f rotation;
             Vec3f direction;
 
+            const CameraType typeFlag;
+            bool lockFlag;
+
         public:
-            Camera(const Vec3f& position, const f32& renderDistance);
+            Camera(const CameraType& type, const Vec3f& position, const f32& renderDistance);
 
             void move(const Vec3f& dir);
             void bind(GLShaderProgram& shader);
@@ -41,6 +49,12 @@ namespace bepbep {
 
             void set_view_matrix(const Mat4f& mat);
             void set_proj_matrix(const Mat4f& mat);
+
+            void lock();
+            void unlock();
+            const bool& locked() const;
+
+            const CameraType& get_type() const;
     };
 }
 

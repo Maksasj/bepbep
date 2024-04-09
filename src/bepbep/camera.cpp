@@ -1,7 +1,7 @@
 #include "camera.h"
 
 namespace bepbep {
-    Camera::Camera(const Vec3f& pos, const f32& rD) {
+    Camera::Camera(const CameraType& type, const Vec3f& pos, const f32& rD) : typeFlag(type), lockFlag(false) {
         renderDistance = rD;
 
         position = pos;
@@ -71,5 +71,21 @@ namespace bepbep {
 
     void Camera::move(const Vec3f &dir) {
         position += dir;
+    }
+
+    void Camera::lock() {
+        lockFlag = true;
+    }
+
+    void Camera::unlock() {
+        lockFlag = false;
+    }
+
+    const bool& Camera::locked() const {
+        return lockFlag;
+    }
+
+    const CameraType& Camera::get_type() const {
+        return typeFlag;
     }
 }
