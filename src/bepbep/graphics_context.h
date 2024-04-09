@@ -15,6 +15,7 @@ namespace bepbep {
 
             unique_ptr<LineMesh> line;
             unique_ptr<LineMesh> sphere;
+            unique_ptr<LineMesh> cube;
 
     public:
             GraphicsContext();
@@ -51,8 +52,43 @@ namespace bepbep {
                 sphere = make_unique<LineMesh>(vertices.data(), vertices.size());
             }
 
+            void init_cube_mesh() {
+                vector<LineVertex> vertices = {
+                    {Vec3f{0, 0, 0    }, ColorRGBA::WHITE },
+                    {Vec3f{1, 0, 0   }, ColorRGBA::WHITE },
+                    {Vec3f{0, 0, 0    }, ColorRGBA::WHITE },
+                    {Vec3f{0, 1, 0   }, ColorRGBA::WHITE },
+                    {Vec3f{0, 0, 0    }, ColorRGBA::WHITE },
+                    {Vec3f{0, 0, 1   }, ColorRGBA::WHITE },
+                    {Vec3f{1, 0, 0   }, ColorRGBA::WHITE },
+                    {Vec3f{1, 1, 0  }, ColorRGBA::WHITE },
+                    {Vec3f{1, 0, 0   }, ColorRGBA::WHITE },
+                    {Vec3f{1, 0, 1  }, ColorRGBA::WHITE },
+                    {Vec3f{0, 1, 0   }, ColorRGBA::WHITE },
+                    {Vec3f{1, 1, 0  }, ColorRGBA::WHITE },
+                    {Vec3f{0, 1, 0   }, ColorRGBA::WHITE },
+                    {Vec3f{0, 1, 1  }, ColorRGBA::WHITE },
+                    {Vec3f{1, 1, 0  }, ColorRGBA::WHITE },
+                    {Vec3f{1, 1, 1 }, ColorRGBA::WHITE },
+                    {Vec3f{1, 1, 1 }, ColorRGBA::WHITE },
+                    {Vec3f{1, 0, 1  }, ColorRGBA::WHITE },
+                    {Vec3f{1, 1, 1 }, ColorRGBA::WHITE },
+                    {Vec3f{0, 1, 1  }, ColorRGBA::WHITE },
+                    {Vec3f{0, 0, 1   }, ColorRGBA::WHITE },
+                    {Vec3f{0, 1, 1  }, ColorRGBA::WHITE },
+                    {Vec3f{0, 0, 1   }, ColorRGBA::WHITE },
+                    {Vec3f{1, 0, 1  }, ColorRGBA::WHITE }
+                };
+
+                cube = make_unique<LineMesh>(vertices.data(), vertices.size());
+            }
+
             void render_sphere() {
                 sphere->render();
+            }
+
+            void render_cube() {
+                cube->render();
             }
 
             void render_line(const Vec3f& start, const Vec3f& end, const ColorRGBA& color) {

@@ -8,7 +8,9 @@ namespace bepbep {
         private:
 
         public:
+            void update_player(Player* player) {
 
+            }
     };
 }
 

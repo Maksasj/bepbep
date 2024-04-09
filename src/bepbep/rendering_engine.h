@@ -27,6 +27,7 @@ namespace bepbep {
             void load();
 
             void render(Level* level, Camera* camera);
+            void render_cams(const vector<Camera*>& cams, const u32& activeCamera);
     };
 }
 

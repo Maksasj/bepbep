@@ -29,6 +29,7 @@ namespace bepbep {
         // Todo
         context.init_line_mesh();
         context.init_circle_mesh();
+        context.init_cube_mesh();
 
         light.load();
     }
@@ -108,5 +109,31 @@ namespace bepbep {
         light.render(context);
 
         render_level(level, camera);
+    }
+
+    void RenderingEngine::render_cams(const vector<Camera*>& cams, const u32& activeCamera) {
+        for(u32 i = 0; i < cams.size(); ++i) {
+            if(i == activeCamera)
+                continue;
+
+            const auto& camera = cams[i];
+
+            const auto& position = camera->get_position();
+            const auto& rotation = camera->get_rotation();
+            const auto& direction = camera->get_direction();
+
+            auto lineShader = context.get_line_shader();
+            lineShader->enable();
+
+            lineShader->set_uniform("transform", Mat4f::identity());
+            context.render_line(position, position + direction.normalize() * 3, ColorRGBA::MAGENTA);
+
+            Transform transform = {
+                .position = position - Vec3f::splat(0.5),
+                .rotation = Mat4f::identity()
+            };
+            lineShader->set_uniform("transform", transform.calculate_final_transform());
+            context.render_cube();
+        }
     }
 }

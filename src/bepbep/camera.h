@@ -31,6 +31,9 @@ namespace bepbep {
             const Vec3f& get_rotation() const;
             const Vec3f& get_direction() const;
 
+            const Mat4f& get_view_matrix() const;
+            const Mat4f& get_proj_matrix() const;
+
             void set_render_distance(const f32& renderDistance);
             void set_position(const Vec3f& pos);
             void set_rotation(const Vec3f& rot);

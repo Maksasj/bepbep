@@ -25,14 +25,25 @@ namespace bepbep {
     const f32& Camera::get_render_distance() const {
         return renderDistance;
     }
+
     const Vec3f& Camera::get_position() const {
         return position;
     }
+
     const Vec3f& Camera::get_rotation() const {
         return rotation;
     }
+
     const Vec3f& Camera::get_direction() const {
         return direction;
+    }
+
+    const Mat4f& Camera::get_view_matrix() const {
+        return viewMatrix;
+    }
+
+    const Mat4f& Camera::get_proj_matrix() const {
+        return projMatrix;
     }
 
     void Camera::set_render_distance(const f32& rD) {

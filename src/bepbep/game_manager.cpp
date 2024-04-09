@@ -15,7 +15,15 @@ namespace bepbep {
         level = new Level();
 
         cams.push_back(new Camera(Vec3f::zero, 2000.0f));
+        cams.push_back(new Camera({0.0f, -5.0f, 0.0f}, 2000.0f));
+
         activeCamera = 0;
+
+        BepBepApp::get_window()->add_listener([&](InputKeyEvent& event) {
+            if(event.action == GLFW_PRESS)
+                if(event.key == GLFW_KEY_F5)
+                    activeCamera = (activeCamera + 1) % cams.size();
+        });
     }
 
     void GameManager::run(const f64& dt) {
@@ -33,5 +41,6 @@ namespace bepbep {
         cameraController.update_position(window, camera);
 
         graphics->render(level, camera);
+        graphics->render_cams(cams, activeCamera);
     }
 }
