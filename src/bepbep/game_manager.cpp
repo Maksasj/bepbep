@@ -19,7 +19,9 @@ namespace bepbep {
     void GameManager::run(const f64& dt) {
         physics->step(level, dt);
 
-        mainCamera.update(BepBepApp::get_window(), BepBepApp::get_delta_time());
+        auto window = BepBepApp::get_window();
+        cameraController.update_rotation(window, mainCamera);
+        cameraController.update_position(window, mainCamera);
 
         graphics->render(level, mainCamera);
     }

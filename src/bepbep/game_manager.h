@@ -6,6 +6,9 @@
 #include "physics_engine.h"
 #include "rendering_engine.h"
 
+#include "camera.h"
+#include "camera_controller.h"
+
 namespace bepbep {
     class BepBepApp;
 
@@ -17,6 +20,7 @@ namespace bepbep {
             unique_ptr<PhysicsEngine> physics;
 
             Camera mainCamera;
+            CameraController cameraController;
 
         public:
             GameManager();
