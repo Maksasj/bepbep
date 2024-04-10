@@ -3,16 +3,21 @@
 
 namespace bepbep {
     RenderingEngine::RenderingEngine() {
-        light.add_light({Vec3f{0, 10, 0}});
-
+        lightManager = make_unique<LightManager>();
         shaderManager = make_unique<ShaderManager>();
         materialManager = make_unique<MaterialManager>();
     }
 
     void RenderingEngine::load() {
-        auto main = shaderManager->load_shader("main", "shaders/main_vert.glsl", "shaders/main_frag.glsl");
-        auto line = shaderManager->load_shader("line", "shaders/line_vert.glsl", "shaders/line_frag.glsl");
-        auto color = shaderManager->load_shader("color", "shaders/color_vert.glsl", "shaders/color_frag.glsl");
+        auto mainShader = shaderManager->load_shader("main", "shaders/main_vert.glsl", "shaders/main_frag.glsl");
+        auto lineShader = shaderManager->load_shader("line", "shaders/line_vert.glsl", "shaders/line_frag.glsl");
+        auto colorShader = shaderManager->load_shader("color", "shaders/color_vert.glsl", "shaders/color_frag.glsl");
+
+        auto main = materialManager->create_material("main", mainShader);
+        auto line = materialManager->create_material("line", lineShader);
+        auto color = materialManager->create_material("color", colorShader);
+
+        lightManager->add_light({Vec3f{0, 10, 0}});
     }
 
     void RenderingEngine::render_level(Level* level, Camera* camera) {
@@ -85,8 +90,6 @@ namespace bepbep {
             if(obj->get_material() == nullptr)
                 continue;
 
-            cout << "rendering object !\n";
-
             if(obj->get_renderer() == nullptr)
                 continue;
 
@@ -96,6 +99,7 @@ namespace bepbep {
         for(auto const& [material, renders] : renderables) {
             material->bind();
 
+            lightManager->bind(material->get_shader());
             camera->bind(material->get_shader());
 
             GraphicsContext context(true, material);

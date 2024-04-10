@@ -21,11 +21,10 @@ namespace bepbep {
         public:
             LightManager();
 
-            void load();
             void add_light(const Light& light);
 
-            void bind(GraphicsContext& context);
-            void render(GraphicsContext& context);
+            void bind(GLShaderProgram* shader);
+            // void render(GraphicsContext& context);
     };
 }
 

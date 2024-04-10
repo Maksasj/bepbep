@@ -11,8 +11,12 @@ namespace bepbep {
     class Material {
         private:
             GLShaderProgram* shader;
-
+            
         public:
+            Material(GLShaderProgram* sh) : shader(sh) {
+
+            }
+
             void bind() {
                 shader->enable();
 

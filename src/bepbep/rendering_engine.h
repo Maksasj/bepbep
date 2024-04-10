@@ -13,8 +13,7 @@ namespace bepbep {
 
     class RenderingEngine {
         private:
-            LightManager light;
-
+            unique_ptr<LightManager> lightManager;
             unique_ptr<ShaderManager> shaderManager;
             unique_ptr<MaterialManager> materialManager;
 

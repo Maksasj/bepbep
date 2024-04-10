@@ -4,9 +4,7 @@ namespace bepbep {
 
     LightManager::LightManager() {
         lightCount = 0;
-    }
 
-    void LightManager::load() {
         buffer = make_unique<GLUniformBufferObject>(sizeof(Lights));
     }
 
@@ -15,10 +13,7 @@ namespace bepbep {
         ++lightCount;
     }
 
-    void LightManager::bind(GraphicsContext& context) {
-        /*
-        auto shader = context.get_main_shader();
-
+    void LightManager::bind(GLShaderProgram* shader) {
         buffer->bind();
         shader->bind_buffer("Lights", 0, *buffer);
 
@@ -32,11 +27,10 @@ namespace bepbep {
         buffer->unmap();
 
         buffer->unbind();
-         */
     }
 
+    /*
     void LightManager::render(GraphicsContext& context) {
-        /*
         auto shader = context.get_line_shader();
         shader->enable();
 
@@ -44,6 +38,6 @@ namespace bepbep {
             shader->set_uniform("transform", Mat4f::translation(lights[i].origin));
             context.render_sphere();
         }
-        */
     }
+    */
 }
