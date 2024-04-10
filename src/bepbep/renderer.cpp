@@ -51,6 +51,31 @@ namespace bepbep {
         mesh->render();
     }
 
+    PlaneRenderer::PlaneRenderer(const f32& width, const f32& height) {
+        const vector<Vertex> vertices {
+            {{0.0f, 0.0f, 0.0f}, { 0 , 1, 0 },  {0.0f, 0.0f} },
+            {{width, 0.0f, 0.0f}, { 0 , 1, 0 }, {1.0f, 0.0f} },
+            {{0.0f, 0.0f, height}, { 0 , 1, 0 },{0.0f, 1.0f} },
+            {{width, 0.0f, height}, { 0 , 1, 0 },{1.0f, 1.0f} }
+        };
+
+        const vector<u32> indices {
+            0, 2, 3,
+            0, 3, 1
+        };
+
+        mesh = make_unique<Mesh>(vertices, indices);
+    }
+
+    void PlaneRenderer::render(GraphicsContext& context, const Transform& transform) {
+        auto shader = context.get_active_material()->get_shader();
+
+        auto matrix = transform.calculate_final_transform();
+        shader->set_uniform("transform", matrix);
+
+        mesh->render();
+    }
+
     void ChunkRenderer::render(GraphicsContext& context, const Transform& transform) {
         auto shader = context.get_active_material()->get_shader();
 
@@ -162,6 +187,12 @@ namespace bepbep {
             {{v6, v12, v5}},
             {{v11, v9, v5}},
         };
+
+        for(auto& tri : triangles) {
+            tri.v[0].texCord = {0.0, 0.0};
+            tri.v[1].texCord = {1.0, 0.0};
+            tri.v[2].texCord = {0.0, 1.0};
+        }
 
         return triangles;
     }

@@ -42,6 +42,16 @@ namespace bepbep {
             void render(GraphicsContext& context, const Transform& transform) override;
     };
 
+    class PlaneRenderer : public Renderer {
+        private:
+            unique_ptr<Mesh> mesh;
+
+        public:
+            PlaneRenderer(const f32& width, const f32& height);
+
+            void render(GraphicsContext& context, const Transform& transform) override;
+    };
+
     class ChunkRenderer : public Renderer {
         private:
             unique_ptr<Mesh> mesh;

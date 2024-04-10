@@ -15,13 +15,13 @@ namespace bepbep {
 
     vector<VertexTriangle> VertexTriangle::subdivide() {
         Vertex ab = {(v[0].pos + v[1].pos) / 2.0f, Vec3f::zero, {
-            Vec2f::zero // Todo
+            (v[0].texCord + v[1].texCord) / 2.0f
         }};
         Vertex bc = {(v[1].pos + v[2].pos) / 2.0f, Vec3f::zero, {
-            Vec2f::zero
+            (v[1].texCord + v[2].texCord) / 2.0f
         }};
         Vertex ac = {(v[0].pos + v[2].pos) / 2.0f, Vec3f::zero, {
-            Vec2f::zero
+            (v[0].texCord + v[2].texCord) / 2.0f
         }};
 
         return {

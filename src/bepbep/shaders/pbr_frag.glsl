@@ -25,22 +25,28 @@ layout(binding = 0) uniform Lights {
     Light sources[16];
 };
 
-uniform vec3 camPos;
+uniform float camPosx;
+uniform float camPosy;
+uniform float camPosz;
 
-float alpha = 1.0;
+vec3 camPos = vec3(camPosx, camPosy, camPosz);
+
 vec3 fragmentPosition = aFragPos;
 // vec3 normal = texture(normalMap, aTexCord).xyz * 0.5 + vec3(0.5);
 vec3 normal = aNormal;
 vec3 cameraPosition = camPos;
-vec3 lightPosition = vec3(0.0, 1.0, 0.0);
+vec3 lightPosition = vec3(0.0, 5.0, 0.0);
 vec3 lightColor = vec3(1.0);
 vec3 albedoMesh = texture(albedoMap, aTexCord).rgb;
-vec3 emissivityMesh = vec3(0.0);
-float roughness = length(texture(roughnessMap, aTexCord).rgb);
-vec3 baseReflectance = vec3(0.0);
-float metallic = 0.8;
+vec3 emissivityMesh = vec3(0.05);
+float roughness = texture(roughnessMap, aTexCord).r;
+vec3 baseReflectance = vec3(0.2);
 
-vec3 F0 = normal;
+float metallic = texture(metallicMap, aTexCord).r;
+
+float alpha = pow(roughness, 2);
+
+vec3 F0 = baseReflectance;
 
 vec3 N = normalize(normal);
 vec3 V = normalize(cameraPosition - fragmentPosition);
@@ -81,14 +87,13 @@ vec3 F(vec3 F0, vec3 V, vec3 H) {
 
 vec3 PBR() {
     vec3 Ks = F(F0, V, H);
-    vec3 Kd = (vec3(1.0) - Ks);
+    vec3 Kd = vec3(1.0) - Ks;
 
     vec3 lambert = albedoMesh / PI;
 
     vec3 cookTorranceNumerator = D(alpha, N, H) * G(alpha, N, V, L) * F(F0, V, H);
     float cookTorranceDenominator = 4.0 * max(dot(V, N), 0.0) * max(dot(L, N), 0.0);
     cookTorranceDenominator = max(cookTorranceDenominator, 0.000001);
-
     vec3 cookTorrance = cookTorranceNumerator / cookTorranceDenominator;
 
     vec3 BRDF = Kd * lambert + cookTorrance;

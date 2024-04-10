@@ -17,9 +17,9 @@ namespace bepbep {
         shader->set_uniform("view", viewMatrix);
 
         // Todo
-        shader->set_uniform("camPos.x", position.x);
-        shader->set_uniform("camPos.y", position.y);
-        shader->set_uniform("camPos.z", position.z);
+        shader->set_uniform("camPosx", position.x);
+        shader->set_uniform("camPosy", position.y);
+        shader->set_uniform("camPosz", position.z);
     }
 
     const f32& Camera::get_render_distance() const {
