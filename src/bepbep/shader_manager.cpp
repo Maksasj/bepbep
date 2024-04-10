@@ -5,7 +5,7 @@ namespace bepbep {
 
     }
 
-    GLShaderProgram* ShaderManager::load_shader(const string& vertPath, const string& fragPath) {
+    GLShaderProgram* ShaderManager::load_shader_program(const string& vertPath, const string& fragPath) {
         auto vertexShader = GLShaderFactory::create_shader(vertPath, ShaderTypes::VERTEX_SHADER, ENABLE_UNIFORMS);
         auto fragmentShader = GLShaderFactory::create_shader(fragPath, ShaderTypes::FRAGMENT_SHADER, ENABLE_UNIFORMS);
 
@@ -17,9 +17,12 @@ namespace bepbep {
         return shader;
     }
 
-    void ShaderManager::load() {
-        shaders["flat"] = load_shader("shaders/main_vert.glsl", "shaders/main_frag.glsl");
-        shaders["line"] = load_shader("shaders/line_vert.glsl", "shaders/line_frag.glsl");
+    GLShaderProgram* ShaderManager::load_shader(const string& name, const string& vertPath, const string& fragPath) {
+        auto shader = load_shader_program(vertPath, fragPath);
+
+        shaders[name] = shader;
+
+        return shader;
     }
 
     const GLShaderProgram* ShaderManager::get_shader(const string& shaderName) {

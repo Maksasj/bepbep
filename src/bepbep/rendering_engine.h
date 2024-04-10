@@ -6,20 +6,17 @@
 #include "light_manager.h"
 
 #include "shader_manager.h"
+#include "material_manager.h"
 
 namespace bepbep {
     class BepBepApp;
 
     class RenderingEngine {
         private:
-            GraphicsContext context;
-
-            shared_ptr<GLShaderProgram> mainShader;
-            shared_ptr<GLShaderProgram> lineShader;
-
             LightManager light;
 
             unique_ptr<ShaderManager> shaderManager;
+            unique_ptr<MaterialManager> materialManager;
 
             void render_level(Level* level, Camera* camera);
 
@@ -33,6 +30,9 @@ namespace bepbep {
 
             void render(Level* level, Camera* camera);
             void render_cams(const vector<Camera*>& cams, const u32& activeCamera);
+
+            ShaderManager& get_shader_manager();
+            MaterialManager& get_material_manager();
     };
 }
 

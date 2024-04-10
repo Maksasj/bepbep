@@ -37,6 +37,10 @@ namespace bepbep {
                 return get_instance().window;
             }
 
+            static GameManager& get_game_manager() {
+                return *get_instance().manager;
+            }
+
             static const f64& get_delta_time() {
                 return get_instance().deltaTime;
             }

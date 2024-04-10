@@ -1,6 +1,7 @@
 #ifndef _BEPBEP_RENDERER_H_
 #define _BEPBEP_RENDERER_H_
 
+#include "material.h"
 #include "mesh.h"
 #include "model.h"
 #include "mesh_builder.h"
@@ -16,8 +17,6 @@ namespace bepbep {
     struct GraphicsContext;
 
     class Renderer {
-        private:
-
         public:
             virtual ~Renderer() = default;
             virtual void render(GraphicsContext& context, const Transform& transform) = 0;
@@ -91,6 +90,7 @@ namespace bepbep {
     class StructureRenderer : public Renderer {
         private:
             Structure* structure;
+
         public:
             StructureRenderer(Structure* ptr);
 

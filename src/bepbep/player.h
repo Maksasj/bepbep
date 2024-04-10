@@ -9,7 +9,7 @@ namespace bepbep {
 
         public:
             Player(const Vec3f& pos, const float& m) : Entity(pos, m) {
-                renderer = new CapsuleRenderer(0.5, 0.5, 3);
+                set_renderer(new CapsuleRenderer(0.5, 0.5, 3));
             }
     };
 }

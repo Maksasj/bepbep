@@ -12,14 +12,14 @@ namespace bepbep {
         projMatrix = Mat4f::identity();
     }
 
-    void Camera::bind(GLShaderProgram& shader) {
-        shader.set_uniform("proj", projMatrix);
-        shader.set_uniform("view", viewMatrix);
+    void Camera::bind(GLShaderProgram* shader) {
+        shader->set_uniform("proj", projMatrix);
+        shader->set_uniform("view", viewMatrix);
 
         // Todo
-        shader.set_uniform("camPos.x", position.x);
-        shader.set_uniform("camPos.y", position.y);
-        shader.set_uniform("camPos.z", position.z);
+        shader->set_uniform("camPos.x", position.x);
+        shader->set_uniform("camPos.y", position.y);
+        shader->set_uniform("camPos.z", position.z);
     }
 
     const f32& Camera::get_render_distance() const {

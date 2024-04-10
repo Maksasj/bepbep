@@ -43,4 +43,20 @@ namespace bepbep {
         graphics->render(level, camera);
         graphics->render_cams(cams, activeCamera);
     }
+
+    PhysicsEngine& GameManager::get_physics_engine() {
+        return *BepBepApp::get_game_manager().physics;
+    }
+
+    RenderingEngine& GameManager::get_rendering_engine() {
+        return *BepBepApp::get_game_manager().graphics;
+    }
+
+    ShaderManager& GameManager::get_shader_manager() {
+        return BepBepApp::get_game_manager().graphics->get_shader_manager();
+    }
+
+    MaterialManager& GameManager::get_material_manager() {
+        return BepBepApp::get_game_manager().graphics->get_material_manager();
+    }
 }

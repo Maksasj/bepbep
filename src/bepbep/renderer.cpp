@@ -10,10 +10,10 @@ namespace bepbep {
     }
 
     void ModelRenderer::render(GraphicsContext& context, const Transform& transform) {
-        auto mainShader = context.get_main_shader();
+        auto shader = context.get_active_material()->get_shader();
 
-        mainShader->enable();
-        mainShader->set_uniform("transform", transform.calculate_final_transform());
+        auto matrix = transform.calculate_final_transform();
+        shader->set_uniform("transform", matrix);
 
         model->render();
     }
@@ -43,24 +43,23 @@ namespace bepbep {
     }
 
     void CubeRenderer::render(GraphicsContext& context, const Transform& transform) {
-        auto mainShader = context.get_main_shader();
+        auto shader = context.get_active_material()->get_shader();
 
-        mainShader->enable();
-        mainShader->set_uniform("transform", transform.calculate_final_transform());
+        auto matrix = transform.calculate_final_transform();
+        shader->set_uniform("transform", matrix);
 
         mesh->render();
     }
 
     void ChunkRenderer::render(GraphicsContext& context, const Transform& transform) {
-        auto mainShader = context.get_main_shader();
+        auto shader = context.get_active_material()->get_shader();
 
         auto matrix = transform.calculate_final_transform();
-
-        mainShader->enable();
-        mainShader->set_uniform("transform", matrix);
+        shader->set_uniform("transform", matrix);
 
         mesh->render();
 
+        /*
         if(context.is_debug()) {
             auto lineShader = context.get_line_shader();
             lineShader->enable();
@@ -80,6 +79,7 @@ namespace bepbep {
             context.render_line({0, 0, 16}, {0, 16, 16}, ColorRGBA::WHITE);
             context.render_line({0, 0, 16}, {16, 0, 16}, ColorRGBA::WHITE);
         }
+        */
     }
 
     void ChunkRenderer::swap_mesh(unique_ptr<Mesh> in) {
@@ -114,12 +114,10 @@ namespace bepbep {
     }
 
     void IcosahedronRenderer::render(GraphicsContext &context, const Transform &transform) {
-        auto mainShader = context.get_main_shader();
+        auto shader = context.get_active_material()->get_shader();
 
         auto matrix = transform.calculate_final_transform();
-
-        mainShader->enable();
-        mainShader->set_uniform("transform", matrix);
+        shader->set_uniform("transform", matrix);
 
         mesh->render();
     }
@@ -189,12 +187,10 @@ namespace bepbep {
     }
 
     void SphereRenderer::render(GraphicsContext &context, const Transform &transform) {
-        auto mainShader = context.get_main_shader();
+        auto shader = context.get_active_material()->get_shader();
 
         auto matrix = transform.calculate_final_transform();
-
-        mainShader->enable();
-        mainShader->set_uniform("transform", matrix);
+        shader->set_uniform("transform", matrix);
 
         mesh->render();
     }
@@ -239,12 +235,10 @@ namespace bepbep {
     }
 
     void CapsuleRenderer::render(GraphicsContext& context, const Transform& transform) {
-        auto mainShader = context.get_main_shader();
+        auto shader = context.get_active_material()->get_shader();
 
         auto matrix = transform.calculate_final_transform();
-
-        mainShader->enable();
-        mainShader->set_uniform("transform", matrix);
+        shader->set_uniform("transform", matrix);
 
         mesh->render();
     }

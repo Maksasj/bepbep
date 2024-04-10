@@ -6,26 +6,17 @@ namespace bepbep {
         light.add_light({Vec3f{0, 10, 0}});
 
         shaderManager = make_unique<ShaderManager>();
+        materialManager = make_unique<MaterialManager>();
     }
 
     void RenderingEngine::load() {
-
-
-        context.set_debug_mode(true);
-        context.set_main_shader(mainShader.get());
-        context.set_line_shader(lineShader.get());
-
-        // Todo
-        context.init_line_mesh();
-        context.init_circle_mesh();
-        context.init_cube_mesh();
-
-        light.load();
-
-        shaderManager->load();
+        auto main = shaderManager->load_shader("main", "shaders/main_vert.glsl", "shaders/main_frag.glsl");
+        auto line = shaderManager->load_shader("line", "shaders/line_vert.glsl", "shaders/line_frag.glsl");
+        auto color = shaderManager->load_shader("color", "shaders/color_vert.glsl", "shaders/color_frag.glsl");
     }
 
     void RenderingEngine::render_level(Level* level, Camera* camera) {
+        /*
         auto objects = level->get_objects();
 
         if(context.is_debug()) {
@@ -82,24 +73,43 @@ namespace bepbep {
                 }
             }
         }
-
-        for(auto& obj : objects) {
-            if(obj->renderer != nullptr)
-                obj->renderer->render(context, obj->transform);
-        }
+        */
     }
 
     void RenderingEngine::render(Level* level, Camera* camera) {
-        mainShader->enable();
-        camera->bind(*mainShader);
+        unordered_map<Material*, vector<IRenderable*>> renderables;
 
-        lineShader->enable();
-        camera->bind(*lineShader);
+        auto objects = level->get_objects();
 
-        light.bind(context);
-        light.render(context);
+        for(Object* obj : objects) {
+            if(obj->get_material() == nullptr)
+                continue;
 
-        render_level(level, camera);
+            cout << "rendering object !\n";
+
+            if(obj->get_renderer() == nullptr)
+                continue;
+
+            renderables[obj->get_material()].push_back(obj);
+        }
+
+        for(auto const& [material, renders] : renderables) {
+            material->bind();
+
+            camera->bind(material->get_shader());
+
+            GraphicsContext context(true, material);
+
+            for(auto& rend : renders) {
+                Object* obj = (Object*) rend;
+                obj->render(context, obj->transform);
+            }
+        }
+
+        // light.bind(context);
+        // light.render(context);
+//
+        // render_level(level, camera);
     }
 
     void RenderingEngine::render_cams(const vector<Camera*>& cams, const u32& activeCamera) {
@@ -120,6 +130,7 @@ namespace bepbep {
     }
 
     void RenderingEngine::render_freecam(Camera* camera) {
+        /*
         const auto& position = camera->get_position();
         const auto& rotation = camera->get_rotation();
         const auto& direction = camera->get_direction();
@@ -136,9 +147,11 @@ namespace bepbep {
         };
         lineShader->set_uniform("transform", transform.calculate_final_transform());
         context.render_cube();
+        */
     }
 
     void RenderingEngine::render_orbitcam(Camera* camera) {
+        /*
         const auto& position = camera->get_position();
         const auto& rotation = camera->get_rotation();
         const auto& direction = camera->get_direction();
@@ -155,5 +168,14 @@ namespace bepbep {
         };
         lineShader->set_uniform("transform", transform.calculate_final_transform());
         context.render_cube();
+        */
+    }
+
+    ShaderManager& RenderingEngine::get_shader_manager() {
+        return *shaderManager;
+    }
+
+    MaterialManager& RenderingEngine::get_material_manager() {
+        return *materialManager;
     }
 }

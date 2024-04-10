@@ -34,6 +34,11 @@ namespace bepbep {
 
             void load();
             void run(const f64& dt);
+
+            static PhysicsEngine& get_physics_engine();
+            static RenderingEngine& get_rendering_engine();
+            static ShaderManager& get_shader_manager();
+            static MaterialManager& get_material_manager();
     };
 }
 

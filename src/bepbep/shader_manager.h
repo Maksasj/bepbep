@@ -12,12 +12,12 @@ namespace bepbep {
         private:
             unordered_map<string, GLShaderProgram*> shaders;
 
-            static GLShaderProgram* load_shader(const string& vertPath, const string& fragPath);
+            static GLShaderProgram* load_shader_program(const string& vertPath, const string& fragPath);
 
         public:
             ShaderManager();
 
-            void load();
+            GLShaderProgram* load_shader(const string& name, const string& vertPath, const string& fragPath);
 
             const GLShaderProgram* get_shader(const string& shaderName);
     };

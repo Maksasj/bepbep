@@ -5,12 +5,13 @@
 #include "graphics_context.h"
 
 #include "collision.h"
-#include "renderer.h"
+
+#include "irenderable.h"
 
 namespace bepbep {
     using namespace bebone::core;
 
-    class Object {
+    class Object : public IRenderable {
         public:
             Object();
             virtual ~Object();
@@ -23,15 +24,14 @@ namespace bepbep {
             float mass;
 
             Collider* collider;
-            Renderer* renderer;
 
-            Renderable intreface
-            Rigidbody interface
-            Shader manager
-            Material
-            Textures
-            Material manager
-            Auto pipeline thing
+            // [x] Renderable intreface
+            // - Rigidbody interface
+            // [x] Shader manager
+            // Material
+            // Textures
+            // Material manager
+            // Auto pipeline thing
     };
 }
 

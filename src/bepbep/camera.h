@@ -32,7 +32,7 @@ namespace bepbep {
             Camera(const CameraType& type, const Vec3f& position, const f32& renderDistance);
 
             void move(const Vec3f& dir);
-            void bind(GLShaderProgram& shader);
+            void bind(GLShaderProgram* shader);
 
             const f32& get_render_distance() const;
             const Vec3f& get_position() const;

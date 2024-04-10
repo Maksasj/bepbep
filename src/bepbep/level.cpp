@@ -1,14 +1,20 @@
 #include "level.h"
+#include "game_manager.h"
 
 namespace bepbep {
     Level::Level() {
+        MaterialManager& materials = GameManager::get_material_manager();
+
         auto suzanne = Model::load_from_obj("models/suzanne.obj");
         auto ak47 = Model::load_from_obj("models/ak47.obj");
         auto bunny = Model::load_from_obj("models/bunny.obj");
 
         {   // suzanne
             auto* entity = new Entity(Vec3f{2, 0, 0}, 1);
-            entity->renderer = new ModelRenderer(suzanne);
+
+            entity->set_renderer(new ModelRenderer(suzanne));
+            entity->set_material(materials.get_material("color"));
+
             entity->collider = new SphereCollider(Vec3f::zero, 1);
 
             objects.push_back(entity);
@@ -16,7 +22,7 @@ namespace bepbep {
 
         {   // ak47
             auto* entity = new Entity(Vec3f{0, 0, 0}, 1);
-            entity->renderer = new ModelRenderer(ak47);
+            entity->set_renderer(new ModelRenderer(ak47));
             entity->collider = new SphereCollider(Vec3f::zero, 1);
 
             objects.push_back(entity);
@@ -29,7 +35,10 @@ namespace bepbep {
 
             {   // ak47
                 auto* entity = new Entity(Vec3f{sin(a) * 7, 10, cos(a) * 7}, 1);
-                entity->renderer = new ModelRenderer(bunny);
+
+                entity->set_renderer(new ModelRenderer(bunny));
+                entity->set_material(materials.get_material("color"));
+
                 entity->collider = new SphereCollider(Vec3f::zero, 1);
 
                 objects.push_back(entity);
