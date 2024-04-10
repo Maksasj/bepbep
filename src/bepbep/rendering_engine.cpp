@@ -3,19 +3,37 @@
 
 namespace bepbep {
     RenderingEngine::RenderingEngine() {
+        textureManager = make_unique<TextureManager>();
         lightManager = make_unique<LightManager>();
         shaderManager = make_unique<ShaderManager>();
         materialManager = make_unique<MaterialManager>();
     }
 
     void RenderingEngine::load() {
-        auto mainShader = shaderManager->load_shader("main", "shaders/main_vert.glsl", "shaders/main_frag.glsl");
-        auto lineShader = shaderManager->load_shader("line", "shaders/line_vert.glsl", "shaders/line_frag.glsl");
-        auto colorShader = shaderManager->load_shader("color", "shaders/color_vert.glsl", "shaders/color_frag.glsl");
+        auto brickAlbedo = textureManager->load_texture("brickAlbedo", "materials/brick/albedo.png");
+        auto brickAo = textureManager->load_texture("brickAo", "materials/brick/ao.png");
+        auto brickMetallic = textureManager->load_texture("brickMetallic", "materials/brick/metallic.png");
+        auto brickNormal = textureManager->load_texture("brickNormal", "materials/brick/normal.png");
+        auto brickRoughness = textureManager->load_texture("brickRoughness", "materials/brick/roughness.png");
 
-        auto main = materialManager->create_material("main", mainShader);
-        auto line = materialManager->create_material("line", lineShader);
-        auto color = materialManager->create_material("color", colorShader);
+        auto metalAlbedo = textureManager->load_texture("metalAlbedo", "materials/metal/albedo.png");
+        auto metalMetallic = textureManager->load_texture("metalMetallic", "materials/metal/metallic.png");
+        auto metalNormal = textureManager->load_texture("metalNormal", "materials/metal/normal.png");
+        auto metalRoughness = textureManager->load_texture("metalRoughness", "materials/metal/roughness.png");
+
+        auto whiteAlbedo = textureManager->load_color_texture("whiteAlbedo", ColorRGBA::WHITE);
+        auto redAlbedo = textureManager->load_color_texture("redAlbedo", ColorRGBA::RED);
+
+        auto mainShader = shaderManager->load_shader("main", "shaders/main_vert.glsl", "shaders/main_frag.glsl");
+        auto pbrShader = shaderManager->load_shader("pbr", "shaders/pbr_vert.glsl", "shaders/pbr_frag.glsl");
+        // auto lineShader = shaderManager->load_shader("line", "shaders/line_vert.glsl", "shaders/line_frag.glsl");
+        // auto colorShader = shaderManager->load_shader("color", "shaders/color_vert.glsl", "shaders/color_frag.glsl");
+
+        auto whiteColor = materialManager->create_material("whiteColor", mainShader, whiteAlbedo, nullptr, nullptr, nullptr, nullptr);
+        auto redColor = materialManager->create_material("redColor", mainShader, redAlbedo, nullptr, nullptr, nullptr, nullptr);
+
+        auto brick = materialManager->create_material("brick", pbrShader, brickAlbedo, brickAo, brickMetallic, brickNormal, brickRoughness);
+        auto metal = materialManager->create_material("metal", pbrShader, metalAlbedo, brickAo, metalMetallic, metalNormal, metalRoughness);
 
         lightManager->add_light({Vec3f{0, 10, 0}});
     }

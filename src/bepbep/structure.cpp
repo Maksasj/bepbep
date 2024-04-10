@@ -15,7 +15,7 @@ namespace bepbep {
 
         MaterialManager& materials = GameManager::get_material_manager();
 
-        set_material(materials.get_material("color"));
+        set_material(materials.get_material("metal"));
         set_renderer(new StructureRenderer(this));
     }
 

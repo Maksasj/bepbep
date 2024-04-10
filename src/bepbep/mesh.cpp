@@ -10,7 +10,7 @@ namespace bepbep {
 
         vao->link_attributes(*vbo, 0, 3, GL_FLOAT, sizeof(Vertex), (void*) offsetof(Vertex, pos));
         vao->link_attributes(*vbo, 1, 3, GL_FLOAT, sizeof(Vertex), (void*) offsetof(Vertex, normal));
-        vao->link_attributes(*vbo, 2, 4, GL_FLOAT, sizeof(Vertex), (void*) offsetof(Vertex, color));
+        vao->link_attributes(*vbo, 2, 2, GL_FLOAT, sizeof(Vertex), (void*) offsetof(Vertex, texCord));
 
         vao->unbind();
         vbo->unbind();

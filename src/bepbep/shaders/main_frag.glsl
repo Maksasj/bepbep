@@ -4,7 +4,13 @@ layout (location = 0) out vec4 fragColor;
 
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
-layout (location = 2) in vec4 aColor;
+layout (location = 2) in vec2 aTexCord;
+
+layout (binding = 0) uniform sampler2D albedoMap;
+layout (binding = 1) uniform sampler2D aoMap;
+layout (binding = 2) uniform sampler2D metallicMap;
+layout (binding = 3) uniform sampler2D normalMap;
+layout (binding = 4) uniform sampler2D roughnessMap;
 
 struct Light {
     vec3 origin;
@@ -40,5 +46,6 @@ void main() {
         specular += specAmount * specularLight;
     }
 
-    fragColor = vec4(aColor.rgb * (diffuse + ambient + specular), 1.0f);
+    vec4 albedo = texture(albedoMap, aTexCord);
+    fragColor = vec4(albedo.rgb * (diffuse + ambient + specular), 1.0f);
 }

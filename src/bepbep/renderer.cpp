@@ -127,18 +127,18 @@ namespace bepbep {
         float a = 1.0f;
         float b = 1.0f / phi;
 
-        auto v1  = Vertex{{0, b, -a},  Vec3f::zero, ColorRGBA::WHITE };
-        auto v2  = Vertex{{b, a, 0},   Vec3f::zero, ColorRGBA::WHITE };
-        auto v3  = Vertex{{-b, a, 0},  Vec3f::zero, ColorRGBA::WHITE };
-        auto v4  = Vertex{{0, b, a},   Vec3f::zero, ColorRGBA::WHITE };
-        auto v5  = Vertex{{0, -b, a},  Vec3f::zero, ColorRGBA::WHITE };
-        auto v6  = Vertex{{-a, 0, b},  Vec3f::zero, ColorRGBA::WHITE };
-        auto v7  = Vertex{{0, -b, -a}, Vec3f::zero, ColorRGBA::WHITE };
-        auto v8  = Vertex{{a, 0, -b},  Vec3f::zero, ColorRGBA::WHITE };
-        auto v9  = Vertex{{a, 0, b},   Vec3f::zero, ColorRGBA::WHITE };
-        auto v10 = Vertex{{-a, 0, -b}, Vec3f::zero, ColorRGBA::WHITE };
-        auto v11 = Vertex{{b, -a, 0},  Vec3f::zero, ColorRGBA::WHITE };
-        auto v12 = Vertex{{-b, -a, 0}, Vec3f::zero, ColorRGBA::WHITE };
+        auto v1  = Vertex{{0, b, -a},  Vec3f::zero, {1.0f, 1.0f} }; // Todo
+        auto v2  = Vertex{{b, a, 0},   Vec3f::zero, {0.0f, 1.0f} }; // Todo
+        auto v3  = Vertex{{-b, a, 0},  Vec3f::zero, {0.0f, 0.0f} }; // Todo
+        auto v4  = Vertex{{0, b, a},   Vec3f::zero, {1.0f, 0.0f} }; // Todo
+        auto v5  = Vertex{{0, -b, a},  Vec3f::zero, {1.0f, 1.0f} }; // Todo
+        auto v6  = Vertex{{-a, 0, b},  Vec3f::zero, {0.0f, 1.0f} }; // Todo
+        auto v7  = Vertex{{0, -b, -a}, Vec3f::zero, {0.0f, 0.0f} }; // Todo
+        auto v8  = Vertex{{a, 0, -b},  Vec3f::zero, {1.0f, 0.0f} }; // Todo
+        auto v9  = Vertex{{a, 0, b},   Vec3f::zero, {1.0f, 1.0f} }; // Todo
+        auto v10 = Vertex{{-a, 0, -b}, Vec3f::zero, {0.0f, 1.0f} }; // Todo
+        auto v11 = Vertex{{b, -a, 0},  Vec3f::zero, {0.0f, 0.0f} }; // Todo
+        auto v12 = Vertex{{-b, -a, 0}, Vec3f::zero, {1.0f, 0.0f} }; // Todo
 
         vector<VertexTriangle> triangles = {
             {{v3, v2, v1}},

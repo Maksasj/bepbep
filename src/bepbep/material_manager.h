@@ -13,8 +13,16 @@ namespace bepbep {
             unordered_map<string, Material*> materials;
 
         public:
-            Material* create_material(const string& name, GLShaderProgram* shader) {
-                Material* material = new Material(shader);
+            Material* create_material(
+                const string& name,
+                GLShaderProgram* shader,
+                GLTexture2D* albedo,
+                GLTexture2D* ao,
+                GLTexture2D* metallic,
+                GLTexture2D* normal,
+                GLTexture2D* roughness)
+            {
+                auto* material = new Material(shader, albedo, ao, metallic, normal, roughness);
 
                 materials[name] = material;
 

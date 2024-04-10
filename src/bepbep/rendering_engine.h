@@ -5,6 +5,7 @@
 #include "camera.h"
 #include "light_manager.h"
 
+#include "texture_manager.h"
 #include "shader_manager.h"
 #include "material_manager.h"
 
@@ -13,6 +14,7 @@ namespace bepbep {
 
     class RenderingEngine {
         private:
+            unique_ptr<TextureManager> textureManager;
             unique_ptr<LightManager> lightManager;
             unique_ptr<ShaderManager> shaderManager;
             unique_ptr<MaterialManager> materialManager;

@@ -11,7 +11,8 @@ namespace bepbep {
     struct Vertex {
         Vec3f pos;
         Vec3f normal;
-        ColorRGBA color;
+        Vec2f texCord;
+        // ColorRGBA color;
 
         void project_to_unit_sphere(const float& radius);
     };

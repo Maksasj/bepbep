@@ -2,11 +2,11 @@
 
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aNormal;
-layout (location = 2) in vec4 aColor;
+layout (location = 2) in vec2 aTexCord;
 
 layout (location = 0) out vec3 oPos;
 layout (location = 1) out vec3 oNormal;
-layout (location = 2) out vec4 oColor;
+layout (location = 2) out vec2 oTexCord;
 
 uniform mat4 transform;
 
@@ -20,5 +20,5 @@ void main() {
 
     oPos = model.xyz;
     oNormal = aNormal;
-    oColor = aColor;
+    oTexCord = aTexCord;
 }
