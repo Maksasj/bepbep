@@ -24,6 +24,14 @@ namespace bepbep {
 
             Collider* collider;
             Renderer* renderer;
+
+            Renderable intreface
+            Rigidbody interface
+            Shader manager
+            Material
+            Textures
+            Material manager
+            Auto pipeline thing
     };
 }
 

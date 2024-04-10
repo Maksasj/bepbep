@@ -2,25 +2,14 @@
 #include "bepbep.h"
 
 namespace bepbep {
-    shared_ptr<GLShaderProgram> RenderingEngine::load_shader(const string& vertPath, const string& fragPath) {
-        auto vertexShader = GLShaderFactory::create_shader(vertPath, ShaderTypes::VERTEX_SHADER, ENABLE_UNIFORMS);
-        auto fragmentShader = GLShaderFactory::create_shader(fragPath, ShaderTypes::FRAGMENT_SHADER, ENABLE_UNIFORMS);
-
-        shared_ptr<GLShaderProgram> shader = make_shared<GLShaderProgram>(vertexShader, fragmentShader);
-
-        vertexShader.destroy();
-        fragmentShader.destroy();
-
-        return shader;
-    }
-
     RenderingEngine::RenderingEngine() {
         light.add_light({Vec3f{0, 10, 0}});
+
+        shaderManager = make_unique<ShaderManager>();
     }
 
     void RenderingEngine::load() {
-        mainShader = load_shader("shaders/main_vert.glsl", "shaders/main_frag.glsl");
-        lineShader = load_shader("shaders/line_vert.glsl", "shaders/line_frag.glsl");
+
 
         context.set_debug_mode(true);
         context.set_main_shader(mainShader.get());
@@ -32,6 +21,8 @@ namespace bepbep {
         context.init_cube_mesh();
 
         light.load();
+
+        shaderManager->load();
     }
 
     void RenderingEngine::render_level(Level* level, Camera* camera) {

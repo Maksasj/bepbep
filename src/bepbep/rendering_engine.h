@@ -5,6 +5,8 @@
 #include "camera.h"
 #include "light_manager.h"
 
+#include "shader_manager.h"
+
 namespace bepbep {
     class BepBepApp;
 
@@ -17,7 +19,7 @@ namespace bepbep {
 
             LightManager light;
 
-            static shared_ptr<GLShaderProgram> load_shader(const string& vertPath, const string& fragPath);
+            unique_ptr<ShaderManager> shaderManager;
 
             void render_level(Level* level, Camera* camera);
 
