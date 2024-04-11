@@ -42,7 +42,7 @@ float metallic = texture(metallicMap, aTexCord).r;
 
 float alpha = pow(roughness, 2);
 
-vec3 F0 = baseReflectance;
+vec3 F0 = mix(vec3(0.04, 0.04, 0.04), albedoMesh, metallic);
 
 vec3 N = normalize(normal);
 vec3 V = normalize(cameraPosition - fragmentPosition);
