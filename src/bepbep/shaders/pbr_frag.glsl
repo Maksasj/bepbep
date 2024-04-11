@@ -25,11 +25,7 @@ layout(binding = 0) uniform Lights {
     Light sources[16];
 };
 
-uniform float camPosx;
-uniform float camPosy;
-uniform float camPosz;
-
-vec3 camPos = vec3(camPosx, camPosy, camPosz);
+uniform vec3 camPos;
 
 vec3 fragmentPosition = aFragPos;
 // vec3 normal = texture(normalMap, aTexCord).xyz * 0.5 + vec3(0.5);
