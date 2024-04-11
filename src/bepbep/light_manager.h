@@ -13,8 +13,7 @@ namespace bepbep {
 
     class LightManager {
         private:
-            Light lights[16];
-            int lightCount;
+            Lights lights;
 
             unique_ptr<GLUniformBufferObject> buffer;
 

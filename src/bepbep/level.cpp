@@ -41,7 +41,6 @@ namespace bepbep {
 
             objects.push_back(entity);
         }
-        /*
 
         {   // plane
             auto* entity = new Entity(Vec3f{-12, -2, -12}, 1);
@@ -51,8 +50,7 @@ namespace bepbep {
 
             objects.push_back(entity);
         }
-        */
-        
+
         {   // ak47
             auto* entity = new Entity(Vec3f{0, -5, 0}, 1);
             entity->set_renderer(new ModelRenderer(ak47));
@@ -70,7 +68,7 @@ namespace bepbep {
                 auto* entity = new Entity(Vec3f{sin(a) * 7, 10, cos(a) * 7}, 1);
 
                 entity->set_renderer(new ModelRenderer(bunny));
-                entity->set_material(materials.get_material("redColor"));
+                entity->set_material(materials.get_material("metal"));
 
                 entity->collider = new SphereCollider(Vec3f::zero, 1);
 
@@ -79,7 +77,7 @@ namespace bepbep {
         }
 
         // objects.push_back(new Player(Vec3f{0, 3, 0}, 1));
-        objects.push_back(new Structure(Vec3f{0, -17, 0}, 1));
+        // objects.push_back(new Structure(Vec3f{0, -17, 0}, 1));
     }
 
     vector<Object*>& Level::get_objects() {

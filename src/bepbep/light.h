@@ -6,6 +6,8 @@
 namespace bepbep {
     struct alignas(16) Light {
         Vec3f origin;
+        int padding;
+        ColorRGBA color;
     };
 }
 

@@ -35,7 +35,11 @@ namespace bepbep {
         auto brick = materialManager->create_material("brick", pbrShader, brickAlbedo, brickAo, brickMetallic, brickNormal, brickRoughness);
         auto metal = materialManager->create_material("metal", pbrShader, metalAlbedo, brickAo, metalMetallic, metalNormal, metalRoughness);
 
-        lightManager->add_light({Vec3f{0, 10, 0}});
+        lightManager->add_light({Vec3f{0, 10, -5}, 0, ColorRGBA::GREEN});
+        lightManager->add_light({Vec3f{0, 10, 5},  0, ColorRGBA::RED});
+        lightManager->add_light({Vec3f{5, 10, 0},  0, ColorRGBA::BLUE});
+        lightManager->add_light({Vec3f{-5, 10, 0}, 0, ColorRGBA::YELLOW});
+        lightManager->add_light({Vec3f{5, 5, 5}, 1, ColorRGBA::WHITE});
     }
 
     void RenderingEngine::render_level(Level* level, Camera* camera) {

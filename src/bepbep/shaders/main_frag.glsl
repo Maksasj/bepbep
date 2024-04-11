@@ -14,6 +14,7 @@ layout (binding = 4) uniform sampler2D roughnessMap;
 
 struct Light {
     vec3 origin;
+    vec4 color;
 };
 
 layout(binding = 0) uniform Lights {
