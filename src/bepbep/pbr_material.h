@@ -15,6 +15,7 @@ namespace bepbep {
             GLTexture* metallicMap;
             GLTexture* normalMap;
             GLTexture* roughnessMap;
+            GLTexture* environmentMap;
 
         public:
             PBRMaterial(
@@ -23,13 +24,15 @@ namespace bepbep {
                 GLTexture* ao,
                 GLTexture* metallic,
                 GLTexture* normal,
-                GLTexture* roughness
+                GLTexture* roughness,
+                GLTexture* environment
             ) : IMaterial(sh),
                 albedoMap(albedo),
                 aoMap(ao),
                 metallicMap(metallic),
                 normalMap(normal),
-                roughnessMap(roughness)
+                roughnessMap(roughness),
+                environmentMap(environment)
             {
 
             }
@@ -51,6 +54,9 @@ namespace bepbep {
 
                 if(roughnessMap)
                     roughnessMap->bind_texture_unit(4);
+
+                if(environmentMap)
+                    environmentMap->bind_texture_unit(5);
             }
     };
 }

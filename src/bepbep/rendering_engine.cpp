@@ -21,9 +21,6 @@ namespace bepbep {
         auto metalNormal = textureManager->load_texture("metalNormal", "materials/metal/normal.png");
         auto metalRoughness = textureManager->load_texture("metalRoughness", "materials/metal/roughness.png");
 
-        auto whiteAlbedo = textureManager->load_color_texture("whiteAlbedo", ColorRGBA::WHITE);
-        auto redAlbedo = textureManager->load_color_texture("redAlbedo", ColorRGBA::RED);
-
         auto skyboxAlbedo = textureManager->load_texture("skyboxAlbedo", {
             "skybox/right.jpg",
             "skybox/left.jpg",
@@ -33,18 +30,11 @@ namespace bepbep {
             "skybox/back.jpg"
         });
 
-        auto mainShader = shaderManager->load_shader("main", "shaders/main_vert.glsl", "shaders/main_frag.glsl");
         auto pbrShader = shaderManager->load_shader("pbr", "shaders/pbr_vert.glsl", "shaders/pbr_frag.glsl");
         auto skyboxShader = shaderManager->load_shader("skybox", "shaders/skybox_vert.glsl", "shaders/skybox_frag.glsl");
 
-        // auto lineShader = shaderManager->load_shader("line", "shaders/line_vert.glsl", "shaders/line_frag.glsl");
-        // auto colorShader = shaderManager->load_shader("color", "shaders/color_vert.glsl", "shaders/color_frag.glsl");
-
-        auto whiteColor = materialManager->create_pbr_material("whiteColor", mainShader, whiteAlbedo, nullptr, nullptr, nullptr, nullptr);
-        auto redColor = materialManager->create_pbr_material("redColor", mainShader, redAlbedo, nullptr, nullptr, nullptr, nullptr);
-
-        auto brick = materialManager->create_pbr_material("brick", pbrShader, brickAlbedo, brickAo, brickMetallic, brickNormal, brickRoughness);
-        auto metal = materialManager->create_pbr_material("metal", pbrShader, metalAlbedo, brickAo, metalMetallic, metalNormal, metalRoughness);
+        auto brick = materialManager->create_pbr_material("brick", pbrShader, brickAlbedo, brickAo, brickMetallic, brickNormal, brickRoughness, skyboxAlbedo);
+        auto metal = materialManager->create_pbr_material("metal", pbrShader, metalAlbedo, nullptr, metalMetallic, metalNormal, metalRoughness, skyboxAlbedo);
 
         auto skyboxMaterial = materialManager->create_skybox_material("skybox", skyboxShader, skyboxAlbedo);
 
@@ -52,7 +42,7 @@ namespace bepbep {
         lightManager->add_light({Vec3f{0, 10, 5},  0, ColorRGBA::RED});
         lightManager->add_light({Vec3f{5, 10, 0},  0, ColorRGBA::BLUE});
         lightManager->add_light({Vec3f{-5, 10, 0}, 0, ColorRGBA::YELLOW});
-        lightManager->add_light({Vec3f{1, 1, 1}, 1, ColorRGBA::WHITE});
+        // lightManager->add_light({Vec3f{1, 1, 1}, 1, ColorRGBA::WHITE});
 
         skybox = make_unique<SkyBox>(skyboxMaterial);
     }

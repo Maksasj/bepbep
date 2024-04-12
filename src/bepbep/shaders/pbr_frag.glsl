@@ -13,6 +13,7 @@ layout (binding = 1) uniform sampler2D aoMap;
 layout (binding = 2) uniform sampler2D metallicMap;
 layout (binding = 3) uniform sampler2D normalMap;
 layout (binding = 4) uniform sampler2D roughnessMap;
+layout (binding = 5) uniform samplerCube environmentMap;
 
 struct Light {
     vec3 origin;
@@ -28,6 +29,7 @@ layout(binding = 0) uniform Lights {
 };
 
 uniform vec3 camPos;
+vec3 emissivityMesh = vec3(0.0);
 
 float D(float alpha, vec3 N, vec3 H) {
     float numerator = pow(alpha, 2.0);
@@ -59,18 +61,17 @@ vec3 F(vec3 F0, vec3 V, vec3 H) {
     return F0 + (vec3(1.0) - F0) * pow(1 - max(dot(V, H), 0.0), 5.0);
 }
 
+float ao = texture(aoMap, aTexCord).r;
+vec3 albedoMesh = texture(albedoMap, aTexCord).rgb;
+float roughness = texture(roughnessMap, aTexCord).r;
+float metallic = texture(metallicMap, aTexCord).r;
+float alpha = pow(roughness, 2);
+
 vec3 PBR(Light light) {
-    vec3 albedoMesh = texture(albedoMap, aTexCord).rgb;
-    vec3 emissivityMesh = vec3(0.0);
-    float roughness = texture(roughnessMap, aTexCord).r;
-
-    float metallic = texture(metallicMap, aTexCord).r;
-    float alpha = pow(roughness, 2);
-
     vec3 N = normalize(aNormal);
     vec3 V = normalize(camPos - aFragPos);
-
     vec3 L = normalize(light.origin - aFragPos);
+
     if(light.padding != 0)
         L = vec3(0.0, 1.0, 0.0);
 
@@ -81,6 +82,7 @@ vec3 PBR(Light light) {
 
     vec3 Ks = F(F0, V, H);
     vec3 Kd = vec3(1.0) - Ks;
+    Kd *= 1.0 - metallic;
 
     vec3 lambert = albedoMesh / PI;
 
@@ -90,16 +92,36 @@ vec3 PBR(Light light) {
     vec3 cookTorrance = cookTorranceNumerator / cookTorranceDenominator;
 
     vec3 BRDF = Kd * lambert + cookTorrance;
-    return emissivityMesh + BRDF * light.color.rgb * max(dot(L, N), 0.0);
+    return BRDF * light.color.rgb * max(dot(L, N), 0.0);
 }
 
 void main() {
-    vec3 color = vec3(0.0);
+    vec3 Lo = vec3(0.0);
+    vec3 V = normalize(camPos - aFragPos);
+    vec3 N = normalize(aNormal);
 
     for(int i = 0; i < lightCount; ++i) {
         Light light = sources[i];
-        color += PBR(light);
+        Lo += PBR(light);
     }
 
-    fragColor = vec4(color / lightCount, 1.0);
+    vec3 F0 = mix(vec3(0.04, 0.04, 0.04), albedoMesh, metallic);
+    vec3 envColor = texture(environmentMap, N).rgb;
+    // envColor = envColor / (envColor + vec3(1.0));
+    envColor = pow(envColor + 0.5, vec3(2));
+
+    vec3 kS = F(F0, V, aNormal);
+    vec3 kD = 1.0 - kS;
+    kD *= 1.0 - metallic;
+    vec3 irradiance = envColor;
+    vec3 diffuse = irradiance * albedoMesh;
+    vec3 ambient = (kD * diffuse); // * ao;
+
+    vec3 color = emissivityMesh + Lo + ambient;
+    // vec3 color = emissivityMesh + Lo;
+
+    color = color / (color + vec3(1.0));
+    color = pow(color, vec3(1.0/2.2));
+
+    fragColor = vec4(color , 1.0);
 }

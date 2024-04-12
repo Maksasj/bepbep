@@ -22,9 +22,10 @@ namespace bepbep {
                 GLTexture* ao,
                 GLTexture* metallic,
                 GLTexture* normal,
-                GLTexture* roughness)
-            {
-                IMaterial* material = new PBRMaterial(shader, albedo, ao, metallic, normal, roughness);
+                GLTexture* roughness,
+                GLTexture* environment
+            ) {
+                IMaterial* material = new PBRMaterial(shader, albedo, ao, metallic, normal, roughness, environment);
                 materials[name] = material;
                 return material;
             }
