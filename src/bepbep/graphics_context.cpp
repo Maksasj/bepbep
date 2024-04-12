@@ -1,7 +1,7 @@
 #include "graphics_context.h"
 
 namespace bepbep {
-    GraphicsContext::GraphicsContext(const bool& debug, Material* material)
+    GraphicsContext::GraphicsContext(const bool& debug, IMaterial* material)
         : debugMode(debug),
           activeMaterial(material)
     {
@@ -12,7 +12,7 @@ namespace bepbep {
         return debugMode;
     }
 
-    Material* GraphicsContext::get_active_material() {
+    IMaterial* GraphicsContext::get_active_material() {
         return activeMaterial;
     }
 }

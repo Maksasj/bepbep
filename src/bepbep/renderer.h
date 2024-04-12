@@ -1,7 +1,7 @@
 #ifndef _BEPBEP_RENDERER_H_
 #define _BEPBEP_RENDERER_H_
 
-#include "material.h"
+#include "pbr_material.h"
 #include "mesh.h"
 #include "model.h"
 #include "mesh_builder.h"

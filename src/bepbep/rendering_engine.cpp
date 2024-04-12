@@ -24,99 +24,57 @@ namespace bepbep {
         auto whiteAlbedo = textureManager->load_color_texture("whiteAlbedo", ColorRGBA::WHITE);
         auto redAlbedo = textureManager->load_color_texture("redAlbedo", ColorRGBA::RED);
 
+        auto skyboxAlbedo = textureManager->load_texture("skyboxAlbedo", {
+            "skybox/right.jpg",
+            "skybox/left.jpg",
+            "skybox/bottom.jpg",
+            "skybox/top.jpg",
+            "skybox/front.jpg",
+            "skybox/back.jpg"
+        });
+
         auto mainShader = shaderManager->load_shader("main", "shaders/main_vert.glsl", "shaders/main_frag.glsl");
         auto pbrShader = shaderManager->load_shader("pbr", "shaders/pbr_vert.glsl", "shaders/pbr_frag.glsl");
+        auto skyboxShader = shaderManager->load_shader("skybox", "shaders/skybox_vert.glsl", "shaders/skybox_frag.glsl");
+
         // auto lineShader = shaderManager->load_shader("line", "shaders/line_vert.glsl", "shaders/line_frag.glsl");
         // auto colorShader = shaderManager->load_shader("color", "shaders/color_vert.glsl", "shaders/color_frag.glsl");
 
-        auto whiteColor = materialManager->create_material("whiteColor", mainShader, whiteAlbedo, nullptr, nullptr, nullptr, nullptr);
-        auto redColor = materialManager->create_material("redColor", mainShader, redAlbedo, nullptr, nullptr, nullptr, nullptr);
+        auto whiteColor = materialManager->create_pbr_material("whiteColor", mainShader, whiteAlbedo, nullptr, nullptr, nullptr, nullptr);
+        auto redColor = materialManager->create_pbr_material("redColor", mainShader, redAlbedo, nullptr, nullptr, nullptr, nullptr);
 
-        auto brick = materialManager->create_material("brick", pbrShader, brickAlbedo, brickAo, brickMetallic, brickNormal, brickRoughness);
-        auto metal = materialManager->create_material("metal", pbrShader, metalAlbedo, brickAo, metalMetallic, metalNormal, metalRoughness);
+        auto brick = materialManager->create_pbr_material("brick", pbrShader, brickAlbedo, brickAo, brickMetallic, brickNormal, brickRoughness);
+        auto metal = materialManager->create_pbr_material("metal", pbrShader, metalAlbedo, brickAo, metalMetallic, metalNormal, metalRoughness);
+
+        auto skyboxMaterial = materialManager->create_skybox_material("skybox", skyboxShader, skyboxAlbedo);
 
         lightManager->add_light({Vec3f{0, 10, -5}, 0, ColorRGBA::GREEN});
         lightManager->add_light({Vec3f{0, 10, 5},  0, ColorRGBA::RED});
         lightManager->add_light({Vec3f{5, 10, 0},  0, ColorRGBA::BLUE});
         lightManager->add_light({Vec3f{-5, 10, 0}, 0, ColorRGBA::YELLOW});
-        lightManager->add_light({Vec3f{5, 5, 5}, 1, ColorRGBA::WHITE});
-    }
+        lightManager->add_light({Vec3f{1, 1, 1}, 1, ColorRGBA::WHITE});
 
-    void RenderingEngine::render_level(Level* level, Camera* camera) {
-        /*
-        auto objects = level->get_objects();
-
-        if(context.is_debug()) {
-            auto lineShader = context.get_line_shader();
-            lineShader->enable();
-            lineShader->set_uniform("transform", Mat4f::identity());
-
-            context.render_line({0, 0, 0}, {5, 0, 0}, ColorRGBA::RED);
-            context.render_line({0, 0, 0}, {0, 5, 0}, ColorRGBA::BLUE);
-            context.render_line({0, 0, 0}, {0, 0, 5}, ColorRGBA::GREEN);
-
-            context.render_sphere();
-
-            Ray ray(camera->get_position(), camera->get_direction());
-
-            for(auto& obj : objects) {
-                auto* str = dynamic_cast<Structure*>(obj);
-
-                if(!str)
-                    continue;
-
-                Box box(obj->transform.position, { obj->transform.position.x + 16, obj->transform.position.y + 16, obj->transform.position.z + 16 });
-
-                float tmin = box.intersect(ray);
-                if(tmin >= 0.0f) {
-                    for(auto& p : str->get_chunks()) {
-                        auto& chunk = p.second;
-
-                        for(int x = 0; x < 16; ++x) {
-                            for(int y = 0; y < 16; ++y) {
-                                for (int z = 0; z < 16; ++z) {
-                                    if(chunk->get_block(x, y, z) == nullptr)
-                                        continue;
-
-                                    Box bbbb(
-                                        { obj->transform.position.x + x, obj->transform.position.y + y, obj->transform.position.z + z},
-                                        { obj->transform.position.x + x + 1, obj->transform.position.y + y + 1, obj->transform.position.z + z + 1});
-
-                                    auto t = bbbb.intersect(ray);
-
-                                    if(t >= 0.0f) {
-                                        Transform tr = {
-                                                .position = ray.orig + ray.dir * t,
-                                                .rotation = Mat4f::identity()
-                                        };
-
-                                        lineShader->set_uniform("transform", tr.calculate_final_transform());
-                                        context.render_sphere();
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        */
+        skybox = make_unique<SkyBox>(skyboxMaterial);
     }
 
     void RenderingEngine::render(Level* level, Camera* camera) {
-        unordered_map<Material*, vector<IRenderable*>> renderables;
+        unordered_map<IMaterial*, vector<IRenderable*>> renderables;
 
         auto objects = level->get_objects();
 
         for(Object* obj : objects) {
-            if(obj->get_material() == nullptr)
+            IRenderable* ren = (IRenderable*) obj;
+
+            if(ren->get_material() == nullptr)
                 continue;
 
-            if(obj->get_renderer() == nullptr)
+            if(ren->get_renderer() == nullptr)
                 continue;
 
-            renderables[obj->get_material()].push_back(obj);
+            renderables[ren->get_material()].push_back(ren);
         }
+
+        renderables[skybox->get_material()].push_back(skybox.get());
 
         for(auto const& [material, renders] : renderables) {
             material->bind();
@@ -127,9 +85,11 @@ namespace bepbep {
             GraphicsContext context(true, material);
 
             for(auto& rend : renders) {
-                Object* obj = (Object*) rend;
+                auto obj = (Object*) rend;
                 obj->render(context, obj->transform);
             }
+
+            material->unbind();
         }
 
         // light.bind(context);
@@ -138,6 +98,7 @@ namespace bepbep {
         // render_level(level, camera);
     }
 
+    /*
     void RenderingEngine::render_cams(const vector<Camera*>& cams, const u32& activeCamera) {
         for(u32 i = 0; i < cams.size(); ++i) {
             if(i == activeCamera)
@@ -156,7 +117,6 @@ namespace bepbep {
     }
 
     void RenderingEngine::render_freecam(Camera* camera) {
-        /*
         const auto& position = camera->get_position();
         const auto& rotation = camera->get_rotation();
         const auto& direction = camera->get_direction();
@@ -173,11 +133,9 @@ namespace bepbep {
         };
         lineShader->set_uniform("transform", transform.calculate_final_transform());
         context.render_cube();
-        */
     }
 
     void RenderingEngine::render_orbitcam(Camera* camera) {
-        /*
         const auto& position = camera->get_position();
         const auto& rotation = camera->get_rotation();
         const auto& direction = camera->get_direction();
@@ -194,8 +152,8 @@ namespace bepbep {
         };
         lineShader->set_uniform("transform", transform.calculate_final_transform());
         context.render_cube();
-        */
     }
+    */
 
     ShaderManager& RenderingEngine::get_shader_manager() {
         return *shaderManager;

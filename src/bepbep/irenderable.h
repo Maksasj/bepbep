@@ -1,7 +1,7 @@
 #ifndef _BEPBEP_IRENDERABLE_H_
 #define _BEPBEP_IRENDERABLE_H_
 
-#include "material.h"
+#include "pbr_material.h"
 #include "renderer.h"
 
 #include "graphics_context.h"
@@ -10,7 +10,7 @@ namespace bepbep {
     class IRenderable {
         private:
             Renderer* renderer;
-            Material* material;
+            IMaterial* material;
 
         public:
             IRenderable() : renderer(nullptr), material(nullptr) {
@@ -29,7 +29,7 @@ namespace bepbep {
                 renderer = value;
             }
 
-            void set_material(Material* value) {
+            void set_material(IMaterial* value) {
                 material = value;
             }
 
@@ -37,7 +37,7 @@ namespace bepbep {
                 return renderer;
             }
 
-            Material* get_material() {
+            IMaterial* get_material() {
                 return material;
             }
     };

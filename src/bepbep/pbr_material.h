@@ -1,32 +1,30 @@
-#ifndef _BEPBEP_MATERIAL_H_
-#define _BEPBEP_MATERIAL_H_
+#ifndef _BEPBEP_PBR_MATERIAL_H_
+#define _BEPBEP_PBR_MATERIAL_H_
 
-#include "vertex.h"
+#include "imaterial.h"
 
 namespace bepbep {
     using namespace bebone::core;
     using namespace bebone::gfx;
     using namespace bebone::gfx::opengl;
 
-    class Material {
+    class PBRMaterial : public IMaterial {
         private:
-            GLShaderProgram* shader;
-
-            GLTexture2D* albedoMap;
-            GLTexture2D* aoMap;
-            GLTexture2D* metallicMap;
-            GLTexture2D* normalMap;
-            GLTexture2D* roughnessMap;
+            GLTexture* albedoMap;
+            GLTexture* aoMap;
+            GLTexture* metallicMap;
+            GLTexture* normalMap;
+            GLTexture* roughnessMap;
 
         public:
-            Material(
+            PBRMaterial(
                 GLShaderProgram* sh,
-                GLTexture2D* albedo,
-                GLTexture2D* ao,
-                GLTexture2D* metallic,
-                GLTexture2D* normal,
-                GLTexture2D* roughness
-            ) : shader(sh),
+                GLTexture* albedo,
+                GLTexture* ao,
+                GLTexture* metallic,
+                GLTexture* normal,
+                GLTexture* roughness
+            ) : IMaterial(sh),
                 albedoMap(albedo),
                 aoMap(ao),
                 metallicMap(metallic),
@@ -37,7 +35,7 @@ namespace bepbep {
             }
 
             void bind() {
-                shader->enable();
+                IMaterial::bind();
 
                 if(albedoMap)
                     albedoMap->bind_texture_unit(0);
@@ -53,10 +51,6 @@ namespace bepbep {
 
                 if(roughnessMap)
                     roughnessMap->bind_texture_unit(4);
-            }
-
-            GLShaderProgram* get_shader() {
-                return shader;
             }
     };
 }

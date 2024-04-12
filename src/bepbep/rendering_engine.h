@@ -1,6 +1,7 @@
 #ifndef _BEPBEP_RENDERING_ENGINE_H_
 #define _BEPBEP_RENDERING_ENGINE_H_
 
+#include "skybox.h"
 #include "level.h"
 #include "camera.h"
 #include "light_manager.h"
@@ -19,10 +20,12 @@ namespace bepbep {
             unique_ptr<ShaderManager> shaderManager;
             unique_ptr<MaterialManager> materialManager;
 
-            void render_level(Level* level, Camera* camera);
+            unique_ptr<SkyBox> skybox;
 
+            /*
             void render_freecam(Camera* camera);
             void render_orbitcam(Camera* camera);
+            */
 
         public:
             RenderingEngine();
@@ -30,7 +33,10 @@ namespace bepbep {
             void load();
 
             void render(Level* level, Camera* camera);
+
+            /*
             void render_cams(const vector<Camera*>& cams, const u32& activeCamera);
+            */
 
             ShaderManager& get_shader_manager();
             MaterialManager& get_material_manager();

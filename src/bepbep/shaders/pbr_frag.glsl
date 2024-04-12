@@ -61,9 +61,8 @@ vec3 F(vec3 F0, vec3 V, vec3 H) {
 
 vec3 PBR(Light light) {
     vec3 albedoMesh = texture(albedoMap, aTexCord).rgb;
-    vec3 emissivityMesh = vec3(0.05);
+    vec3 emissivityMesh = vec3(0.0);
     float roughness = texture(roughnessMap, aTexCord).r;
-    vec3 baseReflectance = vec3(0.0);
 
     float metallic = texture(metallicMap, aTexCord).r;
     float alpha = pow(roughness, 2);
@@ -73,7 +72,7 @@ vec3 PBR(Light light) {
 
     vec3 L = normalize(light.origin - aFragPos);
     if(light.padding != 0)
-        L = normalize(light.origin);
+        L = vec3(0.0, 1.0, 0.0);
 
     vec3 H = normalize(V + L);
 

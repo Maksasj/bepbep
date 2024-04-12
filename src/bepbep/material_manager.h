@@ -1,7 +1,9 @@
 #ifndef _BEPBEP_MATERIAL_MANAGER_H_
 #define _BEPBEP_MATERIAL_MANAGER_H_
 
-#include "material.h"
+#include "imaterial.h"
+#include "pbr_material.h"
+#include "skybox_material.h"
 
 namespace bepbep {
     using namespace bebone::core;
@@ -10,26 +12,30 @@ namespace bepbep {
 
     class MaterialManager {
         private:
-            unordered_map<string, Material*> materials;
+            unordered_map<string, IMaterial*> materials;
 
         public:
-            Material* create_material(
+            IMaterial* create_pbr_material(
                 const string& name,
                 GLShaderProgram* shader,
-                GLTexture2D* albedo,
-                GLTexture2D* ao,
-                GLTexture2D* metallic,
-                GLTexture2D* normal,
-                GLTexture2D* roughness)
+                GLTexture* albedo,
+                GLTexture* ao,
+                GLTexture* metallic,
+                GLTexture* normal,
+                GLTexture* roughness)
             {
-                auto* material = new Material(shader, albedo, ao, metallic, normal, roughness);
-
+                IMaterial* material = new PBRMaterial(shader, albedo, ao, metallic, normal, roughness);
                 materials[name] = material;
-
                 return material;
             }
 
-            Material* get_material(const string& name) {
+            IMaterial* create_skybox_material(const string& name, GLShaderProgram* shader, GLTexture* albedo) {
+                IMaterial* material = new SkyBoxMaterial(shader, albedo);
+                materials[name] = material;
+                return material;
+            }
+
+            IMaterial* get_material(const string& name) {
                 return materials[name];
             }
 

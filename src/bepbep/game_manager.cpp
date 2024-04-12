@@ -41,7 +41,7 @@ namespace bepbep {
         cameraController.update_position(window, camera);
 
         graphics->render(level, camera);
-        graphics->render_cams(cams, activeCamera);
+        // graphics->render_cams(cams, activeCamera);
     }
 
     PhysicsEngine& GameManager::get_physics_engine() {

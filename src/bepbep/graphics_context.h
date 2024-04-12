@@ -1,20 +1,20 @@
 #ifndef _BEPBEP_GRAPHICS_CONTEXT_H_
 #define _BEPBEP_GRAPHICS_CONTEXT_H_
 
-#include "material.h"
+#include "pbr_material.h"
 
 namespace bepbep {
     class GraphicsContext {
         private:
             bool debugMode;
 
-            Material* activeMaterial;
+            IMaterial* activeMaterial;
 
         public:
-            GraphicsContext(const bool& debug, Material* material);
+            GraphicsContext(const bool& debug, IMaterial* material);
 
             const bool& is_debug() const;
-            Material* get_active_material();
+            IMaterial* get_active_material();
 
     };
 }
