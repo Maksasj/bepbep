@@ -1,8 +1,8 @@
 #include "renderer.h"
 
-#include "entity.h"
-#include "structure.h"
-#include "graphics_context.h"
+#include "level/entity.h"
+#include "level/structure.h"
+#include "graphics/graphics_context.h"
 
 namespace bepbep {
     ModelRenderer::ModelRenderer(shared_ptr<Model>& m) {

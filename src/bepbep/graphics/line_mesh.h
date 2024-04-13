@@ -1,7 +1,7 @@
 #ifndef _BEPBEP_LINE_MESH_H_
 #define _BEPBEP_LINE_MESH_H_
 
-#include "vertex.h"
+#include "common/vertex.h"
 
 namespace bepbep {
     using namespace bebone::core;

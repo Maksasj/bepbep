@@ -1,10 +1,10 @@
 #ifndef _BEPBEP_GAME_MANAGER_H_
 #define _BEPBEP_GAME_MANAGER_H_
 
-#include "level.h"
+#include "level/level.h"
 
-#include "physics_engine.h"
-#include "rendering_engine.h"
+#include "physics/physics_engine.h"
+#include "graphics/rendering_engine.h"
 
 #include "camera.h"
 #include "camera_controller.h"

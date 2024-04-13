@@ -5,7 +5,7 @@
 #include "mesh.h"
 #include "model.h"
 #include "mesh_builder.h"
-#include "transform.h"
+#include "common/transform.h"
 #include "irenderable.h"
 
 namespace bepbep {

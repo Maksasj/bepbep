@@ -3,7 +3,7 @@
 
 #include "graphics_context.h"
 #include "light.h"
-#include "vertex.h"
+#include "common/vertex.h"
 
 namespace bepbep {
     struct alignas(16) Lights {

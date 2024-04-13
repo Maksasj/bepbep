@@ -1,7 +1,7 @@
 #ifndef _BEPBEP_PLAYER_H_
 #define _BEPBEP_PLAYER_H_
 
-#include "entity.h"
+#include "level/entity.h"
 
 namespace bepbep {
     class Player : public Entity {

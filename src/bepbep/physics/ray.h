@@ -1,8 +1,8 @@
 #ifndef _BEPBEP_RAY_H_
 #define _BEPBEP_RAY_H_
 
-#include "entity.h"
-#include "structure.h"
+#include "level/entity.h"
+#include "level/structure.h"
 
 namespace bepbep {
     class Ray {

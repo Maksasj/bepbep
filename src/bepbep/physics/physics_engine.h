@@ -1,9 +1,9 @@
 #ifndef _BEPBEP_PHYSICS_ENGINE_H_
 #define _BEPBEP_PHYSICS_ENGINE_H_
 
-#include "level.h"
+#include "level/level.h"
 
-#include "object.h"
+#include "level/object.h"
 
 namespace bepbep {
     using namespace bebone::core;

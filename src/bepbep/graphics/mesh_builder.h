@@ -4,7 +4,7 @@
 #include <memory>
 
 #include "mesh.h"
-#include "vertex.h"
+#include "common/vertex.h"
 
 namespace bepbep {
     class MeshBuilder {

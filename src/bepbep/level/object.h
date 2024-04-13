@@ -1,12 +1,12 @@
 #ifndef _BEPBEP_OBJECT_H_
 #define _BEPBEP_OBJECT_H_
 
-#include "mesh.h"
-#include "graphics_context.h"
+#include "graphics/mesh.h"
+#include "graphics/graphics_context.h"
 
-#include "collision.h"
+#include "physics/collision.h"
 
-#include "irenderable.h"
+#include "graphics/irenderable.h"
 
 namespace bepbep {
     using namespace bebone::core;

@@ -1,7 +1,7 @@
 #ifndef _BEPBEP_LIGHT_H_
 #define _BEPBEP_LIGHT_H_
 
-#include "vertex.h"
+#include "common/vertex.h"
 
 namespace bepbep {
     struct alignas(16) Light {

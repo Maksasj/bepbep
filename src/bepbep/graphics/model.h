@@ -1,7 +1,7 @@
 #ifndef _BEPBEP_MODEL_H_
 #define _BEPBEP_MODEL_H_
 
-#include "mesh.h"
+#include "graphics/mesh.h"
 
 namespace bepbep {
     using namespace bebone::core;

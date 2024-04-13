@@ -2,7 +2,7 @@
 #define _BEPBEP_BLOCK_H_
 
 #include "object.h"
-#include "mesh_builder.h"
+#include "graphics/mesh_builder.h"
 
 namespace bepbep {
     using namespace bebone::core;

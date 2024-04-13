@@ -1,12 +1,12 @@
 #ifndef _BEPBEP_H_
 #define _BEPBEP_H_
 
-#include "vertex.h"
-#include "mesh.h"
+#include "common/vertex.h"
+#include "graphics/mesh.h"
 #include "camera.h"
-#include "level.h"
-#include "graphics_context.h"
-#include "light_manager.h"
+#include "level/level.h"
+#include "graphics/graphics_context.h"
+#include "graphics/light_manager.h"
 #include "game_manager.h"
 
 namespace bepbep {

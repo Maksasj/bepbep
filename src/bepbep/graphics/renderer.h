@@ -1,11 +1,11 @@
 #ifndef _BEPBEP_RENDERER_H_
 #define _BEPBEP_RENDERER_H_
 
-#include "pbr_material.h"
-#include "mesh.h"
+#include "graphics/pbr_material.h"
+#include "graphics/mesh.h"
 #include "model.h"
-#include "mesh_builder.h"
-#include "transform.h"
+#include "graphics/mesh_builder.h"
+#include "common/transform.h"
 
 namespace bepbep {
     using namespace bebone::core;

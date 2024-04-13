@@ -1,8 +1,8 @@
 #ifndef _BEPBEP_COLLISION_H_
 #define _BEPBEP_COLLISION_H_
 
-#include "transform.h"
-#include "vertex.h"
+#include "common/transform.h"
+#include "common/vertex.h"
 
 namespace bepbep {
     using namespace bebone::core;
