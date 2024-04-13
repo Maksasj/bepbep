@@ -75,7 +75,7 @@ namespace bepbep {
             GraphicsContext context(true, material);
 
             for(auto& rend : renders) {
-                auto obj = (Object*) rend;
+                auto obj = (Object*) rend; // todo this think is specific only for objects, will not work with irenderables
                 obj->render(context, obj->transform);
             }
 
