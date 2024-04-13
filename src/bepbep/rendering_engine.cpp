@@ -24,8 +24,8 @@ namespace bepbep {
         auto skyboxAlbedo = textureManager->load_texture("skyboxAlbedo", {
             "skybox/right.jpg",
             "skybox/left.jpg",
-            "skybox/bottom.jpg",
             "skybox/top.jpg",
+            "skybox/bottom.jpg",
             "skybox/front.jpg",
             "skybox/back.jpg"
         });
