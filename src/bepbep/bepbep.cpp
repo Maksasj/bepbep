@@ -37,10 +37,6 @@ namespace bepbep {
             deltaTime = currentFrame - lastFrame;
             lastFrame = currentFrame;
 
-            GLContext::set_viewport(0, 0, window->get_width(), window->get_height());
-            GLContext::clear_color(0.2f, 0.2f, 0.2f, 1.0f);
-            GLContext::clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
             manager->run(deltaTime);
 
             GLFWContext::swap_buffers(*window);

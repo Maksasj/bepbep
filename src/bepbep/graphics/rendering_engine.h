@@ -5,6 +5,7 @@
 #include "level/level.h"
 #include "camera.h"
 #include "light_manager.h"
+#include "render_pass.h"
 
 #include "texture_manager.h"
 #include "shader_manager.h"
@@ -22,21 +23,16 @@ namespace bepbep {
 
             unique_ptr<SkyBox> skybox;
 
-            /*
-            void render_freecam(Camera* camera);
-            void render_orbitcam(Camera* camera);
-            */
+            unique_ptr<RenderPass> firstPass;
+
+            GLShaderProgram* postProcessingShader;
+            unique_ptr<Mesh> quad;
 
         public:
             RenderingEngine();
 
             void load();
-
             void render(Level* level, Camera* camera);
-
-            /*
-            void render_cams(const vector<Camera*>& cams, const u32& activeCamera);
-            */
 
             ShaderManager& get_shader_manager();
             MaterialManager& get_material_manager();

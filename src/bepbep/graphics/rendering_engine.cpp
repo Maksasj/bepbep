@@ -7,6 +7,8 @@ namespace bepbep {
         lightManager = make_unique<LightManager>();
         shaderManager = make_unique<ShaderManager>();
         materialManager = make_unique<MaterialManager>();
+
+        firstPass = make_unique<RenderPass>();
     }
 
     void RenderingEngine::load() {
@@ -32,10 +34,10 @@ namespace bepbep {
 
         auto pbrShader = shaderManager->load_shader("pbr", "shaders/pbr_vert.glsl", "shaders/pbr_frag.glsl");
         auto skyboxShader = shaderManager->load_shader("skybox", "shaders/skybox_vert.glsl", "shaders/skybox_frag.glsl");
+        postProcessingShader = shaderManager->load_shader("skybox", "shaders/post_processing_vert.glsl", "shaders/post_processing_frag.glsl");
 
         auto brick = materialManager->create_pbr_material("brick", pbrShader, brickAlbedo, brickAo, brickMetallic, brickNormal, brickRoughness, skyboxAlbedo);
         auto metal = materialManager->create_pbr_material("metal", pbrShader, metalAlbedo, nullptr, metalMetallic, metalNormal, metalRoughness, skyboxAlbedo);
-
         auto skyboxMaterial = materialManager->create_skybox_material("skybox", skyboxShader, skyboxAlbedo);
 
         lightManager->add_light({Vec3f{0, 10, -5}, 0, ColorRGBA::GREEN});
@@ -45,6 +47,20 @@ namespace bepbep {
         // lightManager->add_light({Vec3f{1, 1, 1}, 1, ColorRGBA::WHITE});
 
         skybox = make_unique<SkyBox>(skyboxMaterial);
+
+        const vector<Vertex> vertices = {
+            Vertex{{-1, -1, 0}, Vec3f::zero, {0, 0}},
+            Vertex{{-1,  1, 0}, Vec3f::zero, {0, 1}},
+            Vertex{{ 1, -1, 0}, Vec3f::zero, {1, 0}},
+            Vertex{{ 1,  1, 0}, Vec3f::zero, {1, 1}}
+        };
+
+        const vector<u32> indicies = {
+            0, 1, 2,
+            1, 3, 2
+        };
+
+        quad = make_unique<Mesh>(vertices, indicies);
     }
 
     void RenderingEngine::render(Level* level, Camera* camera) {
@@ -66,6 +82,11 @@ namespace bepbep {
 
         renderables[skybox->get_material()].push_back(skybox.get());
 
+        firstPass->bind();
+        GLContext::set_viewport(0, 0, 800, 600);
+        GLContext::clear_color(0.2f, 0.2f, 0.2f, 1.0f);
+        GLContext::clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         for(auto const& [material, renders] : renderables) {
             material->bind();
 
@@ -82,68 +103,16 @@ namespace bepbep {
             material->unbind();
         }
 
-        // light.bind(context);
-        // light.render(context);
-//
-        // render_level(level, camera);
+        firstPass->unbind();
+
+        GLContext::set_viewport(0, 0, 800, 600);
+        GLContext::clear_color(0.2f, 0.2f, 0.2f, 1.0f);
+        GLContext::clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        postProcessingShader->enable();
+        firstPass->bind_texture();
+        quad->render();
     }
-
-    /*
-    void RenderingEngine::render_cams(const vector<Camera*>& cams, const u32& activeCamera) {
-        for(u32 i = 0; i < cams.size(); ++i) {
-            if(i == activeCamera)
-                continue;
-
-            const auto& camera = cams[i];
-
-            const auto& type = camera->get_type();
-
-            if(type == FREE_CAM) {
-                render_freecam(camera);
-            } else if(type == ORBIT_CAM) {
-                render_orbitcam(camera);
-            }
-        }
-    }
-
-    void RenderingEngine::render_freecam(Camera* camera) {
-        const auto& position = camera->get_position();
-        const auto& rotation = camera->get_rotation();
-        const auto& direction = camera->get_direction();
-
-        auto lineShader = context.get_line_shader();
-        lineShader->enable();
-
-        lineShader->set_uniform("transform", Mat4f::identity());
-        context.render_line(position, position + direction.normalize() * 3, ColorRGBA::MAGENTA);
-
-        Transform transform = {
-                .position = position - Vec3f::splat(0.5),
-                .rotation = Mat4f::identity()
-        };
-        lineShader->set_uniform("transform", transform.calculate_final_transform());
-        context.render_cube();
-    }
-
-    void RenderingEngine::render_orbitcam(Camera* camera) {
-        const auto& position = camera->get_position();
-        const auto& rotation = camera->get_rotation();
-        const auto& direction = camera->get_direction();
-
-        auto lineShader = context.get_line_shader();
-        lineShader->enable();
-
-        lineShader->set_uniform("transform", Mat4f::identity());
-        context.render_line(position, position + direction, ColorRGBA::MAGENTA);
-
-        Transform transform = {
-            .position = position + direction,
-            .rotation = Mat4f::identity()
-        };
-        lineShader->set_uniform("transform", transform.calculate_final_transform());
-        context.render_cube();
-    }
-    */
 
     ShaderManager& RenderingEngine::get_shader_manager() {
         return *shaderManager;
