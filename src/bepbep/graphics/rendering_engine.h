@@ -34,6 +34,8 @@ namespace bepbep {
             void load();
             void render(Level* level, Camera* camera);
 
+            void handle_window_resize();
+
             ShaderManager& get_shader_manager();
             MaterialManager& get_material_manager();
     };

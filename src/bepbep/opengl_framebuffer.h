@@ -19,6 +19,10 @@ namespace bepbep {
                 glGenFramebuffers(1, &id);
             }
 
+            ~GLFrameBuffer() {
+                glDeleteFramebuffers(1, &id);
+            }
+
             void bind() {
                 glBindFramebuffer(GL_FRAMEBUFFER, id);
             }

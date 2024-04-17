@@ -16,16 +16,16 @@ namespace bepbep {
             unique_ptr<GLRenderBuffer> renderBuffer;
 
         public:
-            RenderPass() {
+            RenderPass(const int& width, const int& height) {
                 frameBuffer = make_unique<GLFrameBuffer>();
                 frameBuffer->bind();
 
-                texture = make_unique<GLTexture2D>(800, 600);
+                texture = make_unique<GLTexture2D>(width, height);
                 frameBuffer->texture2d(*texture, GL_COLOR_ATTACHMENT0);
 
                 renderBuffer = make_unique<GLRenderBuffer>();
                 renderBuffer->bind();
-                renderBuffer->storage(GL_DEPTH24_STENCIL8, 800, 600);
+                renderBuffer->storage(GL_DEPTH24_STENCIL8, width, height);
                 renderBuffer->framebuffer(GL_DEPTH_STENCIL_ATTACHMENT);
 
                 frameBuffer->unbind();

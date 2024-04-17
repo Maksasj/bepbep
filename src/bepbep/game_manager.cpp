@@ -24,6 +24,10 @@ namespace bepbep {
                 if(event.key == GLFW_KEY_F5)
                     activeCamera = (activeCamera + 1) % cams.size();
         });
+
+        BepBepApp::get_window()->add_listener([&](WindowSizeEvent& event) {
+            graphics->handle_window_resize();
+        });
     }
 
     void GameManager::run(const f64& dt) {

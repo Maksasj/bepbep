@@ -8,7 +8,8 @@ namespace bepbep {
         shaderManager = make_unique<ShaderManager>();
         materialManager = make_unique<MaterialManager>();
 
-        firstPass = make_unique<RenderPass>();
+        auto window = BepBepApp::get_window();
+        firstPass = make_unique<RenderPass>(window->get_width(), window->get_height());
     }
 
     void RenderingEngine::load() {
@@ -63,7 +64,14 @@ namespace bepbep {
         quad = make_unique<Mesh>(vertices, indicies);
     }
 
+    void RenderingEngine::handle_window_resize() {
+        auto window = BepBepApp::get_window();
+        firstPass = make_unique<RenderPass>(window->get_width(), window->get_height());
+    }
+
     void RenderingEngine::render(Level* level, Camera* camera) {
+        auto window = BepBepApp::get_window();
+
         unordered_map<IMaterial*, vector<IRenderable*>> renderables;
 
         auto objects = level->get_objects();
@@ -83,7 +91,7 @@ namespace bepbep {
         renderables[skybox->get_material()].push_back(skybox.get());
 
         firstPass->bind();
-        GLContext::set_viewport(0, 0, 800, 600);
+        GLContext::set_viewport(0, 0, window->get_width(), window->get_height());
         GLContext::clear_color(0.2f, 0.2f, 0.2f, 1.0f);
         GLContext::clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -105,7 +113,7 @@ namespace bepbep {
 
         firstPass->unbind();
 
-        GLContext::set_viewport(0, 0, 800, 600);
+        GLContext::set_viewport(0, 0, window->get_width(), window->get_height());
         GLContext::clear_color(0.2f, 0.2f, 0.2f, 1.0f);
         GLContext::clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

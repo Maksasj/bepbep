@@ -19,6 +19,10 @@ namespace bepbep {
                 glGenRenderbuffers(1, &id);
             }
 
+            ~GLRenderBuffer() {
+                glDeleteRenderbuffers(1, &id);
+            }
+
             void bind() const {
                 glBindRenderbuffer(GL_RENDERBUFFER, id);
             }
