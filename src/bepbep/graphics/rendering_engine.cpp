@@ -13,11 +13,7 @@ namespace bepbep {
     }
 
     void RenderingEngine::load() {
-        auto brickAlbedo = textureManager->load_texture("brickAlbedo", "materials/brick/albedo.png");
-        auto brickAo = textureManager->load_texture("brickAo", "materials/brick/ao.png");
-        auto brickMetallic = textureManager->load_texture("brickMetallic", "materials/brick/metallic.png");
-        auto brickNormal = textureManager->load_texture("brickNormal", "materials/brick/normal.png");
-        auto brickRoughness = textureManager->load_texture("brickRoughness", "materials/brick/roughness.png");
+        auto testAlbedo = textureManager->load_texture("testAlbedo", "materials/test/albedo.png");
 
         auto metalAlbedo = textureManager->load_texture("metalAlbedo", "materials/metal/albedo.png");
         auto metalMetallic = textureManager->load_texture("metalMetallic", "materials/metal/metallic.png");
@@ -25,19 +21,19 @@ namespace bepbep {
         auto metalRoughness = textureManager->load_texture("metalRoughness", "materials/metal/roughness.png");
 
         auto skyboxAlbedo = textureManager->load_texture("skyboxAlbedo", {
-            "skybox/right.jpg",
-            "skybox/left.jpg",
-            "skybox/top.jpg",
-            "skybox/bottom.jpg",
-            "skybox/front.jpg",
-            "skybox/back.jpg"
+            "skybox/sky/right.png",
+            "skybox/sky/left.png",
+            "skybox/sky/top.png",
+            "skybox/sky/bottom.png",
+            "skybox/sky/front.png",
+            "skybox/sky/back.png"
         });
 
         auto pbrShader = shaderManager->load_shader("pbr", "shaders/pbr_vert.glsl", "shaders/pbr_frag.glsl");
         auto skyboxShader = shaderManager->load_shader("skybox", "shaders/skybox_vert.glsl", "shaders/skybox_frag.glsl");
         postProcessingShader = shaderManager->load_shader("skybox", "shaders/post_processing_vert.glsl", "shaders/post_processing_frag.glsl");
 
-        auto brick = materialManager->create_pbr_material("brick", pbrShader, brickAlbedo, brickAo, brickMetallic, brickNormal, brickRoughness, skyboxAlbedo);
+        auto test = materialManager->create_pbr_material("test", pbrShader, testAlbedo, nullptr, nullptr, nullptr, nullptr, skyboxAlbedo);
         auto metal = materialManager->create_pbr_material("metal", pbrShader, metalAlbedo, nullptr, metalMetallic, metalNormal, metalRoughness, skyboxAlbedo);
         auto skyboxMaterial = materialManager->create_skybox_material("skybox", skyboxShader, skyboxAlbedo);
 

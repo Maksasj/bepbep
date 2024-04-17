@@ -105,10 +105,22 @@ void main() {
         Lo += PBR(light);
     }
 
+    vec3 R = normalize(reflect(normalize(aFragPos - camPos), N));
+    vec3 envColor = texture(environmentMap, R).rgb / 100.0;
+
+    Light light;
+    light.origin = aFragPos + R;
+    light.padding = 0;
+    light.color = vec4(envColor, 0.0);
+
+    Lo += PBR(light);
+
+
+    /*
     vec3 F0 = mix(vec3(0.04, 0.04, 0.04), albedoMesh, metallic);
-    vec3 envColor = texture(environmentMap, N).rgb;
+    vec3 envColor = texture(environmentMap, reflect(normalize(aFragPos - camPos), N)).rgb;
     // envColor = envColor / (envColor + vec3(1.0));
-    envColor = pow(envColor + 0.5, vec3(2));
+    // envColor = pow(envColor + 0.5, vec3(2));
 
     vec3 kS = F(F0, V, aNormal);
     vec3 kD = 1.0 - kS;
@@ -116,8 +128,9 @@ void main() {
     vec3 irradiance = envColor;
     vec3 diffuse = irradiance * albedoMesh;
     vec3 ambient = (kD * diffuse); // * ao;
+    */
 
-    vec3 color = emissivityMesh + Lo + ambient;
+    vec3 color = Lo;
     // vec3 color = emissivityMesh + Lo;
 
     color = color / (color + vec3(1.0));

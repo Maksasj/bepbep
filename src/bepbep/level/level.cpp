@@ -46,7 +46,7 @@ namespace bepbep {
             auto* entity = new Entity(Vec3f{-12, -2, -12}, 1);
 
             entity->set_renderer(new PlaneRenderer(24, 24));
-            entity->set_material(materials.get_material("brick"));
+            entity->set_material(materials.get_material("test"));
 
             objects.push_back(entity);
         }
