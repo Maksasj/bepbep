@@ -10,6 +10,11 @@ namespace bepbep {
 
         auto window = BepBepApp::get_window();
         firstPass = make_unique<RenderPass>(window->get_width(), window->get_height());
+
+        BeGUI::init(window);
+        ImGuiIO &io = ImGui::GetIO();
+        io.ConfigFlags |= ImGuiConfigFlags_None;
+        io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     }
 
     void RenderingEngine::load() {
@@ -58,15 +63,22 @@ namespace bepbep {
         };
 
         quad = make_unique<Mesh>(vertices, indicies);
+
+        dockspaceWindow = make_unique<MainDockspaceWindow>();
+        levelViewWindow = make_unique<LevelViewWindow>();
     }
 
     void RenderingEngine::handle_window_resize() {
-        auto window = BepBepApp::get_window();
-        firstPass = make_unique<RenderPass>(window->get_width(), window->get_height());
+
     }
 
-    void RenderingEngine::render(Level* level, Camera* camera) {
-        auto window = BepBepApp::get_window();
+    void RenderingEngine::resize_passes(const i32& width, const i32& height) {
+        firstPass = make_unique<RenderPass>(width, height);
+    }
+
+    void RenderingEngine::render_geometry_pass(Level* level, Camera* camera) {
+        firstPass->bind();
+        const auto texture = firstPass->get_texture();
 
         unordered_map<IMaterial*, vector<IRenderable*>> renderables;
 
@@ -86,8 +98,7 @@ namespace bepbep {
 
         renderables[skybox->get_material()].push_back(skybox.get());
 
-        firstPass->bind();
-        GLContext::set_viewport(0, 0, window->get_width(), window->get_height());
+        GLContext::set_viewport(0, 0, texture->get_width(), texture->get_height());
         GLContext::clear_color(0.2f, 0.2f, 0.2f, 1.0f);
         GLContext::clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -109,13 +120,39 @@ namespace bepbep {
 
         firstPass->unbind();
 
-        GLContext::set_viewport(0, 0, window->get_width(), window->get_height());
+    }
+
+    void RenderingEngine::render_post_processing_pass(Level* level, Camera* camera) {
+
+    }
+
+    void RenderingEngine::render_ui_pass(Level* level, Camera* camera) {
+        const auto texture = firstPass->get_texture();
+
+        GLContext::set_viewport(0, 0, texture->get_width(), texture->get_height());
         GLContext::clear_color(0.2f, 0.2f, 0.2f, 1.0f);
         GLContext::clear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         postProcessingShader->enable();
         firstPass->bind_texture();
         quad->render();
+
+        BeGUI::begin();
+
+        dockspaceWindow->run([&]() {
+            auto res = levelViewWindow->run(level, firstPass.get());
+
+            if(res.first)
+                resize_passes(res.second.x, res.second.y);
+        });
+
+        BeGUI::end();
+    }
+
+    void RenderingEngine::render(Level* level, Camera* camera) {
+        render_geometry_pass(level, camera);
+        render_post_processing_pass(level, camera);
+        render_ui_pass(level, camera);
     }
 
     ShaderManager& RenderingEngine::get_shader_manager() {
@@ -124,5 +161,9 @@ namespace bepbep {
 
     MaterialManager& RenderingEngine::get_material_manager() {
         return *materialManager;
+    }
+
+    RenderPass& RenderingEngine::get_first_pass() {
+        return *firstPass;
     }
 }

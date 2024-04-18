@@ -11,6 +11,9 @@
 #include "shader_manager.h"
 #include "material_manager.h"
 
+#include "ui/main_dockspace.h"
+#include "ui/level_view.h"
+
 namespace bepbep {
     class BepBepApp;
 
@@ -28,6 +31,13 @@ namespace bepbep {
             GLShaderProgram* postProcessingShader;
             unique_ptr<Mesh> quad;
 
+            unique_ptr<MainDockspaceWindow> dockspaceWindow;
+            unique_ptr<LevelViewWindow> levelViewWindow;
+
+            void render_geometry_pass(Level* level, Camera* camera);
+            void render_post_processing_pass(Level* level, Camera* camera);
+            void render_ui_pass(Level* level, Camera* camera);
+
         public:
             RenderingEngine();
 
@@ -35,9 +45,11 @@ namespace bepbep {
             void render(Level* level, Camera* camera);
 
             void handle_window_resize();
+            void resize_passes(const i32& width, const i32& height);
 
             ShaderManager& get_shader_manager();
             MaterialManager& get_material_manager();
+            RenderPass& get_first_pass();
     };
 }
 

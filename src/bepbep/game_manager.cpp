@@ -40,9 +40,11 @@ namespace bepbep {
 
         auto camera = cams[activeCamera];
 
-        auto window = BepBepApp::get_window();
-        cameraController.update_rotation(window, camera);
-        cameraController.update_position(window, camera);
+        auto texture = graphics->get_first_pass().get_texture();
+        auto targetSize = Vec2i(texture->get_width(), texture->get_height());
+
+        cameraController.update_rotation(camera, targetSize);
+        cameraController.update_position(camera, targetSize);
 
         graphics->render(level, camera);
         // graphics->render_cams(cams, activeCamera);

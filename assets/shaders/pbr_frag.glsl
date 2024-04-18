@@ -113,8 +113,15 @@ void main() {
     light.padding = 0;
     light.color = vec4(envColor, 0.0);
 
-    Lo += PBR(light);
+    vec3 F0 = mix(vec3(0.04, 0.04, 0.04), albedoMesh, metallic);
+    vec3 kS = F(F0, V, aNormal);
+    vec3 kD = 1.0 - kS;
+    kD *= 1.0 - metallic;
+    vec3 irradiance = envColor;
+    vec3 diffuse = irradiance * albedoMesh;
+    vec3 ambient = (kD * diffuse); // * ao;
 
+    Lo += kS * PBR(light);
 
     /*
     vec3 F0 = mix(vec3(0.04, 0.04, 0.04), albedoMesh, metallic);

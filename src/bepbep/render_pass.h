@@ -46,6 +46,10 @@ namespace bepbep {
             void unbind_texture() {
                 texture->unbind();
             }
+
+            const GLTexture2D* get_texture() {
+                return texture.get();
+            }
     };
 }
 
